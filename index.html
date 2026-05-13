@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>代驾SaaS后台管理系统</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         * {
             margin: 0;
@@ -1616,6 +1618,149 @@
             color: #722ed1;
             border: 1px solid #d3adf7;
         }
+
+        .fence-editor-page {
+            padding: 24px;
+        }
+
+        .fence-editor-form {
+            max-width: 900px;
+        }
+
+        .fence-editor-map-section {
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .fence-editor-instructions {
+            background: #e6f7ff;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .fence-editor-instructions li {
+            margin-bottom: 6px;
+        }
+
+        .fence-editor-map {
+            height: 500px;
+            border-radius: 8px;
+        }
+
+        .fence-editor-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .drawing-btn {
+            padding: 8px 20px;
+            border: 1px solid #d9d9d9;
+            border-radius: 6px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .drawing-btn.active {
+            background: #1677ff;
+            color: #fff;
+            border-color: #1677ff;
+        }
+
+        .drawing-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .fence-editor-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 24px 0;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff2f0;
+            border: 1px solid #ffccc7;
+            padding: 10px 24px;
+            border-radius: 8px;
+            color: #ff4d4f;
+            font-size: 14px;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            animation: toast-in 0.3s ease;
+        }
+
+        @keyframes toast-in {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #bbb;
+            font-size: 14px;
+        }
+
+        .confirm-dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .confirm-dialog {
+            background: #fff;
+            border-radius: 8px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+        }
+
+        .confirm-dialog-body {
+            padding: 24px;
+        }
+
+        .confirm-dialog-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 12px 24px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .company-badge {
+            display: inline-block;
+            padding: 1px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            background: #f0f5ff;
+            color: #2f54eb;
+            border: 1px solid #adc6ff;
+        }
     </style>
 </head>
 <body>
@@ -2059,28 +2204,15 @@
                     <div class="card">
                         <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                             <span class="card-title">围栏列表</span>
-                            <button class="btn btn-primary" onclick="openFenceModal()">
+                            <button class="btn btn-primary" onclick="showFenceEditor()">
                                 <span>+</span> 新增围栏
                             </button>
                         </div>
                         <div class="card-body">
                             <div class="search-bar">
                                 <input type="text" class="search-input" id="fence-search-name" placeholder="搜索围栏名称">
-                                <select class="search-select" id="fence-search-city">
-                                    <option value="">全部城市</option>
-                                    <option value="北京">北京</option>
-                                    <option value="上海">上海</option>
-                                    <option value="广州">广州</option>
-                                    <option value="深圳">深圳</option>
-                                    <option value="保定">保定</option>
-                                </select>
-                                <select class="search-select" id="fence-search-type">
-                                    <option value="">全部类型</option>
-                                    <option value="hot">热门区域</option>
-                                    <option value="airport">机场</option>
-                                    <option value="business">商圈</option>
-                                    <option value="scenic">景区</option>
-                                    <option value="custom">自定义</option>
+                                <select class="search-select" id="fence-search-company" style="display:none;">
+                                    <option value="">全部公司</option>
                                 </select>
                                 <select class="search-select" id="fence-search-status">
                                     <option value="">全部状态</option>
@@ -2095,11 +2227,8 @@
                                 <thead>
                                     <tr>
                                         <th>围栏名称</th>
-                                        <th>围栏类型</th>
-                                        <th>所属城市</th>
-                                        <th>围栏范围</th>
-                                        <th>生效时段</th>
                                         <th>状态</th>
+                                        <th>所属公司</th>
                                         <th>创建时间</th>
                                         <th>操作</th>
                                     </tr>
@@ -2117,83 +2246,82 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- 围栏编辑器页面 -->
+                <div id="page-fence-editor" class="page-content hidden">
+                    <div class="card">
+                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="card-title" id="fence-editor-title">新增围栏</span>
+                            <button class="btn" onclick="backToFenceList()">返回列表</button>
+                        </div>
+                        <div class="card-body fence-editor-form">
+                            <form id="fence-form">
+                                <input type="hidden" id="edit-fence-id">
+                                <div class="form-row">
+                                    <div class="form-item">
+                                        <label class="form-label">围栏名称<span class="required">*</span></label>
+                                        <input type="text" class="form-input" id="fence-name" placeholder="请输入围栏名称">
+                                    </div>
+                                    <div class="form-item" id="fence-company-field">
+                                        <label class="form-label">所属公司<span class="required">*</span></label>
+                                        <select class="form-select" id="fence-company">
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-item">
+                                    <label class="form-label">围栏绘制<span class="required">*</span></label>
+                                    <div class="fence-editor-map-section">
+                                        <div class="fence-editor-instructions">
+                                            <strong>绘制说明：</strong>
+                                            <ul style="margin: 6px 0 0 16px; padding: 0;">
+                                                <li>点击「开始绘制」后，可在地图区域点击鼠标打点，框出围栏区域，点击「完成绘制」，即可连接成区域</li>
+                                                <li>围栏必须在您的经营范围内，且不能与您已经创建的围栏有重叠</li>
+                                                <li>地图上的区域颜色：<span style="color:#ff4d4f;">红色</span>为已有围栏；<span style="color:#999;">灰色区域</span>不在公司经营范围内；<span style="color:#1890ff;">蓝色</span>为本次绘制的围栏</li>
+                                            </ul>
+                                        </div>
+                                        <div style="padding: 8px 12px; background: #fafafa; border-bottom: 1px solid #e8e8e8; position: relative;">
+                                            <input type="text" id="fence-address-search" class="form-input" placeholder="搜索地址定位到区域" style="width:100%;" oninput="searchAddress()">
+                                            <div id="fence-address-results" style="display:none; position:absolute; top:100%; left:0; right:0; background:#fff; border:1px solid #e8e8e8; border-radius:4px; max-height:200px; overflow-y:auto; z-index:1000;"></div>
+                                        </div>
+                                        <div class="fence-editor-map" id="fence-map"></div>
+                                        <div class="fence-editor-actions">
+                                            <button type="button" class="btn btn-primary drawing-btn" id="btn-start-draw" onclick="startDrawing()">开始绘制</button>
+                                            <button type="button" class="btn drawing-btn" id="btn-complete-draw" onclick="completeDrawing()" style="display:none;">完成绘制</button>
+                                            <button type="button" class="btn drawing-btn" id="btn-cancel-draw" onclick="cancelDrawing()" style="display:none;">取消绘制</button>
+                                            <button type="button" class="btn drawing-btn" id="btn-clear-draw" onclick="clearDrawing()" style="display:none;">清除绘制</button>
+                                            <button type="button" class="btn drawing-btn" id="btn-edit-draw" onclick="editDrawing()" style="display:none;">编辑</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="fence-editor-footer">
+                            <button class="btn" onclick="backToFenceList()">取消</button>
+                            <button class="btn btn-primary" onclick="saveFence()">保存</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
 
-    <!-- 新增/编辑围栏模态框 -->
-    <div class="modal-overlay" id="fence-modal">
-        <div class="modal" style="max-width: 700px;">
-            <div class="modal-header">
-                <h3 class="modal-title" id="fence-modal-title">新增围栏</h3>
-                <button class="modal-close" onclick="closeModal('fence-modal')">&times;</button>
+    <!-- 围栏删除确认弹窗 -->
+    <div class="confirm-dialog-overlay" id="fence-delete-confirm" style="display:none;">
+        <div class="confirm-dialog">
+            <div class="confirm-dialog-body">
+                <p id="fence-delete-msg" style="margin:0; font-size:15px; line-height:1.6;">是否确认删除此围栏？</p>
             </div>
-            <div class="modal-body">
-                <form id="fence-form">
-                    <input type="hidden" id="edit-fence-id">
-                    <div class="form-row">
-                        <div class="form-item">
-                            <label class="form-label">围栏名称<span class="required">*</span></label>
-                            <input type="text" class="form-input" id="fence-name" placeholder="请输入围栏名称">
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label">围栏类型<span class="required">*</span></label>
-                            <select class="form-select" id="fence-type">
-                                <option value="hot">热门区域</option>
-                                <option value="airport">机场</option>
-                                <option value="business">商圈</option>
-                                <option value="scenic">景区</option>
-                                <option value="custom">自定义</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-item">
-                            <label class="form-label">所属城市<span class="required">*</span></label>
-                            <select class="form-select" id="fence-city">
-                                <option value="北京">北京</option>
-                                <option value="上海">上海</option>
-                                <option value="广州">广州</option>
-                                <option value="深圳">深圳</option>
-                                <option value="保定">保定</option>
-                            </select>
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label">围栏范围<span class="required">*</span></label>
-                            <input type="text" class="form-input" id="fence-area" placeholder="如：朝阳区CBD商圈半径3公里">
-                        </div>
-                    </div>
-                    <div class="form-item">
-                        <label class="form-label">生效时段</label>
-                        <div style="display: flex; gap: 12px; align-items: center;">
-                            <input type="time" class="form-input" id="fence-time-start" value="00:00" style="width: 150px;">
-                            <span style="color: #999;">至</span>
-                            <input type="time" class="form-input" id="fence-time-end" value="23:59" style="width: 150px;">
-                        </div>
-                        <div class="form-hint">设置围栏在一天中的生效时间段，默认全天生效</div>
-                    </div>
-                    <div class="form-item">
-                        <label class="form-label">围栏描述</label>
-                        <textarea class="form-textarea" id="fence-desc" placeholder="请输入围栏描述信息"></textarea>
-                    </div>
-                    <div class="form-item">
-                        <label class="form-label">状态</label>
-                        <div style="display: flex; gap: 16px;">
-                            <label style="display: flex; align-items: center; gap: 8px;">
-                                <input type="radio" name="fence-status" value="active" checked> 启用
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 8px;">
-                                <input type="radio" name="fence-status" value="inactive"> 停用
-                            </label>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn" onclick="closeModal('fence-modal')">取消</button>
-                <button class="btn btn-primary" onclick="saveFence()">保存</button>
+            <div class="confirm-dialog-footer">
+                <button class="btn" onclick="closeDeleteConfirm()">取消</button>
+                <button class="btn btn-danger" onclick="confirmDeleteFence()" style="background:#ff4d4f;color:#fff;">确认删除</button>
             </div>
         </div>
+    </div>
+
+    <!-- Toast 通知 -->
+    <div id="toast-container" style="position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:10000;display:none;">
+        <div class="toast" id="toast-message"></div>
     </div>
 
     <!-- 新增/编辑业务类型模态框 -->
@@ -3948,55 +4076,163 @@
         }
 
         // 围栏管理数据
+        const fenceCompanies = [
+            { id: 'HQ', name: '总部' },
+            { id: 'C001', name: '北京分公司', city: '北京', scope: [[39.9042,116.4074],[39.9142,116.4274],[39.8942,116.4274],[39.8942,116.3974],[39.9142,116.3974]] },
+            { id: 'C002', name: '上海分公司', city: '上海', scope: [[31.2304,121.4737],[31.2404,121.4937],[31.2204,121.4937],[31.2204,121.4637],[31.2404,121.4637]] },
+            { id: 'C003', name: '广州分公司', city: '广州', scope: [[23.1291,113.2644],[23.1391,113.2844],[23.1191,113.2844],[23.1191,113.2544],[23.1391,113.2544]] },
+            { id: 'C004', name: '深圳分公司', city: '深圳', scope: [[22.5431,114.0579],[22.5531,114.0779],[22.5331,114.0779],[22.5331,114.0479],[22.5531,114.0479]] },
+            { id: 'C005', name: '保定分公司', city: '保定', scope: [[38.8739,115.4646],[38.8839,115.4846],[38.8639,115.4846],[38.8639,115.4546],[38.8839,115.4546]] },
+        ];
+
+        let currentUserRole = 'HQ';
+
         const fenceData = [
-            { id: 'F001', name: '北京三里屯商圈', type: 'business', city: '北京', area: '三里屯/工体周边半径2公里', timeStart: '00:00', timeEnd: '23:59', desc: '三里屯商业区核心范围', status: 'active', time: '2024-01-10 09:00:00' },
-            { id: 'F002', name: '首都机场接机区', type: 'airport', city: '北京', area: '首都机场T1/T2/T3航站楼周边', timeStart: '06:00', timeEnd: '23:00', desc: '机场到达层代驾接驳区域', status: 'active', time: '2024-01-12 14:30:00' },
-            { id: 'F003', name: '上海外滩观光区', type: 'scenic', city: '上海', area: '外滩沿线南京东路至十六铺', timeStart: '00:00', timeEnd: '23:59', desc: '外滩核心观光区域', status: 'active', time: '2024-01-15 10:00:00' },
-            { id: 'F004', name: '广州天河CBD', type: 'hot', city: '广州', area: '天河体育中心周边半径3公里', timeStart: '07:00', timeEnd: '22:00', desc: '天河商圈及写字楼密集区', status: 'active', time: '2024-01-18 16:20:00' },
-            { id: 'F005', name: '深圳南山科技园', type: 'hot', city: '深圳', area: '科技园南区/北区半径2.5公里', timeStart: '08:00', timeEnd: '21:00', desc: '科技园区企业聚集区', status: 'active', time: '2024-01-20 11:00:00' },
-            { id: 'F006', name: '保定东站接驳区', type: 'custom', city: '保定', area: '保定东站周边半径1.5公里', timeStart: '06:00', timeEnd: '22:30', desc: '高铁站代驾接驳专用区域', status: 'inactive', time: '2024-02-01 09:30:00' },
-            { id: 'F007', name: '上海浦东机场', type: 'airport', city: '上海', area: '浦东机场T1/T2航站楼周边', timeStart: '00:00', timeEnd: '23:59', desc: '浦东机场代驾服务区域', status: 'active', time: '2024-02-05 15:00:00' },
-            { id: 'F008', name: '北京国贸商圈', type: 'business', city: '北京', area: '国贸CBD核心区半径2公里', timeStart: '07:00', timeEnd: '22:00', desc: '国贸商业区代驾热点区域', status: 'active', time: '2024-02-10 10:00:00' },
+            { id: 'F001', name: '三里屯商圈围栏', companyId: 'C001', status: 'active', coordinates: [[39.9082,116.4154],[39.9122,116.4254],[39.9042,116.4254],[39.9042,116.4154]], time: '2024-01-10 09:00:00' },
+            { id: 'F002', name: '首都机场接机区', companyId: 'C001', status: 'active', coordinates: [[39.5082,116.4104],[39.5122,116.4204],[39.5042,116.4204],[39.5042,116.4104]], time: '2024-01-12 14:30:00' },
+            { id: 'F003', name: '外滩观光区', companyId: 'C002', status: 'active', coordinates: [[31.2354,121.4787],[31.2454,121.4887],[31.2254,121.4887],[31.2254,121.4687],[31.2454,121.4687]], time: '2024-01-15 10:00:00' },
+            { id: 'F004', name: '天河CBD围栏', companyId: 'C003', status: 'active', coordinates: [[23.1341,113.2694],[23.1441,113.2894],[23.1241,113.2894],[23.1241,113.2594],[23.1441,113.2594]], time: '2024-01-18 16:20:00' },
+            { id: 'F005', name: '南山科技园围栏', companyId: 'C004', status: 'active', coordinates: [[22.5481,114.0629],[22.5581,114.0829],[22.5381,114.0829],[22.5381,114.0529],[22.5581,114.0529]], time: '2024-01-20 11:00:00' },
+            { id: 'F006', name: '保定东站接驳区', companyId: 'C005', status: 'inactive', coordinates: [[38.8789,115.4696],[38.8889,115.4896],[38.8689,115.4896],[38.8689,115.4596],[38.8889,115.4596]], time: '2024-02-01 09:30:00' },
+            { id: 'F007', name: '浦东机场围栏', companyId: 'C002', status: 'active', coordinates: [[31.2354,121.4887],[31.2454,121.4987],[31.2254,121.4987],[31.2254,121.4787],[31.2454,121.4787]], time: '2024-02-05 15:00:00' },
+            { id: 'F008', name: '国贸商圈围栏', companyId: 'C001', status: 'active', coordinates: [[39.9082,116.4254],[39.9122,116.4354],[39.9042,116.4354],[39.9042,116.4254]], time: '2024-02-10 10:00:00' },
         ];
 
         let fenceIdCounter = 9;
 
-        const fenceTypeMap = {
-            hot: '热门区域',
-            airport: '机场',
-            business: '商圈',
-            scenic: '景区',
-            custom: '自定义'
-        };
+        // 绘制状态变量
+        let drawingState = 'idle';
+        let drawnPolygon = null;
+        let drawingPoints = [];
+        let tempLines = [];
+        let fenceMap = null;
+        let editingFenceId = null;
+        let mapLayers = { scopePolygon: null, existingFences: [], editingFence: null };
 
-        const fenceTypeClassMap = {
-            hot: 'fence-tag-hot',
-            airport: 'fence-tag-airport',
-            business: 'fence-tag-business',
-            scenic: 'fence-tag-scenic',
-            custom: 'fence-tag-custom'
-        };
+        function getCompanyName(id) {
+            const c = fenceCompanies.find(c => c.id === id);
+            return c ? c.name : '未知公司';
+        }
+
+        function getCompanyScope(companyId) {
+            const c = fenceCompanies.find(c => c.id === companyId);
+            return c ? c.scope : null;
+        }
+
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const msgEl = document.getElementById('toast-message');
+            if (msgEl) msgEl.textContent = message;
+            if (container) {
+                container.style.display = 'block';
+                setTimeout(function() {
+                    container.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        function hideToast() {
+            const container = document.getElementById('toast-container');
+            if (container) container.style.display = 'none';
+        }
+
+        function onSegmentIntersect(p1, p2, p3, p4) {
+            function cross(o, a, b) {
+                return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+            }
+            function onSegment(p, q, r) {
+                return q[0] <= Math.max(p[0], r[0]) && q[0] >= Math.min(p[0], r[0]) &&
+                       q[1] <= Math.max(p[1], r[1]) && q[1] >= Math.min(p[1], r[1]);
+            }
+            const d1 = cross(p3, p4, p1);
+            const d2 = cross(p3, p4, p2);
+            const d3 = cross(p1, p2, p3);
+            const d4 = cross(p1, p2, p4);
+            if (((d1 > 0 && d2 < 0) || (d1 < 0 && d2 > 0)) &&
+                ((d3 > 0 && d4 < 0) || (d3 < 0 && d4 > 0))) {
+                return true;
+            }
+            if (d1 === 0 && onSegment(p3, p1, p4)) return true;
+            if (d2 === 0 && onSegment(p3, p2, p4)) return true;
+            if (d3 === 0 && onSegment(p1, p3, p2)) return true;
+            if (d4 === 0 && onSegment(p1, p4, p2)) return true;
+            return false;
+        }
+
+        function polygonsIntersect(coords1, coords2) {
+            for (let i = 0; i < coords1.length; i++) {
+                const p1 = coords1[i];
+                const p2 = coords1[(i + 1) % coords1.length];
+                for (let j = 0; j < coords2.length; j++) {
+                    const p3 = coords2[j];
+                    const p4 = coords2[(j + 1) % coords2.length];
+                    if (onSegmentIntersect(p1, p2, p3, p4)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        function isPointInPolygon(point, polygon) {
+            let inside = false;
+            const x = point[0], y = point[1];
+            for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+                const xi = polygon[i][0], yi = polygon[i][1];
+                const xj = polygon[j][0], yj = polygon[j][1];
+                if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) {
+                    inside = !inside;
+                }
+            }
+            return inside;
+        }
+
+        function checkOverlap(drawnCoords, excludeFenceId) {
+            const others = fenceData.filter(f => f.id !== excludeFenceId);
+            for (const fence of others) {
+                if (polygonsIntersect(drawnCoords, fence.coordinates)) {
+                    return true;
+                }
+                for (const pt of drawnCoords) {
+                    if (isPointInPolygon(pt, fence.coordinates)) {
+                        return true;
+                    }
+                }
+                for (const pt of fence.coordinates) {
+                    if (isPointInPolygon(pt, drawnCoords)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        function isWithinScope(drawnCoords, scopeCoords) {
+            for (const pt of drawnCoords) {
+                if (!isPointInPolygon(pt, scopeCoords)) {
+                    return false;
+                }
+            }
+            return true;
+        }
 
         function renderFences(list) {
             const tbody = document.getElementById('fence-list');
             const items = list || fenceData;
             if (items.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px; color: #999;">暂无围栏数据</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px; color: #999;">暂无围栏数据</td></tr>';
                 document.getElementById('fence-page-info').textContent = '共 0 条';
                 return;
             }
             tbody.innerHTML = items.map(f => `
                 <tr>
                     <td><strong>${f.name}</strong></td>
-                    <td><span class="fence-tag ${fenceTypeClassMap[f.type]}">${fenceTypeMap[f.type]}</span></td>
-                    <td>${f.city}</td>
-                    <td style="max-width: 200px; white-space: normal; word-break: break-all;">${f.area}</td>
-                    <td>${f.timeStart} - ${f.timeEnd}</td>
                     <td>${f.status === 'active' ? '<span class="tag tag-green">启用</span>' : '<span class="tag tag-orange">停用</span>'}</td>
+                    <td>${getCompanyName(f.companyId)}</td>
                     <td style="white-space: nowrap;">${f.time}</td>
                     <td class="actions">
                         <button class="btn btn-text" onclick="editFence('${f.id}')">编辑</button>
-                        <button class="btn btn-text ${f.status === 'active' ? '' : 'btn-text-success'}" onclick="toggleFenceStatus('${f.id}')">${f.status === 'active' ? '停用' : '启用'}</button>
+                        <button class="btn btn-text btn-text-danger" onclick="deleteFence('${f.id}')">删除</button>
                     </td>
                 </tr>
             `).join('');
@@ -4005,109 +4241,516 @@
 
         function searchFences() {
             const name = document.getElementById('fence-search-name').value.trim().toLowerCase();
-            const city = document.getElementById('fence-search-city').value;
-            const type = document.getElementById('fence-search-type').value;
             const status = document.getElementById('fence-search-status').value;
-            const filtered = fenceData.filter(f => {
-                if (name && !f.name.toLowerCase().includes(name)) return false;
-                if (city && f.city !== city) return false;
-                if (type && f.type !== type) return false;
-                if (status && f.status !== status) return false;
-                return true;
-            });
+            const company = document.getElementById('fence-search-company').value;
+            let filtered = fenceData;
+            if (currentUserRole !== 'HQ') {
+                filtered = filtered.filter(f => f.companyId === currentUserRole);
+            }
+            if (name) {
+                filtered = filtered.filter(f => f.name.toLowerCase().includes(name));
+            }
+            if (status) {
+                filtered = filtered.filter(f => f.status === status);
+            }
+            if (company) {
+                filtered = filtered.filter(f => f.companyId === company);
+            }
             renderFences(filtered);
         }
 
         function resetFenceSearch() {
             document.getElementById('fence-search-name').value = '';
-            document.getElementById('fence-search-city').value = '';
-            document.getElementById('fence-search-type').value = '';
             document.getElementById('fence-search-status').value = '';
+            document.getElementById('fence-search-company').value = '';
             renderFences(fenceData);
         }
 
-        function openFenceModal(data) {
-            const modal = document.getElementById('fence-modal');
-            const title = document.getElementById('fence-modal-title');
-            if (data) {
-                title.textContent = '编辑围栏';
-                document.getElementById('edit-fence-id').value = data.id;
-                document.getElementById('fence-name').value = data.name;
-                document.getElementById('fence-type').value = data.type;
-                document.getElementById('fence-city').value = data.city;
-                document.getElementById('fence-area').value = data.area;
-                document.getElementById('fence-time-start').value = data.timeStart;
-                document.getElementById('fence-time-end').value = data.timeEnd;
-                document.getElementById('fence-desc').value = data.desc || '';
-                document.querySelector('input[name="fence-status"][value="' + data.status + '"]').checked = true;
+        function showFenceEditor(fenceId) {
+            document.getElementById('page-fence').classList.add('hidden');
+            document.getElementById('page-fence-editor').classList.remove('hidden');
+            document.getElementById('breadcrumb-current').textContent = '围栏管理';
+            document.getElementById('breadcrumb-sub').textContent = fenceId ? '编辑围栏' : '新增围栏';
+            document.getElementById('fence-editor-title').textContent = fenceId ? '编辑围栏' : '新增围栏';
+
+            editingFenceId = fenceId || null;
+
+            const companyField = document.getElementById('fence-company-field');
+            const companySelect = document.getElementById('fence-company');
+
+            if (currentUserRole === 'HQ') {
+                companyField.style.display = '';
+                companySelect.value = '';
             } else {
-                title.textContent = '新增围栏';
-                document.getElementById('edit-fence-id').value = '';
-                document.getElementById('fence-form').reset();
-                document.getElementById('fence-time-start').value = '00:00';
-                document.getElementById('fence-time-end').value = '23:59';
-                document.querySelector('input[name="fence-status"][value="active"]').checked = true;
+                companyField.style.display = 'none';
+                companySelect.value = currentUserRole;
             }
-            modal.classList.add('active');
+
+            if (fenceId) {
+                const fence = fenceData.find(f => f.id === fenceId);
+                if (fence) {
+                    document.getElementById('edit-fence-id').value = fence.id;
+                    document.getElementById('fence-name').value = fence.name;
+                    if (currentUserRole === 'HQ') {
+                        companySelect.value = fence.companyId;
+                    }
+                    initFenceMap(fence.companyId, fence.coordinates);
+                    return;
+                }
+            } else {
+                document.getElementById('edit-fence-id').value = '';
+                document.getElementById('fence-name').value = '';
+                const defaultCompany = currentUserRole === 'HQ' ? '' : currentUserRole;
+                companySelect.value = defaultCompany;
+                initFenceMap(defaultCompany || 'C001', null);
+            }
         }
 
-        function editFence(id) {
-            const fence = fenceData.find(f => f.id === id);
-            if (fence) openFenceModal(fence);
+        function backToFenceList() {
+            document.getElementById('page-fence-editor').classList.add('hidden');
+            document.getElementById('page-fence').classList.remove('hidden');
+            document.getElementById('breadcrumb-current').textContent = '围栏管理';
+            document.getElementById('breadcrumb-sub').textContent = '';
+            if (fenceMap) {
+                fenceMap.remove();
+                fenceMap = null;
+            }
+            drawingState = 'idle';
+            drawnPolygon = null;
+            drawingPoints = [];
+            tempLines = [];
+            editingFenceId = null;
+            mapLayers = { scopePolygon: null, existingFences: [], editingFence: null };
+            renderFences(fenceData);
+        }
+
+        function initFenceMap(companyId, existingCoords) {
+            if (fenceMap) {
+                fenceMap.remove();
+                fenceMap = null;
+            }
+
+            const scope = getCompanyScope(companyId);
+            if (!scope) return;
+
+            const center = scope.reduce(function(acc, pt) {
+                return [acc[0] + pt[0] / scope.length, acc[1] + pt[1] / scope.length];
+            }, [0, 0]);
+
+            fenceMap = L.map('fence-map', { zoomControl: true }).setView(center, 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(fenceMap);
+
+            const scopeLatLngs = scope.map(function(pt) {
+                return [pt[0], pt[1]];
+            });
+
+            mapLayers.scopePolygon = L.polygon(scopeLatLngs, {
+                color: '#999',
+                weight: 2,
+                dashArray: '5, 10',
+                fillColor: '#999',
+                fillOpacity: 0.08,
+                interactive: false
+            }).addTo(fenceMap);
+
+            const others = fenceData.filter(function(f) {
+                return f.id !== editingFenceId;
+            });
+            mapLayers.existingFences = others.map(function(f) {
+                const latlngs = f.coordinates.map(function(pt) {
+                    return [pt[0], pt[1]];
+                });
+                return L.polygon(latlngs, {
+                    color: '#ff4d4f',
+                    weight: 2,
+                    fillColor: '#ff4d4f',
+                    fillOpacity: 0.15,
+                    interactive: false
+                }).addTo(fenceMap);
+            });
+
+            if (existingCoords) {
+                const editLatLngs = existingCoords.map(function(pt) {
+                    return [pt[0], pt[1]];
+                });
+                mapLayers.editingFence = L.polygon(editLatLngs, {
+                    color: '#1890ff',
+                    weight: 2,
+                    fillColor: '#1890ff',
+                    fillOpacity: 0.2,
+                    interactive: false
+                }).addTo(fenceMap);
+
+                drawingPoints = existingCoords.map(function(pt) {
+                    return L.latLng(pt[0], pt[1]);
+                });
+                drawnPolygon = mapLayers.editingFence;
+                drawingState = 'completed';
+                updateDrawingButtons();
+            } else {
+                drawingState = 'idle';
+                updateDrawingButtons();
+            }
+
+            const allBounds = scopeLatLngs.reduce(function(bounds, pt) {
+                return bounds.extend(pt);
+            }, L.latLngBounds(scopeLatLngs[0], scopeLatLngs[0]));
+
+            others.forEach(function(f) {
+                f.coordinates.forEach(function(pt) {
+                    allBounds.extend([pt[0], pt[1]]);
+                });
+            });
+            if (existingCoords) {
+                existingCoords.forEach(function(pt) {
+                    allBounds.extend([pt[0], pt[1]]);
+                });
+            }
+            fenceMap.fitBounds(allBounds, { padding: [50, 50] });
+
+            setTimeout(function() {
+                fenceMap.invalidateSize();
+            }, 200);
+        }
+
+        function updateDrawingButtons() {
+            const btnStart = document.getElementById('btn-start-draw');
+            const btnComplete = document.getElementById('btn-complete-draw');
+            const btnCancel = document.getElementById('btn-cancel-draw');
+            const btnClear = document.getElementById('btn-clear-draw');
+            const btnEdit = document.getElementById('btn-edit-draw');
+
+            btnStart.style.display = 'none';
+            btnComplete.style.display = 'none';
+            btnCancel.style.display = 'none';
+            btnClear.style.display = 'none';
+            btnEdit.style.display = 'none';
+
+            switch (drawingState) {
+                case 'idle':
+                    btnStart.style.display = '';
+                    break;
+                case 'drawing':
+                    btnComplete.style.display = '';
+                    btnCancel.style.display = '';
+                    break;
+                case 'completed':
+                    btnClear.style.display = '';
+                    btnEdit.style.display = '';
+                    break;
+                case 'editing':
+                    btnComplete.style.display = '';
+                    btnCancel.style.display = '';
+                    break;
+            }
+        }
+
+        function clearTempLines() {
+            tempLines.forEach(function(layer) {
+                if (fenceMap) fenceMap.removeLayer(layer);
+            });
+            tempLines = [];
+        }
+
+        function startDrawing() {
+            if (!fenceMap) return;
+            drawingState = 'drawing';
+            drawingPoints = [];
+            tempLines = [];
+            updateDrawingButtons();
+
+            if (drawnPolygon) {
+                fenceMap.removeLayer(drawnPolygon);
+                drawnPolygon = null;
+            }
+
+            fenceMap.on('click', onMapClick);
+        }
+
+        function onMapClick(e) {
+            if (drawingState !== 'drawing') return;
+            const latlng = e.latlng;
+            drawingPoints.push(latlng);
+
+            const marker = L.circleMarker([latlng.lat, latlng.lng], {
+                radius: 5,
+                color: '#1890ff',
+                fillColor: '#1890ff',
+                fillOpacity: 1
+            }).addTo(fenceMap);
+            tempLines.push(marker);
+
+            if (drawingPoints.length >= 2) {
+                const prev = drawingPoints[drawingPoints.length - 2];
+                const line = L.polyline([prev, latlng], {
+                    color: '#1890ff',
+                    weight: 2,
+                    dashArray: '4, 6'
+                }).addTo(fenceMap);
+                tempLines.push(line);
+            }
+        }
+
+        function completeDrawing() {
+            if (drawingState === 'editing') {
+                drawingState = 'completed';
+                updateDrawingButtons();
+                return;
+            }
+
+            if (drawingPoints.length < 3) {
+                showToast('请至少选择3个点来绘制围栏');
+                return;
+            }
+
+            const coords = drawingPoints.map(function(pt) {
+                return [pt.lat, pt.lng];
+            });
+
+            const companyId = currentUserRole === 'HQ'
+                ? document.getElementById('fence-company').value
+                : currentUserRole;
+
+            const scope = getCompanyScope(companyId);
+            if (scope && !isWithinScope(coords, scope)) {
+                showToast('围栏超出公司经营范围，请重新绘制');
+                cancelDrawing();
+                return;
+            }
+
+            if (checkOverlap(coords, editingFenceId)) {
+                showToast('划定区域与已有围栏重合，请重新绘制');
+                cancelDrawing();
+                return;
+            }
+
+            if (drawnPolygon) {
+                fenceMap.removeLayer(drawnPolygon);
+            }
+
+            const latlngs = drawingPoints.map(function(pt) {
+                return [pt.lat, pt.lng];
+            });
+
+            drawnPolygon = L.polygon(latlngs, {
+                color: '#1890ff',
+                weight: 2,
+                fillColor: '#1890ff',
+                fillOpacity: 0.2
+            }).addTo(fenceMap);
+
+            clearTempLines();
+            drawingState = 'completed';
+            updateDrawingButtons();
+        }
+
+        function cancelDrawing() {
+            clearTempLines();
+            drawingPoints = [];
+            if (drawnPolygon) {
+                fenceMap.removeLayer(drawnPolygon);
+                drawnPolygon = null;
+            }
+            drawingState = 'idle';
+            updateDrawingButtons();
+            fenceMap.off('click', onMapClick);
+        }
+
+        function clearDrawing() {
+            if (drawnPolygon) {
+                fenceMap.removeLayer(drawnPolygon);
+                drawnPolygon = null;
+            }
+            drawingPoints = [];
+            drawingState = 'idle';
+            updateDrawingButtons();
+        }
+
+        function editDrawing() {
+            if (!drawnPolygon) return;
+            drawingState = 'editing';
+            updateDrawingButtons();
+
+            const latlngs = drawnPolygon.getLatLngs()[0];
+            drawingPoints = latlngs.map(function(ll) {
+                return L.latLng(ll.lat, ll.lng);
+            });
+
+            fenceMap.removeLayer(drawnPolygon);
+
+            const coords = drawingPoints.map(function(pt) {
+                return [pt.lat, pt.lng];
+            });
+
+            drawnPolygon = L.polygon(coords, {
+                color: '#1890ff',
+                weight: 2,
+                fillColor: '#1890ff',
+                fillOpacity: 0.2
+            }).addTo(fenceMap);
+
+            fenceMap.on('click', onMapClick);
         }
 
         function saveFence() {
-            const id = document.getElementById('edit-fence-id').value;
             const name = document.getElementById('fence-name').value.trim();
-            const type = document.getElementById('fence-type').value;
-            const city = document.getElementById('fence-city').value;
-            const area = document.getElementById('fence-area').value.trim();
-            const timeStart = document.getElementById('fence-time-start').value;
-            const timeEnd = document.getElementById('fence-time-end').value;
-            const desc = document.getElementById('fence-desc').value.trim();
-            const status = document.querySelector('input[name="fence-status"]:checked').value;
+            if (!name) {
+                showToast('请输入围栏名称');
+                return;
+            }
 
-            if (!name) { alert('请输入围栏名称'); return; }
-            if (!area) { alert('请输入围栏范围'); return; }
+            let companyId;
+            if (currentUserRole === 'HQ') {
+                companyId = document.getElementById('fence-company').value;
+                if (!companyId) {
+                    showToast('请选择所属公司');
+                    return;
+                }
+            } else {
+                companyId = currentUserRole;
+            }
 
-            if (id) {
-                const fence = fenceData.find(f => f.id === id);
+            if (drawingState !== 'completed') {
+                showToast('请先绘制围栏区域');
+                return;
+            }
+
+            if (!drawnPolygon) {
+                showToast('请先绘制围栏区域');
+                return;
+            }
+
+            const latlngs = drawnPolygon.getLatLngs()[0];
+            const coordinates = latlngs.map(function(ll) {
+                return [ll.lat, ll.lng];
+            });
+
+            const editId = document.getElementById('edit-fence-id').value;
+
+            if (editId) {
+                const fence = fenceData.find(f => f.id === editId);
                 if (fence) {
                     fence.name = name;
-                    fence.type = type;
-                    fence.city = city;
-                    fence.area = area;
-                    fence.timeStart = timeStart;
-                    fence.timeEnd = timeEnd;
-                    fence.desc = desc;
-                    fence.status = status;
+                    fence.companyId = companyId;
+                    fence.coordinates = coordinates;
                 }
             } else {
                 const newId = 'F00' + fenceIdCounter++;
                 fenceData.push({
                     id: newId,
-                    name,
-                    type,
-                    city,
-                    area,
-                    timeStart,
-                    timeEnd,
-                    desc,
-                    status,
+                    name: name,
+                    companyId: companyId,
+                    status: 'active',
+                    coordinates: coordinates,
                     time: new Date().toISOString().replace('T', ' ').slice(0, 19)
                 });
             }
 
-            closeModal('fence-modal');
+            showToast('保存成功');
+            backToFenceList();
+        }
+
+        let deleteTargetId = null;
+
+        function deleteFence(id) {
+            deleteTargetId = id;
+            const fence = fenceData.find(f => f.id === id);
+            const msg = fence ? `是否确认删除围栏「${fence.name}」？` : '是否确认删除此围栏？';
+            document.getElementById('fence-delete-msg').textContent = msg;
+            document.getElementById('fence-delete-confirm').style.display = 'flex';
+        }
+
+        function closeDeleteConfirm() {
+            document.getElementById('fence-delete-confirm').style.display = 'none';
+            deleteTargetId = null;
+        }
+
+        function confirmDeleteFence() {
+            if (deleteTargetId) {
+                const idx = fenceData.findIndex(f => f.id === deleteTargetId);
+                if (idx !== -1) {
+                    fenceData.splice(idx, 1);
+                }
+            }
+            closeDeleteConfirm();
+            showToast('删除成功');
             renderFences(fenceData);
         }
 
-        function toggleFenceStatus(id) {
-            const fence = fenceData.find(f => f.id === id);
-            if (fence) {
-                fence.status = fence.status === 'active' ? 'inactive' : 'active';
-                renderFences(fenceData);
+        function searchAddress() {
+            const input = document.getElementById('fence-address-search');
+            if (!input) return;
+            const q = input.value.trim();
+            if (!q) return;
+            const url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(q) + '&limit=5';
+            fetch(url)
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
+                    let html = '';
+                    data.forEach(function(item) {
+                        html += '<div class="address-result-item" data-lat="' + item.lat + '" data-lon="' + item.lon + '">' + item.display_name + '</div>';
+                    });
+                    const container = document.getElementById('fence-address-results');
+                    if (container) {
+                        container.innerHTML = html;
+                        container.style.display = data.length ? 'block' : 'none';
+                        container.querySelectorAll('.address-result-item').forEach(function(el) {
+                            el.addEventListener('click', function() {
+                                const lat = parseFloat(this.dataset.lat);
+                                const lon = parseFloat(this.dataset.lon);
+                                if (fenceMap) {
+                                    fenceMap.flyTo([lat, lon], 15);
+                                }
+                                container.style.display = 'none';
+                                const searchInput = document.getElementById('fence-address-search');
+                                if (searchInput) searchInput.value = this.textContent.split(',')[0];
+                            });
+                        });
+                    }
+                })
+                .catch(function() {
+                    showToast('地址搜索失败，请重试');
+                });
+        }
+
+        function populateFenceCompanySelectors() {
+            const companySelect = document.getElementById('fence-company');
+            const companySearch = document.getElementById('fence-search-company');
+            const options = fenceCompanies.filter(function(c) { return c.id !== 'HQ'; });
+
+            if (companySelect) {
+                companySelect.innerHTML = '';
+                options.forEach(function(c) {
+                    const opt = document.createElement('option');
+                    opt.value = c.id;
+                    opt.textContent = c.name;
+                    companySelect.appendChild(opt);
+                });
             }
+
+            if (companySearch) {
+                companySearch.innerHTML = '<option value="">全部公司</option>';
+                options.forEach(function(c) {
+                    const opt = document.createElement('option');
+                    opt.value = c.id;
+                    opt.textContent = c.name;
+                    companySearch.appendChild(opt);
+                });
+            }
+
+            if (currentUserRole === 'HQ') {
+                if (companySearch) companySearch.style.display = '';
+            } else {
+                if (companySearch) companySearch.style.display = 'none';
+            }
+        }
+
+        function editFence(id) {
+            showFenceEditor(id);
         }
 
         // 扩展导航支持公司页面
@@ -4115,17 +4758,17 @@
         setupNavigation = function() {
             if (origSetupNav) origSetupNav();
 
-            document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+            document.querySelectorAll('.nav-item[data-page]').forEach(function(item) {
                 const page = item.dataset.page;
                 if (page === 'dashboard' || page === 'operation') return;
 
                 item.addEventListener('click', function(e) {
                     if (e.target.closest('.sub-menu')) return;
 
-                    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                    document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
                     this.classList.add('active');
 
-                    document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden'));
+                    document.querySelectorAll('.page-content').forEach(function(p) { p.classList.add('hidden'); });
                     const targetPage = document.getElementById('page-' + page);
                     if (targetPage) {
                         targetPage.classList.remove('hidden');
@@ -4144,6 +4787,7 @@
         // 初始化公司页面和围栏页面
         document.addEventListener('DOMContentLoaded', function() {
             renderCompanies(companies);
+            populateFenceCompanySelectors();
             renderFences(fenceData);
         });
 
