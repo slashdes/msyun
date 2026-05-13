@@ -1577,6 +1577,45 @@
             margin-bottom: 12px;
             opacity: 0.4;
         }
+
+        /* 围管管理 */
+        .fence-tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .fence-tag-hot {
+            background: #fff1f0;
+            color: #ff4d4f;
+            border: 1px solid #ffa39e;
+        }
+
+        .fence-tag-airport {
+            background: #e6f7ff;
+            color: #1890ff;
+            border: 1px solid #91d5ff;
+        }
+
+        .fence-tag-business {
+            background: #fff7e6;
+            color: #fa8c16;
+            border: 1px solid #ffd591;
+        }
+
+        .fence-tag-scenic {
+            background: #f6ffed;
+            color: #52c41a;
+            border: 1px solid #b7eb8f;
+        }
+
+        .fence-tag-custom {
+            background: #f9f0ff;
+            color: #722ed1;
+            border: 1px solid #d3adf7;
+        }
     </style>
 </head>
 <body>
@@ -1622,6 +1661,9 @@
                         </div>
                         <div class="sub-menu-item" data-page="pricing-rules">
                             <a>计费规则</a>
+                        </div>
+                        <div class="sub-menu-item" data-page="fence">
+                            <a>围栏管理</a>
                         </div>
                     </div>
                 </div>
@@ -2011,7 +2053,147 @@
                     </div>
                 </div>
             </div>
+
+                <!-- 围栏管理页面 -->
+                <div id="page-fence" class="page-content hidden">
+                    <div class="card">
+                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="card-title">围栏列表</span>
+                            <button class="btn btn-primary" onclick="openFenceModal()">
+                                <span>+</span> 新增围栏
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="search-bar">
+                                <input type="text" class="search-input" id="fence-search-name" placeholder="搜索围栏名称">
+                                <select class="search-select" id="fence-search-city">
+                                    <option value="">全部城市</option>
+                                    <option value="北京">北京</option>
+                                    <option value="上海">上海</option>
+                                    <option value="广州">广州</option>
+                                    <option value="深圳">深圳</option>
+                                    <option value="保定">保定</option>
+                                </select>
+                                <select class="search-select" id="fence-search-type">
+                                    <option value="">全部类型</option>
+                                    <option value="hot">热门区域</option>
+                                    <option value="airport">机场</option>
+                                    <option value="business">商圈</option>
+                                    <option value="scenic">景区</option>
+                                    <option value="custom">自定义</option>
+                                </select>
+                                <select class="search-select" id="fence-search-status">
+                                    <option value="">全部状态</option>
+                                    <option value="active">启用</option>
+                                    <option value="inactive">停用</option>
+                                </select>
+                                <button class="btn btn-primary" onclick="searchFences()">查询</button>
+                                <button class="btn" onclick="resetFenceSearch()">重置</button>
+                            </div>
+                            
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>围栏名称</th>
+                                        <th>围栏类型</th>
+                                        <th>所属城市</th>
+                                        <th>围栏范围</th>
+                                        <th>生效时段</th>
+                                        <th>状态</th>
+                                        <th>创建时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="fence-list">
+                                </tbody>
+                            </table>
+                            
+                            <div class="pagination" id="fence-pagination">
+                                <button class="pagination-btn" disabled>上一页</button>
+                                <button class="pagination-btn active">1</button>
+                                <button class="pagination-btn">下一页</button>
+                                <span style="color: #666; font-size: 14px;" id="fence-page-info">共 0 条</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
+    </div>
+
+    <!-- 新增/编辑围栏模态框 -->
+    <div class="modal-overlay" id="fence-modal">
+        <div class="modal" style="max-width: 700px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="fence-modal-title">新增围栏</h3>
+                <button class="modal-close" onclick="closeModal('fence-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="fence-form">
+                    <input type="hidden" id="edit-fence-id">
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label class="form-label">围栏名称<span class="required">*</span></label>
+                            <input type="text" class="form-input" id="fence-name" placeholder="请输入围栏名称">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label">围栏类型<span class="required">*</span></label>
+                            <select class="form-select" id="fence-type">
+                                <option value="hot">热门区域</option>
+                                <option value="airport">机场</option>
+                                <option value="business">商圈</option>
+                                <option value="scenic">景区</option>
+                                <option value="custom">自定义</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label class="form-label">所属城市<span class="required">*</span></label>
+                            <select class="form-select" id="fence-city">
+                                <option value="北京">北京</option>
+                                <option value="上海">上海</option>
+                                <option value="广州">广州</option>
+                                <option value="深圳">深圳</option>
+                                <option value="保定">保定</option>
+                            </select>
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label">围栏范围<span class="required">*</span></label>
+                            <input type="text" class="form-input" id="fence-area" placeholder="如：朝阳区CBD商圈半径3公里">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label">生效时段</label>
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <input type="time" class="form-input" id="fence-time-start" value="00:00" style="width: 150px;">
+                            <span style="color: #999;">至</span>
+                            <input type="time" class="form-input" id="fence-time-end" value="23:59" style="width: 150px;">
+                        </div>
+                        <div class="form-hint">设置围栏在一天中的生效时间段，默认全天生效</div>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label">围栏描述</label>
+                        <textarea class="form-textarea" id="fence-desc" placeholder="请输入围栏描述信息"></textarea>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label">状态</label>
+                        <div style="display: flex; gap: 16px;">
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                <input type="radio" name="fence-status" value="active" checked> 启用
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                <input type="radio" name="fence-status" value="inactive"> 停用
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal('fence-modal')">取消</button>
+                <button class="btn btn-primary" onclick="saveFence()">保存</button>
+            </div>
+        </div>
     </div>
 
     <!-- 新增/编辑业务类型模态框 -->
@@ -3765,6 +3947,169 @@
             closeCascadeDropdown();
         }
 
+        // 围栏管理数据
+        const fenceData = [
+            { id: 'F001', name: '北京三里屯商圈', type: 'business', city: '北京', area: '三里屯/工体周边半径2公里', timeStart: '00:00', timeEnd: '23:59', desc: '三里屯商业区核心范围', status: 'active', time: '2024-01-10 09:00:00' },
+            { id: 'F002', name: '首都机场接机区', type: 'airport', city: '北京', area: '首都机场T1/T2/T3航站楼周边', timeStart: '06:00', timeEnd: '23:00', desc: '机场到达层代驾接驳区域', status: 'active', time: '2024-01-12 14:30:00' },
+            { id: 'F003', name: '上海外滩观光区', type: 'scenic', city: '上海', area: '外滩沿线南京东路至十六铺', timeStart: '00:00', timeEnd: '23:59', desc: '外滩核心观光区域', status: 'active', time: '2024-01-15 10:00:00' },
+            { id: 'F004', name: '广州天河CBD', type: 'hot', city: '广州', area: '天河体育中心周边半径3公里', timeStart: '07:00', timeEnd: '22:00', desc: '天河商圈及写字楼密集区', status: 'active', time: '2024-01-18 16:20:00' },
+            { id: 'F005', name: '深圳南山科技园', type: 'hot', city: '深圳', area: '科技园南区/北区半径2.5公里', timeStart: '08:00', timeEnd: '21:00', desc: '科技园区企业聚集区', status: 'active', time: '2024-01-20 11:00:00' },
+            { id: 'F006', name: '保定东站接驳区', type: 'custom', city: '保定', area: '保定东站周边半径1.5公里', timeStart: '06:00', timeEnd: '22:30', desc: '高铁站代驾接驳专用区域', status: 'inactive', time: '2024-02-01 09:30:00' },
+            { id: 'F007', name: '上海浦东机场', type: 'airport', city: '上海', area: '浦东机场T1/T2航站楼周边', timeStart: '00:00', timeEnd: '23:59', desc: '浦东机场代驾服务区域', status: 'active', time: '2024-02-05 15:00:00' },
+            { id: 'F008', name: '北京国贸商圈', type: 'business', city: '北京', area: '国贸CBD核心区半径2公里', timeStart: '07:00', timeEnd: '22:00', desc: '国贸商业区代驾热点区域', status: 'active', time: '2024-02-10 10:00:00' },
+        ];
+
+        let fenceIdCounter = 9;
+
+        const fenceTypeMap = {
+            hot: '热门区域',
+            airport: '机场',
+            business: '商圈',
+            scenic: '景区',
+            custom: '自定义'
+        };
+
+        const fenceTypeClassMap = {
+            hot: 'fence-tag-hot',
+            airport: 'fence-tag-airport',
+            business: 'fence-tag-business',
+            scenic: 'fence-tag-scenic',
+            custom: 'fence-tag-custom'
+        };
+
+        function renderFences(list) {
+            const tbody = document.getElementById('fence-list');
+            const items = list || fenceData;
+            if (items.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px; color: #999;">暂无围栏数据</td></tr>';
+                document.getElementById('fence-page-info').textContent = '共 0 条';
+                return;
+            }
+            tbody.innerHTML = items.map(f => `
+                <tr>
+                    <td><strong>${f.name}</strong></td>
+                    <td><span class="fence-tag ${fenceTypeClassMap[f.type]}">${fenceTypeMap[f.type]}</span></td>
+                    <td>${f.city}</td>
+                    <td style="max-width: 200px; white-space: normal; word-break: break-all;">${f.area}</td>
+                    <td>${f.timeStart} - ${f.timeEnd}</td>
+                    <td>${f.status === 'active' ? '<span class="tag tag-green">启用</span>' : '<span class="tag tag-orange">停用</span>'}</td>
+                    <td style="white-space: nowrap;">${f.time}</td>
+                    <td class="actions">
+                        <button class="btn btn-text" onclick="editFence('${f.id}')">编辑</button>
+                        <button class="btn btn-text ${f.status === 'active' ? '' : 'btn-text-success'}" onclick="toggleFenceStatus('${f.id}')">${f.status === 'active' ? '停用' : '启用'}</button>
+                    </td>
+                </tr>
+            `).join('');
+            document.getElementById('fence-page-info').textContent = `共 ${items.length} 条`;
+        }
+
+        function searchFences() {
+            const name = document.getElementById('fence-search-name').value.trim().toLowerCase();
+            const city = document.getElementById('fence-search-city').value;
+            const type = document.getElementById('fence-search-type').value;
+            const status = document.getElementById('fence-search-status').value;
+            const filtered = fenceData.filter(f => {
+                if (name && !f.name.toLowerCase().includes(name)) return false;
+                if (city && f.city !== city) return false;
+                if (type && f.type !== type) return false;
+                if (status && f.status !== status) return false;
+                return true;
+            });
+            renderFences(filtered);
+        }
+
+        function resetFenceSearch() {
+            document.getElementById('fence-search-name').value = '';
+            document.getElementById('fence-search-city').value = '';
+            document.getElementById('fence-search-type').value = '';
+            document.getElementById('fence-search-status').value = '';
+            renderFences(fenceData);
+        }
+
+        function openFenceModal(data) {
+            const modal = document.getElementById('fence-modal');
+            const title = document.getElementById('fence-modal-title');
+            if (data) {
+                title.textContent = '编辑围栏';
+                document.getElementById('edit-fence-id').value = data.id;
+                document.getElementById('fence-name').value = data.name;
+                document.getElementById('fence-type').value = data.type;
+                document.getElementById('fence-city').value = data.city;
+                document.getElementById('fence-area').value = data.area;
+                document.getElementById('fence-time-start').value = data.timeStart;
+                document.getElementById('fence-time-end').value = data.timeEnd;
+                document.getElementById('fence-desc').value = data.desc || '';
+                document.querySelector('input[name="fence-status"][value="' + data.status + '"]').checked = true;
+            } else {
+                title.textContent = '新增围栏';
+                document.getElementById('edit-fence-id').value = '';
+                document.getElementById('fence-form').reset();
+                document.getElementById('fence-time-start').value = '00:00';
+                document.getElementById('fence-time-end').value = '23:59';
+                document.querySelector('input[name="fence-status"][value="active"]').checked = true;
+            }
+            modal.classList.add('active');
+        }
+
+        function editFence(id) {
+            const fence = fenceData.find(f => f.id === id);
+            if (fence) openFenceModal(fence);
+        }
+
+        function saveFence() {
+            const id = document.getElementById('edit-fence-id').value;
+            const name = document.getElementById('fence-name').value.trim();
+            const type = document.getElementById('fence-type').value;
+            const city = document.getElementById('fence-city').value;
+            const area = document.getElementById('fence-area').value.trim();
+            const timeStart = document.getElementById('fence-time-start').value;
+            const timeEnd = document.getElementById('fence-time-end').value;
+            const desc = document.getElementById('fence-desc').value.trim();
+            const status = document.querySelector('input[name="fence-status"]:checked').value;
+
+            if (!name) { alert('请输入围栏名称'); return; }
+            if (!area) { alert('请输入围栏范围'); return; }
+
+            if (id) {
+                const fence = fenceData.find(f => f.id === id);
+                if (fence) {
+                    fence.name = name;
+                    fence.type = type;
+                    fence.city = city;
+                    fence.area = area;
+                    fence.timeStart = timeStart;
+                    fence.timeEnd = timeEnd;
+                    fence.desc = desc;
+                    fence.status = status;
+                }
+            } else {
+                const newId = 'F00' + fenceIdCounter++;
+                fenceData.push({
+                    id: newId,
+                    name,
+                    type,
+                    city,
+                    area,
+                    timeStart,
+                    timeEnd,
+                    desc,
+                    status,
+                    time: new Date().toISOString().replace('T', ' ').slice(0, 19)
+                });
+            }
+
+            closeModal('fence-modal');
+            renderFences(fenceData);
+        }
+
+        function toggleFenceStatus(id) {
+            const fence = fenceData.find(f => f.id === id);
+            if (fence) {
+                fence.status = fence.status === 'active' ? 'inactive' : 'active';
+                renderFences(fenceData);
+            }
+        }
+
         // 扩展导航支持公司页面
         const origSetupNav = setupNavigation;
         setupNavigation = function() {
@@ -3796,9 +4141,10 @@
             });
         };
 
-        // 初始化公司页面
+        // 初始化公司页面和围栏页面
         document.addEventListener('DOMContentLoaded', function() {
             renderCompanies(companies);
+            renderFences(fenceData);
         });
 
         // 侧边栏折叠切换
