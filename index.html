@@ -1577,6 +1577,458 @@
             margin-bottom: 12px;
             opacity: 0.4;
         }
+
+        /* ===== 司机管理页面 ===== */
+        .driver-stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .driver-stat-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .driver-stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .driver-stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .driver-stat-icon.blue { background: #e6f7ff; color: #1890ff; }
+        .driver-stat-icon.green { background: #f6ffed; color: #52c41a; }
+        .driver-stat-icon.orange { background: #fff7e6; color: #fa8c16; }
+        .driver-stat-icon.purple { background: #f9f0ff; color: #722ed1; }
+
+        .driver-stat-info h3 {
+            font-size: 13px;
+            color: #8c8c8c;
+            font-weight: 400;
+            margin-bottom: 4px;
+        }
+
+        .driver-stat-info .number {
+            font-size: 26px;
+            font-weight: 700;
+            color: #1a1a1a;
+            line-height: 1.2;
+        }
+
+        .driver-stat-info .trend {
+            font-size: 12px;
+            margin-left: 8px;
+            font-weight: 500;
+        }
+
+        .driver-stat-info .trend.up { color: #52c41a; }
+        .driver-stat-info .trend.down { color: #ff4d4f; }
+
+        .driver-search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .driver-search-bar .search-input {
+            width: 200px;
+            height: 36px;
+            padding: 0 12px;
+            border: 1px solid #d9d9d9;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .driver-search-bar .search-input:focus {
+            border-color: #1890ff;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(24,144,255,0.15);
+        }
+
+        .driver-search-bar .search-select {
+            height: 36px;
+            padding: 0 12px;
+            border: 1px solid #d9d9d9;
+            border-radius: 6px;
+            font-size: 13px;
+            min-width: 130px;
+            background: #fff;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .driver-search-bar .search-select:focus {
+            border-color: #1890ff;
+            outline: none;
+        }
+
+        .driver-search-bar .btn {
+            height: 36px;
+            padding: 0 18px;
+            font-size: 13px;
+            border-radius: 6px;
+        }
+
+        .driver-search-bar .btn-primary {
+            background: #1890ff;
+            border-color: #1890ff;
+        }
+
+        .driver-search-bar .btn-primary:hover {
+            background: #096dd9;
+            border-color: #096dd9;
+        }
+
+        .driver-table {
+            table-layout: fixed;
+        }
+
+        .driver-table th {
+            font-weight: 600;
+            font-size: 13px;
+            color: #1a1a1a;
+            background: #f8f9fb;
+            padding: 14px 14px;
+            letter-spacing: 0.02em;
+            border-bottom: 2px solid #e8ecf0;
+        }
+
+        .driver-table td {
+            padding: 13px 14px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #333;
+            border-bottom: 1px solid #f0f2f5;
+            vertical-align: middle;
+        }
+
+        .driver-table tbody tr {
+            transition: background 0.15s ease;
+        }
+
+        .driver-table tbody tr:hover {
+            background: #f5f7fa;
+        }
+
+        .driver-table .driver-name {
+            font-weight: 600;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .driver-table .driver-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #1890ff;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .driver-table .driver-avatar.female {
+            background: #eb2f96;
+        }
+
+        .driver-table .driver-phone {
+            color: #555;
+            font-family: 'SF Mono', 'Menlo', monospace;
+            font-size: 12px;
+        }
+
+        .driver-table .driver-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .driver-table .driver-rating .stars {
+            color: #faad14;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .driver-table .driver-rating .score {
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 14px;
+        }
+
+        .driver-table .status-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .driver-table .status-tag.online {
+            background: #f6ffed;
+            color: #389e0d;
+            border: 1px solid #b7eb8f;
+        }
+
+        .driver-table .status-tag.offline {
+            background: #f5f5f5;
+            color: #8c8c8c;
+            border: 1px solid #d9d9d9;
+        }
+
+        .driver-table .status-tag.resting {
+            background: #fff7e6;
+            color: #d46b08;
+            border: 1px solid #ffd591;
+        }
+
+        .driver-table .status-tag.pending {
+            background: #e6f7ff;
+            color: #1890ff;
+            border: 1px solid #91d5ff;
+        }
+
+        .driver-table .status-tag.disabled {
+            background: #fff1f0;
+            color: #ff4d4f;
+            border: 1px solid #ffa39e;
+        }
+
+        .driver-table .action-btn {
+            padding: 4px 12px;
+            font-size: 13px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            background: #fff;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .driver-table .action-btn:hover {
+            border-color: #1890ff;
+            color: #1890ff;
+            background: #f0f5ff;
+        }
+
+        .driver-table .action-btn.danger:hover {
+            border-color: #ff4d4f;
+            color: #ff4d4f;
+            background: #fff1f0;
+        }
+
+        .driver-table .action-btn.success:hover {
+            border-color: #52c41a;
+            color: #52c41a;
+            background: #f6ffed;
+        }
+
+        .driver-card {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .driver-card .card-header {
+            padding: 16px 24px;
+        }
+
+        .driver-card .card-body {
+            padding: 20px 24px 24px;
+        }
+
+        .driver-drawer .drawer {
+            width: 520px;
+            right: -520px;
+            transition: right 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .driver-drawer .drawer-header {
+            padding: 20px 24px 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .driver-drawer .drawer-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .driver-drawer .drawer-body {
+            padding: 24px;
+        }
+
+        .driver-drawer .drawer-body .form-item {
+            margin-bottom: 22px;
+        }
+
+        .driver-drawer .drawer-body .form-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .driver-drawer .drawer-body .form-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        .driver-drawer .drawer-body .form-input,
+        .driver-drawer .drawer-body .form-select {
+            height: 38px;
+            padding: 0 12px;
+            font-size: 14px;
+            border: 1px solid #d9d9d9;
+            border-radius: 6px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .driver-drawer .drawer-body .form-input:focus,
+        .driver-drawer .drawer-body .form-select:focus {
+            border-color: #1890ff;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(24,144,255,0.15);
+        }
+
+        .driver-drawer .drawer-body .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .driver-drawer .drawer-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .driver-drawer .drawer-footer .btn {
+            height: 36px;
+            padding: 0 20px;
+            font-size: 14px;
+            border-radius: 6px;
+        }
+
+        .driver-drawer .drawer-footer .btn-primary {
+            background: #1890ff;
+            border-color: #1890ff;
+        }
+
+        .driver-drawer .drawer-footer .btn-primary:hover {
+            background: #096dd9;
+            border-color: #096dd9;
+        }
+
+        /* 司机详情模态框 */
+        .driver-detail-modal .modal {
+            max-width: 640px;
+        }
+
+        .driver-detail-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 8px 0 20px;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 20px;
+        }
+
+        .driver-detail-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #1890ff;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .driver-detail-avatar.female {
+            background: #eb2f96;
+        }
+
+        .driver-detail-info h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .driver-detail-info .meta {
+            font-size: 13px;
+            color: #8c8c8c;
+        }
+
+        .driver-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .driver-detail-item {
+            padding: 12px 16px;
+            background: #fafafa;
+            border-radius: 8px;
+        }
+
+        .driver-detail-item .label {
+            font-size: 12px;
+            color: #8c8c8c;
+            margin-bottom: 4px;
+        }
+
+        .driver-detail-item .value {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .driver-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: #bbb;
+            font-size: 14px;
+        }
+
+        .driver-empty-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+            opacity: 0.4;
+        }
     </style>
 </head>
 <body>
@@ -2011,7 +2463,284 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 司机管理页面 -->
+            <div id="page-drivers" class="page-content hidden">
+                <!-- 统计卡片 -->
+                <div class="driver-stats-row">
+                    <div class="driver-stat-card">
+                        <div class="driver-stat-icon blue">👤</div>
+                        <div class="driver-stat-info">
+                            <h3>司机总数</h3>
+                            <div class="number" id="stat-total">128</div>
+                        </div>
+                    </div>
+                    <div class="driver-stat-card">
+                        <div class="driver-stat-icon green">🟢</div>
+                        <div class="driver-stat-info">
+                            <h3>在线司机</h3>
+                            <div class="number" id="stat-online">86</div>
+                        </div>
+                    </div>
+                    <div class="driver-stat-card">
+                        <div class="driver-stat-icon orange">🟠</div>
+                        <div class="driver-stat-info">
+                            <h3>休班司机</h3>
+                            <div class="number" id="stat-resting">24</div>
+                        </div>
+                    </div>
+                    <div class="driver-stat-card">
+                        <div class="driver-stat-icon purple">📋</div>
+                        <div class="driver-stat-info">
+                            <h3>待审核</h3>
+                            <div class="number" id="stat-pending">12</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card driver-card">
+                    <div class="card-header">
+                        <span class="card-title">司机列表</span>
+                        <button class="btn btn-primary" onclick="openDriverDrawer()">
+                            <span>+</span> 添加司机
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="driver-search-bar">
+                            <input type="text" class="search-input" id="driver-search-keyword" placeholder="司机姓名 / 手机号">
+                            <select class="search-select" id="driver-search-company">
+                                <option value="">全部公司</option>
+                                <option value="上海安达代驾服务有限公司">上海安达代驾</option>
+                                <option value="北京畅通代驾有限公司">北京畅通代驾</option>
+                                <option value="广州平安代驾服务有限公司">广州平安代驾</option>
+                                <option value="杭州顺风代驾有限公司">杭州顺风代驾</option>
+                                <option value="南京快捷代驾服务有限公司">南京快捷代驾</option>
+                                <option value="深圳万通代驾服务有限公司">深圳万通代驾</option>
+                            </select>
+                            <select class="search-select" id="driver-search-status">
+                                <option value="">全部状态</option>
+                                <option value="online">在线</option>
+                                <option value="resting">休班</option>
+                                <option value="offline">离线</option>
+                                <option value="pending">待审核</option>
+                                <option value="disabled">已停用</option>
+                            </select>
+                            <button class="btn btn-primary" onclick="searchDrivers()">查询</button>
+                            <button class="btn" onclick="resetDriverSearch()">重置</button>
+                        </div>
+
+                        <table class="table driver-table">
+                            <colgroup>
+                                <col style="width: 50px;">
+                                <col style="width: 160px;">
+                                <col style="width: 130px;">
+                                <col style="width: 160px;">
+                                <col style="width: 90px;">
+                                <col style="width: 80px;">
+                                <col style="width: 80px;">
+                                <col style="width: 150px;">
+                                <col style="width: 160px;">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>司机姓名</th>
+                                    <th>手机号</th>
+                                    <th>所属公司</th>
+                                    <th>工作状态</th>
+                                    <th>总订单</th>
+                                    <th>评分</th>
+                                    <th>注册时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="driver-list"></tbody>
+                        </table>
+
+                        <div class="pagination" id="driver-pagination">
+                            <button class="pagination-btn" disabled>上一页</button>
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">下一页</button>
+                            <span style="color: #666; font-size: 14px;" id="driver-page-info">共 0 条</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
+    </div>
+
+    <!-- 司机管理抽屉 -->
+    <div class="drawer-overlay driver-drawer" id="driver-drawer">
+        <div class="drawer">
+            <div class="drawer-header">
+                <h3 class="drawer-title" id="driver-drawer-title">添加司机</h3>
+                <button class="drawer-close" onclick="closeDriverDrawer()">&times;</button>
+            </div>
+            <div class="drawer-body">
+                <form id="driver-form">
+                    <input type="hidden" id="edit-driver-id">
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label class="form-label">司机姓名<span class="required">*</span></label>
+                            <input type="text" class="form-input" id="driver-name" placeholder="请输入司机姓名">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label">手机号<span class="required">*</span></label>
+                            <input type="text" class="form-input" id="driver-phone" placeholder="请输入手机号" oninput="this.value=this.value.replace(/\D/g,'')" maxlength="11">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label class="form-label">性别</label>
+                            <select class="form-select" id="driver-gender">
+                                <option value="男">男</option>
+                                <option value="女">女</option>
+                            </select>
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label">年龄</label>
+                            <input type="number" class="form-input" id="driver-age" placeholder="请输入年龄" min="18" max="65">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label">所属公司<span class="required">*</span></label>
+                        <select class="form-select" id="driver-company">
+                            <option value="">请选择所属公司</option>
+                            <option value="上海安达代驾服务有限公司">上海安达代驾服务有限公司</option>
+                            <option value="北京畅通代驾有限公司">北京畅通代驾有限公司</option>
+                            <option value="广州平安代驾服务有限公司">广州平安代驾服务有限公司</option>
+                            <option value="杭州顺风代驾有限公司">杭州顺风代驾有限公司</option>
+                            <option value="南京快捷代驾服务有限公司">南京快捷代驾服务有限公司</option>
+                            <option value="深圳万通代驾服务有限公司">深圳万通代驾服务有限公司</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label class="form-label">驾龄（年）</label>
+                            <input type="number" class="form-input" id="driver-experience" placeholder="驾龄" min="1" max="40">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label">车牌号</label>
+                            <input type="text" class="form-input" id="driver-plate" placeholder="如 沪A·88888">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label class="form-label">车辆品牌</label>
+                            <input type="text" class="form-input" id="driver-car-brand" placeholder="如 大众帕萨特">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label">车辆颜色</label>
+                            <select class="form-select" id="driver-car-color">
+                                <option value="">请选择</option>
+                                <option value="白色">白色</option>
+                                <option value="黑色">黑色</option>
+                                <option value="灰色">灰色</option>
+                                <option value="银色">银色</option>
+                                <option value="蓝色">蓝色</option>
+                                <option value="红色">红色</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label">工作状态</label>
+                        <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px;">
+                                <input type="radio" name="driver-status" value="online"> 在线
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px;">
+                                <input type="radio" name="driver-status" value="resting"> 休班
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px;">
+                                <input type="radio" name="driver-status" value="offline"> 离线
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px;">
+                                <input type="radio" name="driver-status" value="pending" checked> 待审核
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px;">
+                                <input type="radio" name="driver-status" value="disabled"> 已停用
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label">备注</label>
+                        <textarea class="form-textarea" id="driver-remark" placeholder="请输入备注信息（可选）" style="min-height: 60px;"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="drawer-footer">
+                <button class="btn" onclick="closeDriverDrawer()">取消</button>
+                <button class="btn btn-primary" onclick="saveDriver()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 司机详情模态框 -->
+    <div class="modal-overlay driver-detail-modal" id="driver-detail-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">司机详情</h3>
+                <button class="modal-close" onclick="closeModal('driver-detail-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="driver-detail-header">
+                    <div class="driver-detail-avatar" id="detail-avatar">张</div>
+                    <div class="driver-detail-info">
+                        <h2 id="detail-name">张三</h2>
+                        <div class="meta">
+                            <span id="detail-company">上海安达代驾服务有限公司</span>
+                            <span style="margin: 0 8px;">|</span>
+                            <span id="detail-phone">138****0001</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="driver-detail-grid">
+                    <div class="driver-detail-item">
+                        <div class="label">性别</div>
+                        <div class="value" id="detail-gender">男</div>
+                    </div>
+                    <div class="driver-detail-item">
+                        <div class="label">年龄</div>
+                        <div class="value" id="detail-age">32</div>
+                    </div>
+                    <div class="driver-detail-item">
+                        <div class="label">驾龄</div>
+                        <div class="value" id="detail-experience">8 年</div>
+                    </div>
+                    <div class="driver-detail-item">
+                        <div class="label">工作状态</div>
+                        <div class="value" id="detail-status">在线</div>
+                    </div>
+                    <div class="driver-detail-item">
+                        <div class="label">车牌号</div>
+                        <div class="value" id="detail-plate">沪A·88888</div>
+                    </div>
+                    <div class="driver-detail-item">
+                        <div class="label">车辆信息</div>
+                        <div class="value" id="detail-car">大众帕萨特（白色）</div>
+                    </div>
+                    <div class="driver-detail-item">
+                        <div class="label">总订单数</div>
+                        <div class="value" id="detail-orders">1,286 单</div>
+                    </div>
+                    <div class="driver-detail-item">
+                        <div class="label">综合评分</div>
+                        <div class="value" id="detail-rating">⭐ 4.8</div>
+                    </div>
+                    <div class="driver-detail-item">
+                        <div class="label">注册时间</div>
+                        <div class="value" id="detail-register">2024-03-15</div>
+                    </div>
+                    <div class="driver-detail-item">
+                        <div class="label">备注</div>
+                        <div class="value" id="detail-remark">-</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal('driver-detail-modal')">关闭</button>
+            </div>
+        </div>
     </div>
 
     <!-- 新增/编辑业务类型模态框 -->
@@ -3791,6 +4520,9 @@
 
                     if (page === 'company') {
                         renderCompanies(companies);
+                    } else if (page === 'drivers') {
+                        updateDriverStats();
+                        renderDrivers(drivers);
                     }
                 });
             });
@@ -3838,6 +4570,339 @@
             const trigger = cascadeTriggerEl;
             if (trigger && (trigger.contains(e.target) || dropdown.contains(e.target))) return;
             closeCascadeDropdown();
+        });
+
+        // ========== 司机管理模块 ==========
+
+        // 司机数据
+        let drivers = [
+            { id: 1, name: '张伟', phone: '13800138001', gender: '男', age: 32, company: '上海安达代驾服务有限公司', experience: 8, plate: '沪A·88888', carBrand: '大众帕萨特', carColor: '白色', status: 'online', orders: 1286, rating: 4.8, registerDate: '2024-03-15 09:30:00', remark: '' },
+            { id: 2, name: '李娜', phone: '13900139002', gender: '女', age: 28, company: '上海安达代驾服务有限公司', experience: 5, plate: '沪B·66666', carBrand: '丰田凯美瑞', carColor: '黑色', status: 'online', orders: 856, rating: 4.9, registerDate: '2024-04-20 14:00:00', remark: '优秀司机，零投诉' },
+            { id: 3, name: '王强', phone: '13700137003', gender: '男', age: 35, company: '北京畅通代驾有限公司', experience: 10, plate: '京A·12345', carBrand: '奥迪A6L', carColor: '黑色', status: 'online', orders: 2105, rating: 4.7, registerDate: '2024-01-10 10:00:00', remark: '金牌司机' },
+            { id: 4, name: '赵敏', phone: '13600136004', gender: '女', age: 30, company: '北京畅通代驾有限公司', experience: 6, plate: '京B·67890', carBrand: '本田雅阁', carColor: '白色', status: 'resting', orders: 623, rating: 4.6, registerDate: '2024-05-08 16:30:00', remark: '' },
+            { id: 5, name: '刘洋', phone: '13500135005', gender: '男', age: 29, company: '广州平安代驾服务有限公司', experience: 4, plate: '粤A·11111', carBrand: '日产天籁', carColor: '银色', status: 'online', orders: 412, rating: 4.5, registerDate: '2024-06-12 11:20:00', remark: '' },
+            { id: 6, name: '陈静', phone: '13400134006', gender: '女', age: 33, company: '广州平安代驾服务有限公司', experience: 7, plate: '粤B·22222', carBrand: '别克君威', carColor: '灰色', status: 'offline', orders: 756, rating: 4.8, registerDate: '2024-03-01 08:45:00', remark: '' },
+            { id: 7, name: '孙鹏', phone: '13300133007', gender: '男', age: 38, company: '杭州顺风代驾有限公司', experience: 12, plate: '浙A·33333', carBrand: '宝马5系', carColor: '黑色', status: 'online', orders: 1892, rating: 4.9, registerDate: '2024-02-18 13:15:00', remark: '五星司机' },
+            { id: 8, name: '周婷', phone: '13200132008', gender: '女', age: 26, company: '杭州顺风代驾有限公司', experience: 3, plate: '浙B·44444', carBrand: '大众迈腾', carColor: '白色', status: 'pending', orders: 0, rating: 0, registerDate: '2024-07-01 09:00:00', remark: '新注册，待审核' },
+            { id: 9, name: '吴昊', phone: '13100131009', gender: '男', age: 31, company: '南京快捷代驾服务有限公司', experience: 6, plate: '苏A·55555', carBrand: '奔驰C级', carColor: '白色', status: 'online', orders: 967, rating: 4.7, registerDate: '2024-04-05 15:30:00', remark: '' },
+            { id: 10, name: '郑雨', phone: '13000130010', gender: '女', age: 27, company: '南京快捷代驾服务有限公司', experience: 4, plate: '苏B·66666', carBrand: '马自达6', carColor: '红色', status: 'resting', orders: 345, rating: 4.4, registerDate: '2024-06-20 10:45:00', remark: '' },
+            { id: 11, name: '黄磊', phone: '18900189011', gender: '男', age: 40, company: '深圳万通代驾服务有限公司', experience: 15, plate: '粤B·77777', carBrand: '特斯拉Model 3', carColor: '蓝色', status: 'online', orders: 2534, rating: 4.9, registerDate: '2024-01-05 08:00:00', remark: '年度最佳司机' },
+            { id: 12, name: '林悦', phone: '18800188012', gender: '女', age: 29, company: '深圳万通代驾服务有限公司', experience: 5, plate: '粤B·88888', carBrand: '比亚迪汉', carColor: '灰色', status: 'pending', orders: 0, rating: 0, registerDate: '2024-07-05 14:20:00', remark: '新注册，待审核' },
+            { id: 13, name: '何勇', phone: '18700187013', gender: '男', age: 36, company: '上海安达代驾服务有限公司', experience: 9, plate: '沪C·99999', carBrand: '荣威i6', carColor: '白色', status: 'online', orders: 1102, rating: 4.6, registerDate: '2024-03-20 11:00:00', remark: '' },
+            { id: 14, name: '徐芳', phone: '18600186014', gender: '女', age: 34, company: '北京畅通代驾有限公司', experience: 7, plate: '京C·00000', carBrand: '现代索纳塔', carColor: '银色', status: 'disabled', orders: 534, rating: 4.2, registerDate: '2024-04-10 16:00:00', remark: '因投诉过多已停用' },
+            { id: 15, name: '马超', phone: '18500185015', gender: '男', age: 42, company: '广州平安代驾服务有限公司', experience: 18, plate: '粤A·12346', carBrand: '丰田皇冠', carColor: '黑色', status: 'offline', orders: 1876, rating: 4.8, registerDate: '2024-02-01 07:30:00', remark: '' },
+        ];
+
+        let driverNextId = 16;
+
+        // 获取状态文本
+        function getDriverStatusText(status) {
+            const map = {
+                'online': '在线',
+                'offline': '离线',
+                'resting': '休班',
+                'pending': '待审核',
+                'disabled': '已停用'
+            };
+            return map[status] || status;
+        }
+
+        // 获取状态标签HTML
+        function getDriverStatusTag(status) {
+            const map = {
+                'online': '<span class="status-tag online">🟢 在线</span>',
+                'offline': '<span class="status-tag offline">⚪ 离线</span>',
+                'resting': '<span class="status-tag resting">🟠 休班</span>',
+                'pending': '<span class="status-tag pending">📋 待审核</span>',
+                'disabled': '<span class="status-tag disabled">⛔ 已停用</span>'
+            };
+            return map[status] || status;
+        }
+
+        // 获取评分显示
+        function getRatingDisplay(rating) {
+            if (rating === 0) return '<span style="color: #bbb;">暂无</span>';
+            const fullStars = Math.floor(rating);
+            const hasHalf = rating - fullStars >= 0.5;
+            let stars = '';
+            for (let i = 0; i < fullStars; i++) stars += '★';
+            if (hasHalf) stars += '☆';
+            return `<span class="driver-rating"><span class="stars">${stars}</span><span class="score">${rating.toFixed(1)}</span></span>`;
+        }
+
+        // 格式化手机号
+        function formatPhone(phone) {
+            if (phone.length === 11) {
+                return phone.slice(0, 3) + '****' + phone.slice(7);
+            }
+            return phone;
+        }
+
+        // 获取首字母
+        function getInitial(name) {
+            return name.charAt(0);
+        }
+
+        // 更新统计卡片
+        function updateDriverStats() {
+            const total = drivers.length;
+            const online = drivers.filter(d => d.status === 'online').length;
+            const resting = drivers.filter(d => d.status === 'resting').length;
+            const pending = drivers.filter(d => d.status === 'pending').length;
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-online').textContent = online;
+            document.getElementById('stat-resting').textContent = resting;
+            document.getElementById('stat-pending').textContent = pending;
+        }
+
+        // 渲染司机列表
+        function renderDrivers(data) {
+            const tbody = document.getElementById('driver-list');
+            const list = data || drivers;
+
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9"><div class="driver-empty"><div class="driver-empty-icon">👤</div>暂无司机数据</div></td></tr>';
+                document.getElementById('driver-page-info').textContent = '共 0 条';
+                return;
+            }
+
+            tbody.innerHTML = list.map((driver, index) => {
+                const genderClass = driver.gender === '女' ? 'female' : '';
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>
+                            <div class="driver-name">
+                                <span class="driver-avatar ${genderClass}">${getInitial(driver.name)}</span>
+                                <span>${driver.name}</span>
+                            </div>
+                        </td>
+                        <td><span class="driver-phone">${formatPhone(driver.phone)}</span></td>
+                        <td style="font-size: 12px; color: #555;">${driver.company}</td>
+                        <td>${getDriverStatusTag(driver.status)}</td>
+                        <td style="font-weight: 500;">${driver.orders.toLocaleString()}</td>
+                        <td>${getRatingDisplay(driver.rating)}</td>
+                        <td style="font-size: 12px; color: #888;">${driver.registerDate}</td>
+                        <td>
+                            <button class="action-btn" onclick="viewDriver(${driver.id})" title="查看详情">查看</button>
+                            <button class="action-btn" onclick="editDriver(${driver.id})" title="编辑">编辑</button>
+                            ${driver.status === 'disabled' 
+                                ? '<button class="action-btn success" onclick="toggleDriverStatus(' + driver.id + ', \'enable\')">启用</button>'
+                                : '<button class="action-btn danger" onclick="toggleDriverStatus(' + driver.id + ', \'disable\')">停用</button>'
+                            }
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            document.getElementById('driver-page-info').textContent = `共 ${list.length} 条`;
+        }
+
+        // 搜索司机
+        function searchDrivers() {
+            const keyword = document.getElementById('driver-search-keyword').value.trim().toLowerCase();
+            const company = document.getElementById('driver-search-company').value;
+            const status = document.getElementById('driver-search-status').value;
+
+            const filtered = drivers.filter(driver => {
+                if (keyword) {
+                    const matchName = driver.name.toLowerCase().includes(keyword);
+                    const matchPhone = driver.phone.includes(keyword);
+                    if (!matchName && !matchPhone) return false;
+                }
+                if (company && driver.company !== company) return false;
+                if (status && driver.status !== status) return false;
+                return true;
+            });
+
+            renderDrivers(filtered);
+        }
+
+        // 重置司机搜索
+        function resetDriverSearch() {
+            document.getElementById('driver-search-keyword').value = '';
+            document.getElementById('driver-search-company').value = '';
+            document.getElementById('driver-search-status').value = '';
+            renderDrivers(drivers);
+        }
+
+        // 打开司机抽屉（新增）
+        function openDriverDrawer(driverData) {
+            document.getElementById('driver-drawer-title').textContent = driverData ? '编辑司机' : '添加司机';
+            document.getElementById('edit-driver-id').value = driverData ? driverData.id : '';
+
+            if (driverData) {
+                document.getElementById('driver-name').value = driverData.name;
+                document.getElementById('driver-phone').value = driverData.phone;
+                document.getElementById('driver-gender').value = driverData.gender;
+                document.getElementById('driver-age').value = driverData.age;
+                document.getElementById('driver-company').value = driverData.company;
+                document.getElementById('driver-experience').value = driverData.experience;
+                document.getElementById('driver-plate').value = driverData.plate;
+                document.getElementById('driver-car-brand').value = driverData.carBrand;
+                document.getElementById('driver-car-color').value = driverData.carColor;
+                document.getElementById('driver-remark').value = driverData.remark || '';
+                const statusRadio = document.querySelector(`input[name="driver-status"][value="${driverData.status}"]`);
+                if (statusRadio) statusRadio.checked = true;
+            } else {
+                document.getElementById('driver-name').value = '';
+                document.getElementById('driver-phone').value = '';
+                document.getElementById('driver-gender').value = '男';
+                document.getElementById('driver-age').value = '';
+                document.getElementById('driver-company').value = '';
+                document.getElementById('driver-experience').value = '';
+                document.getElementById('driver-plate').value = '';
+                document.getElementById('driver-car-brand').value = '';
+                document.getElementById('driver-car-color').value = '';
+                document.getElementById('driver-remark').value = '';
+                document.querySelector('input[name="driver-status"][value="pending"]').checked = true;
+            }
+
+            document.getElementById('driver-drawer').classList.add('active');
+        }
+
+        // 关闭司机抽屉
+        function closeDriverDrawer() {
+            document.getElementById('driver-drawer').classList.remove('active');
+        }
+
+        // 保存司机
+        function saveDriver() {
+            const name = document.getElementById('driver-name').value.trim();
+            const phone = document.getElementById('driver-phone').value.trim();
+            const gender = document.getElementById('driver-gender').value;
+            const age = parseInt(document.getElementById('driver-age').value) || 0;
+            const company = document.getElementById('driver-company').value;
+            const experience = parseInt(document.getElementById('driver-experience').value) || 0;
+            const plate = document.getElementById('driver-plate').value.trim();
+            const carBrand = document.getElementById('driver-car-brand').value.trim();
+            const carColor = document.getElementById('driver-car-color').value;
+            const remark = document.getElementById('driver-remark').value.trim();
+            const editId = document.getElementById('edit-driver-id').value;
+            const statusRadio = document.querySelector('input[name="driver-status"]:checked');
+            const status = statusRadio ? statusRadio.value : 'pending';
+
+            // 校验必填项
+            if (!name) { alert('请输入司机姓名'); return; }
+            if (!phone || phone.length !== 11) { alert('请输入有效的11位手机号'); return; }
+            if (!company) { alert('请选择所属公司'); return; }
+
+            if (editId) {
+                // 编辑
+                const index = drivers.findIndex(d => d.id === parseInt(editId));
+                if (index !== -1) {
+                    drivers[index] = {
+                        ...drivers[index],
+                        name,
+                        phone,
+                        gender,
+                        age,
+                        company,
+                        experience,
+                        plate,
+                        carBrand,
+                        carColor,
+                        status,
+                        remark
+                    };
+                }
+            } else {
+                // 新增
+                const now = new Date();
+                const pad = n => String(n).padStart(2, '0');
+                const registerDate = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+                drivers.push({
+                    id: driverNextId++,
+                    name,
+                    phone,
+                    gender,
+                    age,
+                    company,
+                    experience,
+                    plate,
+                    carBrand,
+                    carColor,
+                    status,
+                    orders: 0,
+                    rating: status === 'pending' ? 0 : 0,
+                    registerDate,
+                    remark
+                });
+            }
+
+            closeDriverDrawer();
+            updateDriverStats();
+            renderDrivers(drivers);
+            resetDriverSearch();
+        }
+
+        // 编辑司机
+        function editDriver(id) {
+            const driver = drivers.find(d => d.id === id);
+            if (driver) {
+                openDriverDrawer(driver);
+            }
+        }
+
+        // 查看司机详情
+        function viewDriver(id) {
+            const driver = drivers.find(d => d.id === id);
+            if (!driver) return;
+
+            const genderClass = driver.gender === '女' ? 'female' : '';
+            document.getElementById('detail-avatar').className = 'driver-detail-avatar ' + genderClass;
+            document.getElementById('detail-avatar').textContent = getInitial(driver.name);
+            document.getElementById('detail-name').textContent = driver.name;
+            document.getElementById('detail-company').textContent = driver.company;
+            document.getElementById('detail-phone').textContent = formatPhone(driver.phone);
+            document.getElementById('detail-gender').textContent = driver.gender;
+            document.getElementById('detail-age').textContent = driver.age + ' 岁';
+            document.getElementById('detail-experience').textContent = driver.experience + ' 年';
+            document.getElementById('detail-status').textContent = getDriverStatusText(driver.status);
+            document.getElementById('detail-plate').textContent = driver.plate || '-';
+            document.getElementById('detail-car').textContent = driver.carBrand ? (driver.carBrand + (driver.carColor ? '（' + driver.carColor + '）' : '')) : '-';
+            document.getElementById('detail-orders').textContent = driver.orders.toLocaleString() + ' 单';
+            document.getElementById('detail-rating').textContent = driver.rating > 0 ? '⭐ ' + driver.rating.toFixed(1) : '暂无评分';
+            document.getElementById('detail-register').textContent = driver.registerDate;
+            document.getElementById('detail-remark').textContent = driver.remark || '-';
+
+            document.getElementById('driver-detail-modal').classList.add('active');
+        }
+
+        // 切换司机状态（启用/停用）
+        function toggleDriverStatus(id, action) {
+            const driver = drivers.find(d => d.id === id);
+            if (!driver) return;
+
+            if (action === 'disable') {
+                if (confirm(`确定要停用司机「${driver.name}」吗？`)) {
+                    driver.status = 'disabled';
+                } else {
+                    return;
+                }
+            } else {
+                if (confirm(`确定要启用司机「${driver.name}」吗？`)) {
+                    driver.status = 'offline';
+                } else {
+                    return;
+                }
+            }
+
+            updateDriverStats();
+            renderDrivers(drivers);
+        }
+
+        // 点击遮罩关闭司机抽屉
+        document.getElementById('driver-drawer').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+
+        // 初始化司机页面数据
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDriverStats();
+            renderDrivers(drivers);
         });
     </script>
 </body>
