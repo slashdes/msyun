@@ -2028,6 +2028,21 @@
         .driver-form-page {
             max-width: 840px;
             margin: 0 auto;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .driver-form-page form {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .form-body-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 16px;
         }
 
         .driver-form-page .page-header {
@@ -2035,6 +2050,7 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 24px;
+            flex-shrink: 0;
         }
 
         .driver-form-page .page-header h2 {
@@ -2074,24 +2090,7 @@
         .form-section-card .section-header {
             padding: 16px 24px;
             border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
             background: #fafafa;
-        }
-
-        .form-section-card .section-header .section-num {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: #1890ff;
-            color: #fff;
-            font-size: 12px;
-            font-weight: 500;
-            flex-shrink: 0;
         }
 
         .form-section-card .section-header .section-title {
@@ -2278,10 +2277,16 @@
         /* 表单底部操作栏 */
         .form-footer {
             display: flex;
-            justify-content: flex-end;
+            justify-content: flex-start;
             gap: 8px;
-            margin-top: 8px;
-            padding: 16px 0;
+            padding: 16px 24px;
+            background: #fff;
+            border-top: 1px solid #f0f0f0;
+            flex-shrink: 0;
+            position: sticky;
+            bottom: 0;
+            z-index: 10;
+            margin: 0 -24px -24px;
         }
 
         .form-footer .ant-btn {
@@ -2456,8 +2461,8 @@
                 </div>
                 <div class="user-info">
                     <select class="form-select" id="role-selector" onchange="switchRole(this.value)" style="width: 120px; padding: 8px 12px; border: 1px solid #d9d9d9; border-radius: 4px; font-size: 14px;">
-                        <option value="headquarters">🏢 总部</option>
-                        <option value="branch">📍 分公司</option>
+                        <option value="headquarters">总部</option>
+                        <option value="branch">分公司</option>
                     </select>
                     <div class="user-avatar">管</div>
                 </div>
@@ -2653,11 +2658,11 @@
                             </div>
                             <div class="company-selector" id="company-selector-container" style="display: flex; align-items: center;">
                                 <select class="form-select" id="company-selector" onchange="switchCompany(this.value)" style="width: 160px; padding: 8px 12px; border: 1px solid #d9d9d9; border-radius: 4px; font-size: 14px;">
-                                    <option value="shanghai">📍 上海公司</option>
-                                    <option value="beijing">📍 北京公司</option>
-                                    <option value="baoding">📍 保定公司</option>
-                                    <option value="guangzhou">📍 广州公司</option>
-                                    <option value="shenzhen">📍 深圳公司</option>
+                                    <option value="shanghai">上海公司</option>
+                                    <option value="beijing">北京公司</option>
+                                    <option value="baoding">保定公司</option>
+                                    <option value="guangzhou">广州公司</option>
+                                    <option value="shenzhen">深圳公司</option>
                                 </select>
                             </div>
                         </div>
@@ -2764,9 +2769,6 @@
             <div id="page-driver-list" class="page-content">
                 <!-- 查询条件 -->
                 <div class="card driver-search-card">
-                    <div class="card-header">
-                        <span class="card-title">查询条件</span>
-                    </div>
                     <div class="card-body">
                         <div class="driver-search-bar">
                             <div class="ant-form-item">
@@ -2808,18 +2810,17 @@
 
                 <!-- 司机列表 -->
                 <div class="card driver-list-card">
-                    <div class="card-header">
-                        <span class="card-title">司机列表</span>
-                        <button class="ant-btn-primary" onclick="location.hash='#/driver/add'">
-                            <span>+</span> 添加司机
-                        </button>
-                    </div>
                     <div class="card-body">
                         <!-- 状态筛选 -->
-                        <div class="status-filter-bar">
-                            <div class="status-filter-item active" data-status="all" onclick="filterByStatus('all')">全部 <span class="count" id="count-all">0</span></div>
-                            <div class="status-filter-item" data-status="active" onclick="filterByStatus('active')">在职 <span class="count" id="count-active">0</span></div>
-                            <div class="status-filter-item" data-status="inactive" onclick="filterByStatus('inactive')">已解约 <span class="count" id="count-inactive">0</span></div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                            <div class="status-filter-bar">
+                                <div class="status-filter-item active" data-status="all" onclick="filterByStatus('all')">全部 <span class="count" id="count-all">0</span></div>
+                                <div class="status-filter-item" data-status="active" onclick="filterByStatus('active')">在职 <span class="count" id="count-active">0</span></div>
+                                <div class="status-filter-item" data-status="inactive" onclick="filterByStatus('inactive')">已解约 <span class="count" id="count-inactive">0</span></div>
+                            </div>
+                            <button class="ant-btn-primary" onclick="location.hash='#/driver/add'">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> 添加司机
+                            </button>
                         </div>
 
                         <table class="table driver-table">
@@ -2868,11 +2869,10 @@
 
                     <form id="driver-form">
                         <input type="hidden" id="edit-driver-id">
-
+                        <div class="form-body-scroll">
                         <!-- 模块1：个人信息 -->
                         <div class="form-section-card">
                             <div class="section-header">
-                                <span class="section-num">1</span>
                                 <span class="section-title">个人信息</span>
                             </div>
                             <div class="section-body">
@@ -2911,7 +2911,7 @@
                                         <label class="ant-form-item-label">身份证正面</label>
                                         <div class="ant-upload-wrapper">
                                             <div class="ant-upload" id="id-front-area">
-                                                <div class="ant-upload-icon">📷</div>
+                                                <div class="ant-upload-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8c8c8c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
                                                 <div class="ant-upload-text">点击上传</div>
                                                 <img id="id-front-preview" alt="身份证正面">
                                                 <input type="file" accept=".jpg,.jpeg,.png" onchange="previewPhoto(this, 'id-front-preview', 'id-front-area')">
@@ -2923,7 +2923,7 @@
                                         <label class="ant-form-item-label">身份证背面</label>
                                         <div class="ant-upload-wrapper">
                                             <div class="ant-upload" id="id-back-area">
-                                                <div class="ant-upload-icon">📷</div>
+                                                <div class="ant-upload-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8c8c8c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
                                                 <div class="ant-upload-text">点击上传</div>
                                                 <img id="id-back-preview" alt="身份证背面">
                                                 <input type="file" accept=".jpg,.jpeg,.png" onchange="previewPhoto(this, 'id-back-preview', 'id-back-area')">
@@ -2938,7 +2938,6 @@
                         <!-- 模块2：紧急联系人 -->
                         <div class="form-section-card">
                             <div class="section-header">
-                                <span class="section-num">2</span>
                                 <span class="section-title">紧急联系人</span>
                             </div>
                             <div class="section-body">
@@ -2958,7 +2957,6 @@
                         <!-- 模块3：驾驶证信息 -->
                         <div class="form-section-card">
                             <div class="section-header">
-                                <span class="section-num">3</span>
                                 <span class="section-title">驾驶证信息</span>
                             </div>
                             <div class="section-body">
@@ -2999,7 +2997,7 @@
                                         <label class="ant-form-item-label">驾驶证正本</label>
                                         <div class="ant-upload-wrapper">
                                             <div class="ant-upload" id="license-front-area">
-                                                <div class="ant-upload-icon">📷</div>
+                                                <div class="ant-upload-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8c8c8c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
                                                 <div class="ant-upload-text">点击上传</div>
                                                 <img id="license-front-preview" alt="驾驶证正本">
                                                 <input type="file" accept=".jpg,.jpeg,.png" onchange="previewPhoto(this, 'license-front-preview', 'license-front-area')">
@@ -3011,7 +3009,7 @@
                                         <label class="ant-form-item-label">驾驶证副本</label>
                                         <div class="ant-upload-wrapper">
                                             <div class="ant-upload" id="license-back-area">
-                                                <div class="ant-upload-icon">📷</div>
+                                                <div class="ant-upload-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8c8c8c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
                                                 <div class="ant-upload-text">点击上传</div>
                                                 <img id="license-back-preview" alt="驾驶证副本">
                                                 <input type="file" accept=".jpg,.jpeg,.png" onchange="previewPhoto(this, 'license-back-preview', 'license-back-area')">
@@ -3026,7 +3024,6 @@
                         <!-- 模块4：公司信息 -->
                         <div class="form-section-card">
                             <div class="section-header">
-                                <span class="section-num">4</span>
                                 <span class="section-title">公司信息</span>
                             </div>
                             <div class="section-body">
@@ -3070,9 +3067,11 @@
                             </div>
                         </div>
 
+                        </div>
+
                         <div class="form-footer">
-                            <button type="button" class="ant-btn" onclick="backToDriverList()">取消</button>
                             <button type="button" class="ant-btn ant-btn-primary" onclick="saveDriverForm()">保存</button>
+                            <button type="button" class="ant-btn" onclick="backToDriverList()">取消</button>
                         </div>
                     </form>
                 </div>
@@ -3090,7 +3089,7 @@
             <div class="drawer-body" id="detail-drawer-body">
                 <!-- 个人信息 -->
                 <div class="detail-section">
-                    <div class="detail-section-title">📋 个人信息</div>
+                    <div class="detail-section-title">个人信息</div>
                     <div class="detail-grid">
                         <div class="detail-item"><div class="label">姓名</div><div class="value" id="d-name">-</div></div>
                         <div class="detail-item"><div class="label">身份证号</div><div class="value" id="d-idcard">-</div></div>
@@ -3102,7 +3101,7 @@
                 </div>
                 <!-- 紧急联系人 -->
                 <div class="detail-section">
-                    <div class="detail-section-title">📞 紧急联系人</div>
+                    <div class="detail-section-title">紧急联系人</div>
                     <div class="detail-grid">
                         <div class="detail-item"><div class="label">紧急联系人</div><div class="value" id="d-emergency">-</div></div>
                         <div class="detail-item"><div class="label">紧急联系人手机号</div><div class="value" id="d-emergency-phone">-</div></div>
@@ -3110,7 +3109,7 @@
                 </div>
                 <!-- 驾驶证信息 -->
                 <div class="detail-section">
-                    <div class="detail-section-title">🚗 驾驶证信息</div>
+                    <div class="detail-section-title">驾驶证信息</div>
                     <div class="detail-grid">
                         <div class="detail-item"><div class="label">驾驶证号</div><div class="value" id="d-license-no">-</div></div>
                         <div class="detail-item"><div class="label">准驾车型</div><div class="value" id="d-license-type">-</div></div>
@@ -3120,7 +3119,7 @@
                 </div>
                 <!-- 公司信息 -->
                 <div class="detail-section">
-                    <div class="detail-section-title">🏢 公司信息</div>
+                    <div class="detail-section-title">公司信息</div>
                     <div class="detail-grid">
                         <div class="detail-item"><div class="label">所属公司</div><div class="value" id="d-company">-</div></div>
                         <div class="detail-item"><div class="label">业务类型</div><div class="value" id="d-biz-type">-</div></div>
@@ -3219,11 +3218,11 @@
                             <div class="target-selector">
                                 <div class="target-option" onclick="selectTarget(this, 'public')">
                                     <input type="radio" name="target" value="public">
-                                    <span>🌐 公共规则（全部分公司可用）</span>
+                                    <span>公共规则（全部分公司可用）</span>
                                 </div>
                                 <div class="target-option selected" onclick="selectTarget(this, 'specific')">
                                     <input type="radio" name="target" value="specific" checked>
-                                    <span>🏢 指定公司可用</span>
+                                    <span>指定公司可用</span>
                                 </div>
                             </div>
                             
@@ -3259,8 +3258,8 @@
                         <div class="form-item">
                             <label class="form-label">计价模式<span class="required">*</span></label>
                             <div class="rule-type-tabs">
-                                <button type="button" class="rule-type-tab active" onclick="selectPricingMode('fence')">🚧 围栏计价</button>
-                                <button type="button" class="rule-type-tab" onclick="selectPricingMode('uniform')">📏 全程统一计价</button>
+                                <button type="button" class="rule-type-tab active" onclick="selectPricingMode('fence')">围栏计价</button>
+                                <button type="button" class="rule-type-tab" onclick="selectPricingMode('uniform')">全程统一计价</button>
                             </div>
                         </div>
                     </div>
@@ -3786,14 +3785,14 @@
                     <td>${rule.code}</td>
                     <td>${rule.name}</td>
                     <td><span class="tag tag-blue">${rule.type}</span></td>
-                    <td>${rule.mode === 'fence' ? '🚧 围栏计价' : '📏 全程统一计价'}</td>
-                    <td>${rule.target === '公共规则' ? '<span class="tag tag-green">🌐 公共规则</span>' : '<span class="tag tag-orange">🏢 ' + rule.target + '</span>'}</td>
+                    <td>${rule.mode === 'fence' ? '围栏计价' : '全程统一计价'}</td>
+                    <td>${rule.target === '公共规则' ? '<span class="tag tag-green">公共规则</span>' : '<span class="tag tag-orange">' + rule.target + '</span>'}</td>
                     <td>${getStatusTag(rule.status)}</td>
                     <td>${rule.creator}</td>
                     <td>${rule.time}</td>
                     <td class="actions">
                         <button class="btn btn-text">编辑</button>
-                        <button class="btn btn-text" onclick="copyRule('${rule.code}')">📋 复制</button>
+                        <button class="btn btn-text" onclick="copyRule('${rule.code}')">复制</button>
                         ${currentRole === 'headquarters' ? '<button class="btn btn-text" style="color: #ff4d4f;">删除</button>' : ''}
                     </td>
                 </tr>
@@ -4112,7 +4111,7 @@
                         </div>
                     </td>
                     <td>${config.source}</td>
-                    <td>${config.mode !== '-' ? (config.mode === '围栏计价' ? '🚧 围栏计价' : '📏 全程统一计价') : '-'}</td>
+                    <td>${config.mode !== '-' ? (config.mode === '围栏计价' ? '围栏计价' : '全程统一计价') : '-'}</td>
                     <td>${getConfigStatusTag(config.status)}</td>
                     <td>${config.updateTime}</td>
                     <td class="actions">
@@ -4171,7 +4170,7 @@
                     <input type="radio" name="selected-rule" value="${rule.code}">
                     <div style="flex: 1;">
                         <div style="font-weight: 500;">${rule.name}</div>
-                        <div style="font-size: 12px; color: #666;">${rule.mode === 'fence' ? '🚧 围栏计价' : '📏 全程统一计价'}</div>
+                        <div style="font-size: 12px; color: #666;">${rule.mode === 'fence' ? '围栏计价' : '全程统一计价'}</div>
                     </div>
                 </label>`
             ).join('');
@@ -4464,7 +4463,7 @@
             const list = data || companies;
 
             if (list.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="9"><div class="company-empty"><div class="company-empty-icon">🏢</div>暂无公司数据</div></td></tr>';
+                tbody.innerHTML = '<tr><td colspan="9"><div class="company-empty"><div class="company-empty-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d9d9d9" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="1"/><path d="M8 8V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v3"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>暂无公司数据</div></td></tr>';
                 document.getElementById('company-page-info').textContent = '共 0 条';
                 return;
             }
@@ -5024,7 +5023,7 @@
             }
 
             if (list.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8"><div class="driver-empty"><div class="driver-empty-icon">👤</div>暂无司机数据</div></td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8"><div class="driver-empty"><div class="driver-empty-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d9d9d9" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 22c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div>暂无司机数据</div></td></tr>';
                 document.getElementById('driver-page-info').textContent = '共 0 条';
                 return;
             }
