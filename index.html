@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>代驾SaaS后台管理系统</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd@4.24.16/dist/antd.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -1583,576 +1580,152 @@
         }
 
         /* ========== 司机管理样式 ========== */
-        :root {
-            --driver-primary: #0891b2;
-            --driver-primary-light: #22d3ee;
-            --driver-primary-dark: #0e7490;
-            --driver-accent: #f59e0b;
-            --driver-bg: #f8fafc;
-            --driver-surface: #ffffff;
-            --driver-text: #0f172a;
-            --driver-text-secondary: #475569;
-            --driver-text-muted: #94a3b8;
-            --driver-border: #e2e8f0;
-            --driver-radius: 12px;
-            --driver-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-            --driver-shadow-lg: 0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
-            --driver-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        .driver-status-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 16px;
+            background: #fff;
+            border-radius: 6px;
+            padding: 4px;
+            border: 1px solid #f0f0f0;
+            width: fit-content;
         }
-
+        .driver-status-tab {
+            padding: 6px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #666;
+            transition: color 0.3s, background 0.3s;
+            border: none;
+            background: transparent;
+            font-weight: 500;
+        }
+        .driver-status-tab:hover {
+            color: #1890ff;
+        }
+        .driver-status-tab:focus-visible {
+            outline: 2px solid #1890ff;
+            outline-offset: 2px;
+        }
+        .driver-status-tab.active {
+            background: #1890ff;
+            color: #fff;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .driver-status-tab {
+                transition: none;
+            }
+        }
+        .driver-search-bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .driver-search-bar .ant-input {
+            width: 200px;
+        }
+        .driver-search-bar .ant-select {
+            width: 180px;
+        }
         .driver-card {
-            background: var(--driver-surface);
-            border-radius: var(--driver-radius);
-            padding: 28px;
-            box-shadow: var(--driver-shadow);
-            border: 1px solid var(--driver-border);
-            font-family: var(--driver-font);
+            background: #fff;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.06);
         }
         .driver-card .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
         .driver-card .card-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--driver-text);
-            letter-spacing: -0.02em;
-            position: relative;
-            padding-left: 14px;
-        }
-        .driver-card .card-title::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 2px;
-            bottom: 2px;
-            width: 3px;
-            background: linear-gradient(to bottom, var(--driver-primary), var(--driver-primary-light));
-            border-radius: 2px;
-        }
-        .driver-card .card-header .ant-btn-primary {
-            background: linear-gradient(135deg, var(--driver-primary), var(--driver-primary-dark));
-            border: none;
-            border-radius: 8px;
-            height: 36px;
-            padding: 0 20px;
+            font-size: 16px;
             font-weight: 600;
-            font-size: 14px;
-            box-shadow: 0 2px 8px rgba(8,145,178,0.25);
-            transition: all 0.25s ease;
+            color: #1a1a1a;
         }
-        .driver-card .card-header .ant-btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 14px rgba(8,145,178,0.35);
-        }
-
-        /* 搜索栏 */
-        .driver-search-bar {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-            padding: 16px 20px;
-            background: var(--driver-bg);
-            border-radius: 10px;
-            border: 1px solid var(--driver-border);
-        }
-        .driver-search-bar .ant-input,
-        .driver-search-bar select {
-            border-radius: 8px;
-            border: 1px solid var(--driver-border);
-            height: 36px;
-            padding: 0 12px;
-            font-size: 13px;
-            font-family: var(--driver-font);
-            transition: border-color 0.2s, box-shadow 0.2s;
-            background: var(--driver-surface);
-        }
-        .driver-search-bar .ant-input:focus,
-        .driver-search-bar select:focus {
-            border-color: var(--driver-primary);
-            box-shadow: 0 0 0 3px rgba(8,145,178,0.1);
-            outline: none;
-        }
-        .driver-search-bar .ant-input { width: 180px; }
-        .driver-search-bar select { width: 160px; }
-        .driver-search-bar .ant-btn {
-            border-radius: 8px;
-            height: 36px;
-            font-weight: 500;
-            font-size: 13px;
-        }
-        .driver-search-bar .ant-btn-primary {
-            background: var(--driver-primary);
-            border-color: var(--driver-primary);
-        }
-        .driver-search-bar .ant-btn-primary:hover {
-            background: var(--driver-primary-dark);
-            border-color: var(--driver-primary-dark);
-        }
-
-        /* 状态标签切换 */
-        .driver-status-tabs {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 20px;
-            background: var(--driver-bg);
-            border-radius: 10px;
-            padding: 4px;
-            border: 1px solid var(--driver-border);
-            width: fit-content;
-        }
-        .driver-status-tab {
-            padding: 8px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--driver-text-secondary);
-            transition: color 0.25s, background 0.25s, box-shadow 0.25s;
-            border: none;
-            background: transparent;
-            font-family: var(--driver-font);
-            letter-spacing: 0.01em;
-            position: relative;
-        }
-        .driver-status-tab:hover {
-            color: var(--driver-primary);
-        }
-        .driver-status-tab:focus-visible {
-            outline: 2px solid var(--driver-primary);
-            outline-offset: 2px;
-        }
-        .driver-status-tab.active {
-            background: var(--driver-surface);
-            color: var(--driver-primary);
-            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-        }
-        .driver-status-tab .count-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 20px;
-            height: 20px;
-            padding: 0 6px;
-            border-radius: 10px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-left: 6px;
-            background: var(--driver-border);
-            color: var(--driver-text-secondary);
-        }
-        .driver-status-tab.active .count-badge {
-            background: rgba(8,145,178,0.12);
-            color: var(--driver-primary);
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .driver-status-tab { transition: none; }
-        }
-
-        /* 表格 */
-        .ant-table-wrapper {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            border-radius: 10px;
-            border: 1px solid var(--driver-border);
-        }
-        .ant-table {
-            min-width: 800px;
-            font-family: var(--driver-font);
-        }
-        .ant-table-thead > tr > th {
-            background: var(--driver-bg);
-            color: var(--driver-text-secondary);
-            font-weight: 600;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--driver-border);
-        }
-        .ant-table-tbody > tr > td {
-            padding: 14px 16px;
-            border-bottom: 1px solid #f1f5f9;
-            font-size: 14px;
-            color: var(--driver-text);
-            transition: background 0.15s;
-        }
-        .ant-table-tbody > tr:hover > td {
-            background: #f0f9ff;
-        }
-        .ant-table-tbody > tr:last-child > td {
-            border-bottom: none;
-        }
-        .driver-table .ant-table-cell {
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .ant-table-tbody .ant-tag {
-            border-radius: 4px;
-            padding: 2px 10px;
-            font-size: 12px;
-            font-weight: 600;
-            border: none;
-        }
-        .ant-table-tbody .ant-tag-green {
-            background: #dcfce7;
-            color: #166534;
-        }
-        .ant-table-tbody .ant-tag-red {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        /* 操作按钮 */
-        .driver-actions {
-            display: flex;
-            gap: 4px;
-            align-items: center;
-        }
-        .driver-actions .ant-btn-link {
-            padding: 4px 10px;
-            font-size: 13px;
-            font-weight: 500;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
-        .driver-actions .ant-btn-link:hover {
-            background: rgba(8,145,178,0.08);
-        }
-        .driver-actions .ant-btn-link[style*="color: #ff4d4f"]:hover {
-            background: rgba(255,77,79,0.08);
-        }
-        .driver-actions .ant-btn-link[style*="color: #1890ff"]:hover {
-            background: rgba(8,145,178,0.08);
-        }
-
-        /* 分页 */
-        .driver-pagination {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 20px 0 0;
-            gap: 8px;
-        }
-        .driver-pagination .page-info {
-            color: var(--driver-text-secondary);
-            font-size: 13px;
-            font-weight: 500;
-        }
-        .driver-pagination .ant-pagination-item {
-            border-radius: 8px;
-            border: 1px solid var(--driver-border);
-            font-family: var(--driver-font);
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-        .driver-pagination .ant-pagination-item:hover {
-            border-color: var(--driver-primary);
-            color: var(--driver-primary);
-        }
-        .driver-pagination .ant-pagination-item-active {
-            background: var(--driver-primary);
-            border-color: var(--driver-primary);
-        }
-        .driver-pagination .ant-pagination-item-active a {
-            color: #fff;
-        }
-        .driver-pagination .ant-pagination-prev,
-        .driver-pagination .ant-pagination-next {
-            border-radius: 8px;
-            border: 1px solid var(--driver-border);
-        }
-
-        /* 空状态 */
-        .driver-empty {
-            text-align: center;
-            padding: 60px 0;
-            color: var(--driver-text-muted);
-        }
-        .driver-empty .anticon {
-            font-size: 48px;
-            margin-bottom: 12px;
-            opacity: 0.4;
-        }
-
-        /* ========== 表单抽屉样式 ========== */
-        .driver-form-drawer .ant-drawer-content-wrapper {
-            width: 760px !important;
-        }
-        .driver-form-drawer .ant-drawer-body {
-            padding: 0;
-            overflow-y: auto;
-            overscroll-behavior: contain;
-            background: var(--driver-bg);
-        }
-        .driver-form-drawer .ant-drawer-body .driver-drawer-content {
-            padding: 28px;
-        }
-        .driver-form-drawer .ant-drawer-body .driver-drawer-footer {
-            position: sticky;
-            bottom: 0;
-            background: var(--driver-surface);
-            z-index: 10;
-            padding: 16px 28px;
-            border-top: 1px solid var(--driver-border);
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-        .driver-form-drawer .ant-drawer-header {
-            border-bottom: 1px solid var(--driver-border);
-            padding: 20px 28px;
-        }
-        .driver-form-drawer .ant-drawer-title {
-            font-family: var(--driver-font);
-            font-weight: 700;
-            font-size: 17px;
-            color: var(--driver-text);
-        }
-
-        /* 表单分区卡片 */
         .driver-form-section {
-            margin-bottom: 20px;
-            background: var(--driver-surface);
-            border-radius: 10px;
-            padding: 24px;
-            border: 1px solid var(--driver-border);
-            box-shadow: var(--driver-shadow);
-            transition: box-shadow 0.2s;
-        }
-        .driver-form-section:hover {
-            box-shadow: var(--driver-shadow-lg);
+            margin-bottom: 24px;
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+            padding: 20px;
+            background: #fafafa;
         }
         .driver-form-section .section-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--driver-text);
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--driver-border);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            letter-spacing: -0.01em;
-        }
-        .driver-form-section .section-title .section-icon {
-            display: inline-flex;
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
-            background: linear-gradient(135deg, var(--driver-primary), var(--driver-primary-light));
-            color: #fff;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f0f0f0;
         }
         .driver-form-row {
             display: flex;
-            gap: 20px;
+            gap: 16px;
             margin-bottom: 0;
         }
         .driver-form-row .ant-form-item {
             flex: 1;
-            margin-bottom: 16px;
-        }
-        .driver-form-row .ant-form-item:last-child {
-            margin-bottom: 0;
-        }
-        .driver-form-row .ant-form-item-label {
-            font-family: var(--driver-font);
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--driver-text-secondary);
-            padding-bottom: 6px;
-        }
-        .driver-form-row .ant-form-item-label .ant-form-item-required {
-            color: #ef4444;
-        }
-        .driver-form-row .ant-input,
-        .driver-form-row select.ant-input {
-            border-radius: 8px;
-            border: 1px solid var(--driver-border);
-            height: 40px;
-            padding: 0 12px;
-            font-size: 14px;
-            font-family: var(--driver-font);
-            transition: border-color 0.2s, box-shadow 0.2s;
-            background: var(--driver-surface);
-        }
-        .driver-form-row .ant-input:focus,
-        .driver-form-row select.ant-input:focus {
-            border-color: var(--driver-primary);
-            box-shadow: 0 0 0 3px rgba(8,145,178,0.1);
-            outline: none;
-        }
-        .driver-form-row input[type="date"] {
-            appearance: none;
-            -webkit-appearance: none;
-            padding: 0 12px;
-        }
-
-        /* 照片上传 */
-        .driver-photo-upload {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .driver-photo-upload .ant-upload.ant-upload-select-picture-card {
-            width: 130px;
-            height: 88px;
-            margin: 0;
-            border-radius: 8px;
-            border: 2px dashed var(--driver-border);
-            background: var(--driver-bg);
-            transition: all 0.2s;
-        }
-        .driver-photo-upload .ant-upload.ant-upload-select-picture-card:hover {
-            border-color: var(--driver-primary);
-            background: rgba(8,145,178,0.04);
-        }
-        .driver-photo-upload .ant-upload-list-picture-card {
-            display: none;
         }
         .driver-upload-hint {
             font-size: 12px;
-            color: var(--driver-text-muted);
-            margin-top: 2px;
-        }
-
-        /* 表单错误 */
-        .driver-form-error {
-            color: #ef4444;
-            font-size: 13px;
-            font-weight: 500;
-            margin-top: 8px;
-            padding: 10px 14px;
-            background: #fef2f2;
-            border-radius: 8px;
-            border: 1px solid #fecaca;
-            display: none;
-        }
-        .driver-form-error.visible {
-            display: block;
-        }
-
-        /* 准驾车型多选 */
-        .driver-form-row .ant-select .ant-select-selector {
-            border-radius: 8px;
-            border: 1px solid var(--driver-border);
-            min-height: 40px;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        .driver-form-row .ant-select .ant-select-selector:focus-within {
-            border-color: var(--driver-primary);
-            box-shadow: 0 0 0 3px rgba(8,145,178,0.1);
-        }
-        .driver-form-row .ant-select .ant-tag {
-            border-radius: 4px;
-            font-size: 12px;
-            padding: 2px 8px;
-        }
-
-        /* ========== 详情抽屉样式 ========== */
-        .driver-drawer .ant-drawer-content-wrapper {
-            width: 680px !important;
-        }
-        .driver-drawer .ant-drawer-body {
-            overscroll-behavior: contain;
-            background: var(--driver-bg);
-        }
-        .driver-drawer .ant-drawer-header {
-            border-bottom: 1px solid var(--driver-border);
-            padding: 20px 28px;
-        }
-        .driver-drawer .ant-drawer-title {
-            font-family: var(--driver-font);
-            font-weight: 700;
-            font-size: 17px;
-            color: var(--driver-text);
-        }
-        .driver-drawer .driver-drawer-footer {
-            padding: 16px 28px;
-            border-top: 1px solid var(--driver-border);
-            display: flex;
-            justify-content: flex-end;
-            background: var(--driver-surface);
-        }
-        .driver-drawer-content {
-            padding: 24px 28px;
-        }
-
-        .driver-detail-section {
-            margin-bottom: 20px;
-            background: var(--driver-surface);
-            border-radius: 10px;
-            padding: 20px 24px;
-            border: 1px solid var(--driver-border);
-            box-shadow: var(--driver-shadow);
-        }
-        .driver-detail-section .section-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--driver-text);
-            margin-bottom: 16px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--driver-border);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            color: #999;
+            margin-top: 4px;
         }
         .driver-detail-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0;
+            gap: 12px 24px;
         }
         .driver-detail-item {
             display: flex;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #f8fafc;
-        }
-        .driver-detail-item:nth-last-child(-n+2) {
-            border-bottom: none;
+            align-items: flex-start;
+            padding: 8px 0;
+            border-bottom: 1px dashed #f0f0f0;
         }
         .driver-detail-item .detail-label {
-            color: var(--driver-text-muted);
+            color: #999;
             font-size: 13px;
-            font-weight: 500;
-            width: 90px;
+            width: 100px;
             flex-shrink: 0;
         }
         .driver-detail-item .detail-value {
-            color: var(--driver-text);
+            color: #333;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 500;
         }
-
-        /* 详情照片 */
+        .driver-detail-section {
+            margin-bottom: 20px;
+        }
+        .driver-detail-section .section-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f0f0f0;
+        }
         .driver-photo-grid {
             display: flex;
             gap: 16px;
             flex-wrap: wrap;
         }
         .driver-photo-item {
-            width: 130px;
-            height: 88px;
-            background: var(--driver-bg);
-            border: 1px solid var(--driver-border);
-            border-radius: 8px;
+            width: 120px;
+            height: 80px;
+            background: #f5f5f5;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--driver-text-muted);
+            color: #999;
             font-size: 12px;
-            cursor: zoom-in;
+            cursor: pointer;
             overflow: hidden;
-            transition: all 0.25s ease;
         }
         .driver-photo-item img {
             width: 100%;
@@ -2160,9 +1733,128 @@
             object-fit: cover;
         }
         .driver-photo-item:hover {
-            border-color: var(--driver-primary);
-            box-shadow: 0 4px 16px rgba(8,145,178,0.2);
-            transform: scale(1.03);
+            border-color: #1890ff;
+        }
+        .driver-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .driver-table .ant-table-cell {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .ant-table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .ant-table {
+            min-width: 800px;
+        }
+        @media (max-width: 1200px) {
+            .driver-search-bar .ant-input,
+            .driver-search-bar .ant-select,
+            .driver-search-bar select {
+                width: 140px !important;
+            }
+        }
+        @media (max-width: 768px) {
+            .driver-search-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .driver-search-bar .ant-input,
+            .driver-search-bar .ant-select,
+            .driver-search-bar select {
+                width: 100% !important;
+            }
+            .driver-card {
+                padding: 12px;
+            }
+            .driver-form-drawer .ant-drawer-content-wrapper {
+                width: 100% !important;
+            }
+            .driver-drawer .ant-drawer-content-wrapper {
+                width: 100% !important;
+            }
+            .driver-form-row {
+                flex-direction: column;
+            }
+            .driver-detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .driver-form-error {
+            color: #ff4d4f;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+        .driver-form-error.visible {
+            display: block;
+        }
+        .driver-empty {
+            text-align: center;
+            padding: 40px 0;
+            color: #999;
+        }
+        .driver-pagination {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 16px 0 0;
+            gap: 8px;
+        }
+        .driver-pagination .page-info {
+            color: #666;
+            font-size: 13px;
+            margin-left: 8px;
+        }
+        .driver-drawer .ant-drawer-content-wrapper {
+            width: 640px !important;
+        }
+        .driver-drawer .ant-drawer-body {
+            overscroll-behavior: contain;
+        }
+        .driver-form-drawer .ant-drawer-content-wrapper {
+            width: 720px !important;
+        }
+        .driver-form-drawer .ant-drawer-body {
+            padding: 0;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+        }
+        .driver-form-drawer .ant-drawer-body .driver-drawer-content {
+            padding: 24px;
+        }
+        .driver-form-drawer .ant-drawer-body .driver-drawer-footer {
+            position: sticky;
+            bottom: 0;
+            background: #fff;
+            z-index: 10;
+        }
+        .driver-photo-upload {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .driver-photo-upload .ant-upload.ant-upload-select-picture-card {
+            width: 120px;
+            height: 80px;
+            margin: 0;
+        }
+        .driver-photo-upload .ant-upload-list-picture-card {
+            display: none;
+        }
+        .ant-radio-wrapper .ant-radio-input {
+            position: absolute;
+            left: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
         }
 
         /* 图片预览大图弹窗 */
@@ -2173,24 +1865,21 @@
             right: 0;
             bottom: 0;
             z-index: 9999;
-            background: rgba(0,0,0,0.88);
+            background: rgba(0,0,0,0.85);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: zoom-out;
-            animation: lightbox-fade-in 0.25s ease;
-            backdrop-filter: blur(4px);
+            animation: lightbox-fade-in 0.2s ease;
         }
         @keyframes lightbox-fade-in {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        @keyframes lightbox-scale-in {
-            from { transform: scale(0.92); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
         @media (prefers-reduced-motion: reduce) {
-            .photo-lightbox { animation: none; }
+            .photo-lightbox {
+                animation: none;
+            }
         }
         .photo-lightbox-content {
             position: relative;
@@ -2199,64 +1888,44 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: lightbox-scale-in 0.3s ease;
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .photo-lightbox-content { animation: none; }
         }
         .photo-lightbox-content img {
             max-width: 100%;
             max-height: 90vh;
             object-fit: contain;
-            border-radius: 8px;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+            border-radius: 4px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.4);
             cursor: default;
         }
         .photo-lightbox-close {
             position: absolute;
-            top: -44px;
-            right: -44px;
-            background: rgba(255,255,255,0.12);
+            top: -40px;
+            right: -40px;
+            background: rgba(255,255,255,0.15);
             border: none;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             color: #fff;
-            transition: background 0.2s, transform 0.2s;
+            transition: background 0.2s;
         }
         .photo-lightbox-close:hover {
-            background: rgba(255,255,255,0.25);
-            transform: rotate(90deg);
+            background: rgba(255,255,255,0.3);
         }
         .photo-lightbox-close:focus-visible {
             outline: 2px solid #fff;
             outline-offset: 2px;
         }
-
-        /* 响应式 */
-        @media (max-width: 1200px) {
-            .driver-search-bar .ant-input { width: 150px !important; }
-            .driver-search-bar select { width: 140px !important; }
+        .driver-photo-item {
+            cursor: zoom-in;
         }
-        @media (max-width: 768px) {
-            .driver-search-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .driver-search-bar .ant-input,
-            .driver-search-bar select { width: 100% !important; }
-            .driver-card { padding: 16px; }
-            .driver-form-drawer .ant-drawer-content-wrapper,
-            .driver-drawer .ant-drawer-content-wrapper { width: 100% !important; }
-            .driver-form-row { flex-direction: column; }
-            .driver-detail-grid { grid-template-columns: 1fr; }
-            .driver-detail-item:nth-last-child(-n+2) { border-bottom: 1px solid #f8fafc; }
-            .driver-detail-item:last-child { border-bottom: none; }
-            .photo-lightbox-close { top: -48px; right: 0; }
+        .driver-photo-item:hover {
+            border-color: #1890ff;
+            box-shadow: 0 2px 8px rgba(24,144,255,0.3);
         }
     </style>
 </head>
