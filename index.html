@@ -1630,6 +1630,88 @@
         .driver-search-bar .ant-select {
             width: 180px;
         }
+        /* 多选下拉 */
+        .multi-select-wrapper {
+            position: relative;
+            width: 180px;
+        }
+        .multi-select-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 32px;
+            padding: 0 8px;
+            border: 1px solid #d9d9d9;
+            border-radius: 2px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 13px;
+            color: #333;
+            transition: border-color 0.3s;
+        }
+        .multi-select-trigger:hover,
+        .multi-select-trigger.open {
+            border-color: #1890ff;
+        }
+        .multi-select-trigger .arrow {
+            font-size: 10px;
+            color: #999;
+            transition: transform 0.2s;
+        }
+        .multi-select-trigger.open .arrow {
+            transform: rotate(180deg);
+        }
+        .multi-select-trigger .placeholder {
+            color: #bfbfbf;
+        }
+        .multi-select-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 2px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            display: none;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 2px;
+        }
+        .multi-select-dropdown.open {
+            display: block;
+        }
+        .multi-select-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #333;
+            transition: background 0.2s;
+        }
+        .multi-select-option:hover {
+            background: #e6f7ff;
+        }
+        .multi-select-option input[type="checkbox"] {
+            margin: 0;
+            cursor: pointer;
+        }
+        .multi-select-option .check-label {
+             user-select: none;
+         }
+        /* 表单业务类型多选 */
+        .driver-biz-checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 4px 0;
+        }
+        .driver-biz-checkbox-group .ant-checkbox-wrapper {
+            font-size: 13px;
+        }
         .driver-card {
             background: #fff;
             border-radius: 8px;
@@ -2197,9 +2279,14 @@
                                 <select class="ant-select ant-select-selector" id="driver-search-company" style="width:160px;height:32px;padding:0 8px;border:1px solid #d9d9d9;border-radius:2px;">
                                     <option value="">全部公司</option>
                                 </select>
-                                <select class="ant-select ant-select-selector" id="driver-search-business" style="width:160px;height:32px;padding:0 8px;border:1px solid #d9d9d9;border-radius:2px;">
-                                    <option value="">全部业务类型</option>
-                                </select>
+                                <div class="multi-select-wrapper" id="driver-search-business-wrapper">
+                                    <div class="multi-select-trigger" onclick="toggleSearchBizDropdown()" id="driver-search-business-trigger" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-label="选择业务类型">
+                                        <span class="placeholder" id="driver-search-business-text">全部业务类型</span>
+                                        <span class="arrow">▼</span>
+                                    </div>
+                                    <div class="multi-select-dropdown" id="driver-search-business-dropdown" role="listbox" aria-multiselectable="true">
+                                    </div>
+                                </div>
                                 <button class="ant-btn ant-btn-primary" onclick="searchDrivers()">
                                     <span role="img" class="anticon anticon-search" aria-hidden="true"><svg viewBox="64 64 896 896" width="1em" height="1em" fill="currentColor"><path d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.6 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.6 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0011.6 0l43.6-43.5a8.2 8.2 0 000-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z"></path></svg></span>
                                     查询
@@ -3154,11 +3241,10 @@
                                             </div>
                                         </div>
                                         <div class="ant-form-item">
-                                            <label class="ant-form-item-label" for="driver-business-type">业务类型 <span class="ant-form-item-required">*</span></label>
+                                            <label class="ant-form-item-label">业务类型 <span class="ant-form-item-required">*</span></label>
                                             <div class="ant-form-item-control">
-                                                <select class="ant-input" id="driver-business-type" name="business-type" autocomplete="off" style="height:32px;">
-                                                    <option value="">请选择业务类型…</option>
-                                                </select>
+                                                <div class="driver-biz-checkbox-group" id="driver-business-type-group">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -4626,18 +4712,18 @@
             return 'data:image/svg+xml,' + encodeURIComponent(svg);
         }
         let drivers = [
-            { id: 1, name: '张伟', gender: '男', birthday: '1990-05-15', phone: '13800138001', idcard: '110101199005150011', company: '北京分公司', businessType: '酒后代驾', driverType: '全职', status: 'active', joinDate: '2024-01-15', emergencyContact: '李娜', emergencyPhone: '13900139001', licenseNo: '110101199005150011', licenseTypes: ['C1', 'B2'], licenseFirstDate: '2012-06-01', licenseExpireDate: '2028-06-01', idcardFront: mockPhotoUrl('身份证正面'), idcardBack: mockPhotoUrl('身份证背面'), licenseFront: mockPhotoUrl('驾驶证正本'), licenseBack: mockPhotoUrl('驾驶证副本') },
-            { id: 2, name: '王强', gender: '男', birthday: '1988-08-20', phone: '13800138002', idcard: '110101198808200012', company: '上海分公司', businessType: '商务代驾', driverType: '全职', status: 'active', joinDate: '2024-02-20', emergencyContact: '王芳', emergencyPhone: '13900139002', licenseNo: '110101198808200012', licenseTypes: ['C1', 'A2'], licenseFirstDate: '2010-08-01', licenseExpireDate: '2026-08-01', idcardFront: mockPhotoUrl('身份证正面'), idcardBack: mockPhotoUrl('身份证背面'), licenseFront: mockPhotoUrl('驾驶证正本'), licenseBack: mockPhotoUrl('驾驶证副本') },
-            { id: 3, name: '刘洋', gender: '男', birthday: '1995-12-01', phone: '13800138003', idcard: '110101199512010013', company: '广州分公司', businessType: '长途代驾', driverType: '兼职', status: 'active', joinDate: '2024-03-10', emergencyContact: '刘敏', emergencyPhone: '13900139003', licenseNo: '110101199512010013', licenseTypes: ['C1'], licenseFirstDate: '2016-12-01', licenseExpireDate: '2032-12-01' },
-            { id: 4, name: '陈静', gender: '女', birthday: '1992-03-25', phone: '13800138004', idcard: '110101199203250014', company: '深圳分公司', businessType: '包时代驾', driverType: '全职', status: 'active', joinDate: '2024-01-05', emergencyContact: '陈刚', emergencyPhone: '13900139004', licenseNo: '110101199203250014', licenseTypes: ['C1', 'C2'], licenseFirstDate: '2013-03-01', licenseExpireDate: '2029-03-01' },
-            { id: 5, name: '赵磊', gender: '男', birthday: '1985-07-10', phone: '13800138005', idcard: '110101198507100015', company: '北京分公司', businessType: '酒后代驾', driverType: '全职', status: 'terminated', joinDate: '2023-06-01', emergencyContact: '赵丽', emergencyPhone: '13900139005', licenseNo: '110101198507100015', licenseTypes: ['C1', 'B1', 'A2'], licenseFirstDate: '2006-07-01', licenseExpireDate: '2024-07-01' },
-            { id: 6, name: '孙明', gender: '男', birthday: '1993-11-18', phone: '13800138006', idcard: '110101199311180016', company: '上海分公司', businessType: '商务代驾', driverType: '兼职', status: 'active', joinDate: '2024-04-01', emergencyContact: '孙红', emergencyPhone: '13900139006', licenseNo: '110101199311180016', licenseTypes: ['C1', 'C2'], licenseFirstDate: '2014-11-01', licenseExpireDate: '2030-11-01' },
-            { id: 7, name: '周婷', gender: '女', birthday: '1991-09-05', phone: '13800138007', idcard: '110101199109050017', company: '广州分公司', businessType: '酒后代驾', driverType: '全职', status: 'active', joinDate: '2024-02-15', emergencyContact: '周杰', emergencyPhone: '13900139007', licenseNo: '110101199109050017', licenseTypes: ['C1'], licenseFirstDate: '2012-09-01', licenseExpireDate: '2028-09-01' },
-            { id: 8, name: '吴凯', gender: '男', birthday: '1987-04-30', phone: '13800138008', idcard: '110101198704300018', company: '深圳分公司', businessType: '长途代驾', driverType: '全职', status: 'terminated', joinDate: '2023-08-20', emergencyContact: '吴雪', emergencyPhone: '13900139008', licenseNo: '110101198704300018', licenseTypes: ['C1', 'A1'], licenseFirstDate: '2008-04-01', licenseExpireDate: '2024-04-01' },
-            { id: 9, name: '郑浩', gender: '男', birthday: '1994-06-22', phone: '13800138009', idcard: '110101199406220019', company: '北京分公司', businessType: '包时代驾', driverType: '兼职', status: 'active', joinDate: '2024-05-10', emergencyContact: '郑秀', emergencyPhone: '13900139009', licenseNo: '110101199406220019', licenseTypes: ['C1', 'C2', 'C3'], licenseFirstDate: '2015-06-01', licenseExpireDate: '2031-06-01' },
-            { id: 10, name: '黄丽', gender: '女', birthday: '1996-01-12', phone: '13800138010', idcard: '110101199601120010', company: '上海分公司', businessType: '酒后代驾', driverType: '全职', status: 'active', joinDate: '2024-03-25', emergencyContact: '黄磊', emergencyPhone: '13900139010', licenseNo: '110101199601120010', licenseTypes: ['C1'], licenseFirstDate: '2017-01-01', licenseExpireDate: '2033-01-01' },
-            { id: 11, name: '林峰', gender: '男', birthday: '1989-10-08', phone: '13800138011', idcard: '110101198910080011', company: '广州分公司', businessType: '商务代驾', driverType: '全职', status: 'active', joinDate: '2024-01-20', emergencyContact: '林芝', emergencyPhone: '13900139011', licenseNo: '110101198910080011', licenseTypes: ['C1', 'B2'], licenseFirstDate: '2010-10-01', licenseExpireDate: '2026-10-01' },
-            { id: 12, name: '何伟', gender: '男', birthday: '1997-08-15', phone: '13800138012', idcard: '110101199708150012', company: '深圳分公司', businessType: '酒后代驾', driverType: '兼职', status: 'active', joinDate: '2024-06-01', emergencyContact: '何花', emergencyPhone: '13900139012', licenseNo: '110101199708150012', licenseTypes: ['C1', 'C2'], licenseFirstDate: '2018-08-01', licenseExpireDate: '2034-08-01' },
+            { id: 1, name: '张伟', gender: '男', birthday: '1990-05-15', phone: '13800138001', idcard: '110101199005150011', company: '北京分公司', businessType: ['酒后代驾', '包时代驾'], driverType: '全职', status: 'active', joinDate: '2024-01-15', emergencyContact: '李娜', emergencyPhone: '13900139001', licenseNo: '110101199005150011', licenseTypes: ['C1', 'B2'], licenseFirstDate: '2012-06-01', licenseExpireDate: '2028-06-01', idcardFront: mockPhotoUrl('身份证正面'), idcardBack: mockPhotoUrl('身份证背面'), licenseFront: mockPhotoUrl('驾驶证正本'), licenseBack: mockPhotoUrl('驾驶证副本') },
+            { id: 2, name: '王强', gender: '男', birthday: '1988-08-20', phone: '13800138002', idcard: '110101198808200012', company: '上海分公司', businessType: ['商务代驾'], driverType: '全职', status: 'active', joinDate: '2024-02-20', emergencyContact: '王芳', emergencyPhone: '13900139002', licenseNo: '110101198808200012', licenseTypes: ['C1', 'A2'], licenseFirstDate: '2010-08-01', licenseExpireDate: '2026-08-01', idcardFront: mockPhotoUrl('身份证正面'), idcardBack: mockPhotoUrl('身份证背面'), licenseFront: mockPhotoUrl('驾驶证正本'), licenseBack: mockPhotoUrl('驾驶证副本') },
+            { id: 3, name: '刘洋', gender: '男', birthday: '1995-12-01', phone: '13800138003', idcard: '110101199512010013', company: '广州分公司', businessType: ['长途代驾', '商务代驾'], driverType: '兼职', status: 'active', joinDate: '2024-03-10', emergencyContact: '刘敏', emergencyPhone: '13900139003', licenseNo: '110101199512010013', licenseTypes: ['C1'], licenseFirstDate: '2016-12-01', licenseExpireDate: '2032-12-01' },
+            { id: 4, name: '陈静', gender: '女', birthday: '1992-03-25', phone: '13800138004', idcard: '110101199203250014', company: '深圳分公司', businessType: ['包时代驾'], driverType: '全职', status: 'active', joinDate: '2024-01-05', emergencyContact: '陈刚', emergencyPhone: '13900139004', licenseNo: '110101199203250014', licenseTypes: ['C1', 'C2'], licenseFirstDate: '2013-03-01', licenseExpireDate: '2029-03-01' },
+            { id: 5, name: '赵磊', gender: '男', birthday: '1985-07-10', phone: '13800138005', idcard: '110101198507100015', company: '北京分公司', businessType: ['酒后代驾'], driverType: '全职', status: 'terminated', joinDate: '2023-06-01', emergencyContact: '赵丽', emergencyPhone: '13900139005', licenseNo: '110101198507100015', licenseTypes: ['C1', 'B1', 'A2'], licenseFirstDate: '2006-07-01', licenseExpireDate: '2024-07-01' },
+            { id: 6, name: '孙明', gender: '男', birthday: '1993-11-18', phone: '13800138006', idcard: '110101199311180016', company: '上海分公司', businessType: ['商务代驾', '包时代驾'], driverType: '兼职', status: 'active', joinDate: '2024-04-01', emergencyContact: '孙红', emergencyPhone: '13900139006', licenseNo: '110101199311180016', licenseTypes: ['C1', 'C2'], licenseFirstDate: '2014-11-01', licenseExpireDate: '2030-11-01' },
+            { id: 7, name: '周婷', gender: '女', birthday: '1991-09-05', phone: '13800138007', idcard: '110101199109050017', company: '广州分公司', businessType: ['酒后代驾', '长途代驾'], driverType: '全职', status: 'active', joinDate: '2024-02-15', emergencyContact: '周杰', emergencyPhone: '13900139007', licenseNo: '110101199109050017', licenseTypes: ['C1'], licenseFirstDate: '2012-09-01', licenseExpireDate: '2028-09-01' },
+            { id: 8, name: '吴凯', gender: '男', birthday: '1987-04-30', phone: '13800138008', idcard: '110101198704300018', company: '深圳分公司', businessType: ['长途代驾'], driverType: '全职', status: 'terminated', joinDate: '2023-08-20', emergencyContact: '吴雪', emergencyPhone: '13900139008', licenseNo: '110101198704300018', licenseTypes: ['C1', 'A1'], licenseFirstDate: '2008-04-01', licenseExpireDate: '2024-04-01' },
+            { id: 9, name: '郑浩', gender: '男', birthday: '1994-06-22', phone: '13800138009', idcard: '110101199406220019', company: '北京分公司', businessType: ['包时代驾', '酒后代驾'], driverType: '兼职', status: 'active', joinDate: '2024-05-10', emergencyContact: '郑秀', emergencyPhone: '13900139009', licenseNo: '110101199406220019', licenseTypes: ['C1', 'C2', 'C3'], licenseFirstDate: '2015-06-01', licenseExpireDate: '2031-06-01' },
+            { id: 10, name: '黄丽', gender: '女', birthday: '1996-01-12', phone: '13800138010', idcard: '110101199601120010', company: '上海分公司', businessType: ['酒后代驾'], driverType: '全职', status: 'active', joinDate: '2024-03-25', emergencyContact: '黄磊', emergencyPhone: '13900139010', licenseNo: '110101199601120010', licenseTypes: ['C1'], licenseFirstDate: '2017-01-01', licenseExpireDate: '2033-01-01' },
+            { id: 11, name: '林峰', gender: '男', birthday: '1989-10-08', phone: '13800138011', idcard: '110101198910080011', company: '广州分公司', businessType: ['商务代驾', '长途代驾'], driverType: '全职', status: 'active', joinDate: '2024-01-20', emergencyContact: '林芝', emergencyPhone: '13900139011', licenseNo: '110101198910080011', licenseTypes: ['C1', 'B2'], licenseFirstDate: '2010-10-01', licenseExpireDate: '2026-10-01' },
+            { id: 12, name: '何伟', gender: '男', birthday: '1997-08-15', phone: '13800138012', idcard: '110101199708150012', company: '深圳分公司', businessType: ['酒后代驾', '包时代驾'], driverType: '兼职', status: 'active', joinDate: '2024-06-01', emergencyContact: '何花', emergencyPhone: '13900139012', licenseNo: '110101199708150012', licenseTypes: ['C1', 'C2'], licenseFirstDate: '2018-08-01', licenseExpireDate: '2034-08-01' },
         ];
         let driverNextId = 13;
         let currentDriverStatus = 'active';
@@ -4662,14 +4748,16 @@
             const name = (document.getElementById('driver-search-name').value || '').trim().toLowerCase();
             const phone = (document.getElementById('driver-search-phone').value || '').trim();
             const company = document.getElementById('driver-search-company').value;
-            const businessType = document.getElementById('driver-search-business').value;
 
             return drivers.filter(d => {
                 if (d.status !== currentDriverStatus) return false;
                 if (name && !d.name.toLowerCase().includes(name)) return false;
                 if (phone && !d.phone.includes(phone)) return false;
                 if (company && d.company !== company) return false;
-                if (businessType && d.businessType !== businessType) return false;
+                if (searchSelectedBizTypes.length > 0) {
+                    const hasMatch = d.businessType.some(t => searchSelectedBizTypes.includes(t));
+                    if (!hasMatch) return false;
+                }
                 return true;
             });
         }
@@ -4717,7 +4805,7 @@
                         <td class="ant-table-cell">${d.gender}</td>
                         <td class="ant-table-cell">${age}</td>
                         <td class="ant-table-cell">${d.company}</td>
-                        <td class="ant-table-cell">${d.businessType}</td>
+                        <td class="ant-table-cell">${d.businessType.map(t => `<span class="ant-tag ant-tag-blue" style="margin:2px 4px 2px 0;font-size:12px;">${t}</span>`).join('')}</td>
                         <td class="ant-table-cell">${d.joinDate}</td>
                         <td class="ant-table-cell">${statusTag}</td>
                         <td class="ant-table-cell">${actions}</td>
@@ -4777,7 +4865,11 @@
             document.getElementById('driver-search-name').value = '';
             document.getElementById('driver-search-phone').value = '';
             document.getElementById('driver-search-company').value = '';
-            document.getElementById('driver-search-business').value = '';
+            // 重置多选
+            document.querySelectorAll('#driver-search-business-dropdown input[type="checkbox"]').forEach(cb => cb.checked = false);
+            searchSelectedBizTypes = [];
+            document.getElementById('driver-search-business-text').textContent = '全部业务类型';
+            document.getElementById('driver-search-business-text').className = 'placeholder';
             currentDriverPage = 1;
             renderDrivers();
         }
@@ -4785,12 +4877,12 @@
         // 初始化搜索下拉选项
         function initDriverSearchOptions() {
             const companySelect = document.getElementById('driver-search-company');
-            const businessSelect = document.getElementById('driver-search-business');
             const formCompanySelect = document.getElementById('driver-company');
-            const formBusinessSelect = document.getElementById('driver-business-type');
+            const bizDropdown = document.getElementById('driver-search-business-dropdown');
+            const bizCheckboxGroup = document.getElementById('driver-business-type-group');
 
             const companies = [...new Set(drivers.map(d => d.company))];
-            const businessTypes = [...new Set(drivers.map(d => d.businessType))];
+            const allBizTypes = [...new Set(drivers.flatMap(d => d.businessType))].sort();
 
             const companyFragment = document.createDocumentFragment();
             const formCompanyFragment = document.createDocumentFragment();
@@ -4805,19 +4897,90 @@
             companySelect.appendChild(companyFragment);
             formCompanySelect.appendChild(formCompanyFragment);
 
-            const businessFragment = document.createDocumentFragment();
-            const formBusinessFragment = document.createDocumentFragment();
-            businessTypes.forEach(b => {
-                const opt1 = document.createElement('option');
-                opt1.value = b; opt1.textContent = b;
-                businessFragment.appendChild(opt1);
-                const opt2 = document.createElement('option');
-                opt2.value = b; opt2.textContent = b;
-                formBusinessFragment.appendChild(opt2);
+            // 搜索栏多选下拉
+            const bizFragment = document.createDocumentFragment();
+            allBizTypes.forEach(b => {
+                const label = document.createElement('label');
+                label.className = 'multi-select-option';
+                const cb = document.createElement('input');
+                cb.type = 'checkbox';
+                cb.value = b;
+                cb.onchange = function() { onSearchBizChange(); };
+                const span = document.createElement('span');
+                span.className = 'check-label';
+                span.textContent = b;
+                label.appendChild(cb);
+                label.appendChild(span);
+                label.onclick = function(e) {
+                    if (e.target !== cb) {
+                        cb.checked = !cb.checked;
+                        cb.onchange();
+                    }
+                };
+                bizFragment.appendChild(label);
             });
-            businessSelect.appendChild(businessFragment);
-            formBusinessSelect.appendChild(formBusinessFragment);
+            bizDropdown.appendChild(bizFragment);
+
+            // 表单 checkbox 组
+            const formFragment = document.createDocumentFragment();
+            allBizTypes.forEach(b => {
+                const label = document.createElement('label');
+                label.className = 'ant-checkbox-wrapper';
+                label.style.cssText = 'display:inline-flex;align-items:center;gap:4px;cursor:pointer;';
+                const cb = document.createElement('input');
+                cb.type = 'checkbox';
+                cb.className = 'ant-checkbox-input';
+                cb.value = b;
+                const span = document.createElement('span');
+                span.className = 'ant-checkbox';
+                const inner = document.createElement('span');
+                inner.className = 'ant-checkbox-inner';
+                span.appendChild(inner);
+                const text = document.createTextNode(' ' + b);
+                label.appendChild(cb);
+                label.appendChild(span);
+                label.appendChild(text);
+                formFragment.appendChild(label);
+            });
+            bizCheckboxGroup.appendChild(formFragment);
         }
+
+        // 搜索栏业务类型多选
+        let searchSelectedBizTypes = [];
+
+        function toggleSearchBizDropdown() {
+            const dd = document.getElementById('driver-search-business-dropdown');
+            const trigger = document.getElementById('driver-search-business-trigger');
+            const isOpen = dd.classList.toggle('open');
+            trigger.classList.toggle('open', isOpen);
+            trigger.setAttribute('aria-expanded', isOpen);
+        }
+
+        function onSearchBizChange() {
+            const checks = document.querySelectorAll('#driver-search-business-dropdown input[type="checkbox"]');
+            searchSelectedBizTypes = [];
+            checks.forEach(cb => {
+                if (cb.checked) searchSelectedBizTypes.push(cb.value);
+            });
+            const text = document.getElementById('driver-search-business-text');
+            if (searchSelectedBizTypes.length === 0) {
+                text.textContent = '全部业务类型';
+                text.className = 'placeholder';
+            } else {
+                text.textContent = searchSelectedBizTypes.join('、');
+                text.className = '';
+            }
+        }
+
+        // 点击外部关闭多选下拉
+        document.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('driver-search-business-wrapper');
+            const dd = document.getElementById('driver-search-business-dropdown');
+            if (wrapper && !wrapper.contains(e.target) && dd.classList.contains('open')) {
+                dd.classList.remove('open');
+                document.getElementById('driver-search-business-trigger').classList.remove('open');
+            }
+        });
 
         // 打开司机表单抽屉（新增）
         function openDriverFormDrawer() {
@@ -4829,6 +4992,8 @@
             selectedLicenseTypes = [];
             updateLicenseTypeTags();
             clearAllPhotoPreviews();
+            // 重置业务类型多选
+            document.querySelectorAll('#driver-business-type-group input[type="checkbox"]').forEach(cb => cb.checked = false);
             document.getElementById('driver-form-drawer').classList.add('ant-drawer-open');
             document.getElementById('driver-form-drawer').style.display = 'block';
         }
@@ -4853,7 +5018,11 @@
             document.getElementById('driver-license-first-date').value = driver.licenseFirstDate;
             document.getElementById('driver-license-expire-date').value = driver.licenseExpireDate;
             document.getElementById('driver-company').value = driver.company;
-            document.getElementById('driver-business-type').value = driver.businessType;
+            // 设置业务类型多选
+            const bizChecks = document.querySelectorAll('#driver-business-type-group input[type="checkbox"]');
+            bizChecks.forEach(cb => {
+                cb.checked = driver.businessType.includes(cb.value);
+            });
             document.getElementById('driver-type').value = driver.driverType;
             clearAllPhotoPreviews();
             document.getElementById('driver-form-drawer').classList.add('ant-drawer-open');
@@ -4900,7 +5069,10 @@
             const licenseFirstDate = document.getElementById('driver-license-first-date').value;
             const licenseExpireDate = document.getElementById('driver-license-expire-date').value;
             const company = document.getElementById('driver-company').value;
-            const businessType = document.getElementById('driver-business-type').value;
+            // 获取业务类型多选
+            const bizChecks = document.querySelectorAll('#driver-business-type-group input[type="checkbox"]');
+            const businessType = [];
+            bizChecks.forEach(cb => { if (cb.checked) businessType.push(cb.value); });
             const driverType = document.getElementById('driver-type').value;
             const editId = document.getElementById('edit-driver-id').value;
 
@@ -4919,7 +5091,7 @@
             if (!licenseFirstDate) { showFormError('请选择初次领证日期', 'driver-license-first-date'); return; }
             if (!licenseExpireDate) { showFormError('请选择驾驶证有效期止', 'driver-license-expire-date'); return; }
             if (!company) { showFormError('请选择所属公司', 'driver-company'); return; }
-            if (!businessType) { showFormError('请选择业务类型', 'driver-business-type'); return; }
+            if (businessType.length === 0) { showFormError('请至少选择一个业务类型'); return; }
             if (!driverType) { showFormError('请选择司机类型', 'driver-type'); return; }
 
             const now = new Date();
@@ -5044,7 +5216,7 @@
                     <div class="section-title">公司信息</div>
                     <div class="driver-detail-grid">
                         <div class="driver-detail-item"><span class="detail-label">所属公司</span><span class="detail-value">${d.company}</span></div>
-                        <div class="driver-detail-item"><span class="detail-label">业务类型</span><span class="detail-value">${d.businessType}</span></div>
+                        <div class="driver-detail-item"><span class="detail-label">业务类型</span><span class="detail-value">${d.businessType.map(t => `<span class="ant-tag ant-tag-blue" style="margin:2px 4px 2px 0;font-size:12px;">${t}</span>`).join('')}</span></div>
                         <div class="driver-detail-item"><span class="detail-label">司机类型</span><span class="detail-value">${d.driverType}</span></div>
                     </div>
                 </div>
