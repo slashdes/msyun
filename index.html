@@ -1851,7 +1851,7 @@
                         <span>订单管理</span>
                     </a>
                 </div>
-                <div class="nav-item" data-page="drivers">
+                <div class="nav-item open" data-page="drivers">
                     <a>
                         <span class="nav-icon">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1861,6 +1861,11 @@
                         </span>
                         <span>司机管理</span>
                     </a>
+                    <div class="sub-menu">
+                        <div class="sub-menu-item" data-page="drivers">
+                            <a>司机列表</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="nav-item" data-page="finance">
                     <a>
@@ -3215,6 +3220,10 @@
                     // 切换页面
                     document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden'));
                     document.getElementById('page-' + page).classList.remove('hidden');
+
+                    if (page === 'drivers') {
+                        renderDrivers();
+                    }
                 });
             });
         }
@@ -4939,7 +4948,7 @@
             // 为所有一级菜单项添加导航点击处理
             document.querySelectorAll('.nav-item[data-page]').forEach(item => {
                 const page = item.dataset.page;
-                if (page === 'dashboard' || page === 'operation') return;
+                if (page === 'dashboard' || page === 'operation' || page === 'drivers') return;
 
                 item.addEventListener('click', function(e) {
                     if (e.target.closest('.sub-menu')) return;
@@ -4958,8 +4967,6 @@
 
                     if (page === 'company') {
                         renderCompanies(companies);
-                    } else if (page === 'drivers') {
-                        renderDrivers();
                     }
                 });
             });
