@@ -1746,6 +1746,46 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+        .ant-table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .ant-table {
+            min-width: 800px;
+        }
+        @media (max-width: 1200px) {
+            .driver-search-bar .ant-input,
+            .driver-search-bar .ant-select,
+            .driver-search-bar select {
+                width: 140px !important;
+            }
+        }
+        @media (max-width: 768px) {
+            .driver-search-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .driver-search-bar .ant-input,
+            .driver-search-bar .ant-select,
+            .driver-search-bar select {
+                width: 100% !important;
+            }
+            .driver-card {
+                padding: 12px;
+            }
+            .driver-form-drawer .ant-drawer-content-wrapper {
+                width: 100% !important;
+            }
+            .driver-drawer .ant-drawer-content-wrapper {
+                width: 100% !important;
+            }
+            .driver-form-row {
+                flex-direction: column;
+            }
+            .driver-detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
         .driver-form-error {
             color: #ff4d4f;
             font-size: 12px;
@@ -1807,6 +1847,14 @@
         }
         .driver-photo-upload .ant-upload-list-picture-card {
             display: none;
+        }
+        .ant-radio-wrapper .ant-radio-input {
+            position: absolute;
+            left: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
         }
     </style>
 </head>
@@ -2814,7 +2862,7 @@
     </div>
 
     <!-- 司机表单抽屉（新增/编辑） -->
-    <div class="ant-drawer ant-drawer-right driver-form-drawer" id="driver-form-drawer" tabindex="-1">
+    <div class="ant-drawer ant-drawer-right driver-form-drawer" id="driver-form-drawer" tabindex="-1" style="display:none;">
         <div class="ant-drawer-mask" onclick="closeDriverFormDrawer()"></div>
         <div class="ant-drawer-content-wrapper">
             <div class="ant-drawer-content">
@@ -3072,7 +3120,7 @@
     </div>
 
     <!-- 司机详情抽屉 -->
-    <div class="ant-drawer ant-drawer-right driver-drawer" id="driver-detail-drawer" tabindex="-1">
+    <div class="ant-drawer ant-drawer-right driver-drawer" id="driver-detail-drawer" tabindex="-1" style="display:none;">
         <div class="ant-drawer-mask" onclick="closeDriverDetailDrawer()"></div>
         <div class="ant-drawer-content-wrapper">
             <div class="ant-drawer-content">
@@ -4802,7 +4850,11 @@
                         emergencyContact, emergencyPhone,
                         licenseNo, licenseTypes: [...selectedLicenseTypes],
                         licenseFirstDate, licenseExpireDate,
-                        company, businessType, driverType
+                        company, businessType, driverType,
+                        idcardFront: getPhotoData('idcard-front-preview'),
+                        idcardBack: getPhotoData('idcard-back-preview'),
+                        licenseFront: getPhotoData('license-front-preview'),
+                        licenseBack: getPhotoData('license-back-preview')
                     };
                 }
             } else {
@@ -4814,7 +4866,11 @@
                     joinDate,
                     emergencyContact, emergencyPhone,
                     licenseNo, licenseTypes: [...selectedLicenseTypes],
-                    licenseFirstDate, licenseExpireDate
+                    licenseFirstDate, licenseExpireDate,
+                    idcardFront: getPhotoData('idcard-front-preview'),
+                    idcardBack: getPhotoData('idcard-back-preview'),
+                    licenseFront: getPhotoData('license-front-preview'),
+                    licenseBack: getPhotoData('license-back-preview')
                 });
             }
 
@@ -4830,6 +4886,19 @@
             const age = calcAge(d.birthday);
             const licenseTypesStr = d.licenseTypes.join('、');
 
+            const idcardFrontHtml = d.idcardFront
+                ? `<div class="driver-photo-item"><img src="${d.idcardFront}" alt="身份证正面"></div>`
+                : `<div class="driver-photo-item" style="color:#bbb;">暂无照片</div>`;
+            const idcardBackHtml = d.idcardBack
+                ? `<div class="driver-photo-item"><img src="${d.idcardBack}" alt="身份证背面"></div>`
+                : `<div class="driver-photo-item" style="color:#bbb;">暂无照片</div>`;
+            const licenseFrontHtml = d.licenseFront
+                ? `<div class="driver-photo-item"><img src="${d.licenseFront}" alt="驾驶证正本"></div>`
+                : `<div class="driver-photo-item" style="color:#bbb;">暂无照片</div>`;
+            const licenseBackHtml = d.licenseBack
+                ? `<div class="driver-photo-item"><img src="${d.licenseBack}" alt="驾驶证副本"></div>`
+                : `<div class="driver-photo-item" style="color:#bbb;">暂无照片</div>`;
+
             const html = `
                 <div class="driver-detail-section">
                     <div class="section-title">个人信息</div>
@@ -4842,6 +4911,19 @@
                         <div class="driver-detail-item"><span class="detail-label">出生日期</span><span class="detail-value">${d.birthday}</span></div>
                         <div class="driver-detail-item"><span class="detail-label">入职时间</span><span class="detail-value">${d.joinDate}</span></div>
                         <div class="driver-detail-item"><span class="detail-label">状态</span><span class="detail-value">${d.status === 'active' ? '在职' : '已解约'}</span></div>
+                    </div>
+                    <div style="margin-top:12px;">
+                        <div style="font-size:13px;color:#666;margin-bottom:8px;">身份证照片</div>
+                        <div class="driver-photo-grid">
+                            <div>
+                                <div style="font-size:12px;color:#999;margin-bottom:4px;">正面</div>
+                                ${idcardFrontHtml}
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:#999;margin-bottom:4px;">背面</div>
+                                ${idcardBackHtml}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="driver-detail-section">
@@ -4858,6 +4940,19 @@
                         <div class="driver-detail-item"><span class="detail-label">准驾车型</span><span class="detail-value">${licenseTypesStr}</span></div>
                         <div class="driver-detail-item"><span class="detail-label">初次领证</span><span class="detail-value">${d.licenseFirstDate}</span></div>
                         <div class="driver-detail-item"><span class="detail-label">有效期止</span><span class="detail-value">${d.licenseExpireDate}</span></div>
+                    </div>
+                    <div style="margin-top:12px;">
+                        <div style="font-size:13px;color:#666;margin-bottom:8px;">驾驶证照片</div>
+                        <div class="driver-photo-grid">
+                            <div>
+                                <div style="font-size:12px;color:#999;margin-bottom:4px;">正本</div>
+                                ${licenseFrontHtml}
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:#999;margin-bottom:4px;">副本</div>
+                                ${licenseBackHtml}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="driver-detail-section">
@@ -4999,6 +5094,12 @@
                 preview.innerHTML = `<div class="driver-photo-item"><img src="${e.target.result}" alt="照片预览"></div>`;
             };
             reader.readAsDataURL(file);
+        }
+
+        function getPhotoData(previewId) {
+            const preview = document.getElementById(previewId);
+            const img = preview.querySelector('img');
+            return img ? img.src : '';
         }
 
         function clearAllPhotoPreviews() {
