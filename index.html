@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>代驾SaaS后台管理系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd@4.24.16/dist/antd.min.css">
     <style>
         * {
             margin: 0;
@@ -1577,6 +1578,208 @@
             margin-bottom: 12px;
             opacity: 0.4;
         }
+
+        /* ========== 司机管理样式 ========== */
+        .driver-status-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 16px;
+            background: #fff;
+            border-radius: 6px;
+            padding: 4px;
+            border: 1px solid #f0f0f0;
+            width: fit-content;
+        }
+        .driver-status-tab {
+            padding: 6px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #666;
+            transition: all 0.3s;
+            border: none;
+            background: transparent;
+            font-weight: 500;
+        }
+        .driver-status-tab:hover {
+            color: #1890ff;
+        }
+        .driver-status-tab.active {
+            background: #1890ff;
+            color: #fff;
+        }
+        .driver-search-bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .driver-search-bar .ant-input {
+            width: 200px;
+        }
+        .driver-search-bar .ant-select {
+            width: 180px;
+        }
+        .driver-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+        }
+        .driver-card .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .driver-card .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        .driver-form-section {
+            margin-bottom: 24px;
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+            padding: 20px;
+            background: #fafafa;
+        }
+        .driver-form-section .section-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .driver-form-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 0;
+        }
+        .driver-form-row .ant-form-item {
+            flex: 1;
+        }
+        .driver-upload-hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+        .driver-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 24px;
+        }
+        .driver-detail-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 8px 0;
+            border-bottom: 1px dashed #f0f0f0;
+        }
+        .driver-detail-item .detail-label {
+            color: #999;
+            font-size: 13px;
+            width: 100px;
+            flex-shrink: 0;
+        }
+        .driver-detail-item .detail-value {
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .driver-detail-section {
+            margin-bottom: 20px;
+        }
+        .driver-detail-section .section-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .driver-photo-grid {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .driver-photo-item {
+            width: 120px;
+            height: 80px;
+            background: #f5f5f5;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 12px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .driver-photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .driver-photo-item:hover {
+            border-color: #1890ff;
+        }
+        .driver-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .driver-empty {
+            text-align: center;
+            padding: 40px 0;
+            color: #999;
+        }
+        .driver-pagination {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 16px 0 0;
+            gap: 8px;
+        }
+        .driver-pagination .page-info {
+            color: #666;
+            font-size: 13px;
+            margin-left: 8px;
+        }
+        .driver-drawer .ant-drawer-content-wrapper {
+            width: 640px !important;
+        }
+        .driver-form-drawer .ant-drawer-content-wrapper {
+            width: 720px !important;
+        }
+        .driver-form-drawer .ant-drawer-body {
+            padding: 0;
+            overflow-y: auto;
+        }
+        .driver-form-drawer .ant-drawer-body .driver-drawer-content {
+            padding: 24px;
+        }
+        .driver-form-drawer .ant-drawer-body .driver-drawer-footer {
+            position: sticky;
+            bottom: 0;
+            background: #fff;
+            z-index: 10;
+        }
+        .driver-photo-upload {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .driver-photo-upload .ant-upload.ant-upload-select-picture-card {
+            width: 120px;
+            height: 80px;
+            margin: 0;
+        }
+        .driver-photo-upload .ant-upload-list-picture-card {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -1821,6 +2024,77 @@
                                 <button class="pagination-btn">3</button>
                                 <button class="pagination-btn">下一页</button>
                                 <span style="color: #666; font-size: 14px;">共 3 页</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 司机管理页面 -->
+                <div id="page-drivers" class="page-content hidden">
+                    <div class="driver-card">
+                        <div class="card-header">
+                            <span class="card-title">司机列表</span>
+                            <button class="ant-btn ant-btn-primary" onclick="openDriverFormDrawer()">
+                                <span>+</span> 添加司机
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="driver-search-bar">
+                                <input type="text" class="ant-input" id="driver-search-name" placeholder="姓名" style="width:160px;">
+                                <input type="text" class="ant-input" id="driver-search-phone" placeholder="手机号" style="width:160px;">
+                                <select class="ant-select ant-select-selector" id="driver-search-company" style="width:160px;height:32px;padding:0 8px;border:1px solid #d9d9d9;border-radius:2px;">
+                                    <option value="">全部公司</option>
+                                </select>
+                                <select class="ant-select ant-select-selector" id="driver-search-business" style="width:160px;height:32px;padding:0 8px;border:1px solid #d9d9d9;border-radius:2px;">
+                                    <option value="">全部业务类型</option>
+                                </select>
+                                <button class="ant-btn ant-btn-primary" onclick="searchDrivers()">
+                                    <span role="img" class="anticon anticon-search"><svg viewBox="64 64 896 896" width="1em" height="1em" fill="currentColor"><path d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.6 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.6 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0011.6 0l43.6-43.5a8.2 8.2 0 000-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z"></path></svg></span>
+                                    查询
+                                </button>
+                                <button class="ant-btn" onclick="resetDriverSearch()">重置</button>
+                            </div>
+
+                            <div class="driver-status-tabs">
+                                <button class="driver-status-tab active" data-status="active" onclick="switchDriverStatus('active')">在职</button>
+                                <button class="driver-status-tab" data-status="terminated" onclick="switchDriverStatus('terminated')">已解约</button>
+                            </div>
+
+                            <div class="ant-table-wrapper">
+                                <div class="ant-spin-nested-loading">
+                                    <div class="ant-spin-container">
+                                        <table class="ant-table driver-table">
+                                            <colgroup>
+                                                <col style="width:100px;">
+                                                <col style="width:70px;">
+                                                <col style="width:60px;">
+                                                <col style="width:60px;">
+                                                <col style="width:140px;">
+                                                <col style="width:100px;">
+                                                <col style="width:120px;">
+                                                <col style="width:200px;">
+                                            </colgroup>
+                                            <thead class="ant-table-thead">
+                                                <tr>
+                                                    <th class="ant-table-cell">姓名</th>
+                                                    <th class="ant-table-cell">性别</th>
+                                                    <th class="ant-table-cell">年龄</th>
+                                                    <th class="ant-table-cell">所属公司</th>
+                                                    <th class="ant-table-cell">业务类型</th>
+                                                    <th class="ant-table-cell">入职时间</th>
+                                                    <th class="ant-table-cell">状态</th>
+                                                    <th class="ant-table-cell">操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="ant-table-tbody" id="driver-list-body">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="driver-pagination" id="driver-pagination">
+                                <div class="page-info" id="driver-page-info">共 0 条</div>
                             </div>
                         </div>
                     </div>
@@ -2502,6 +2776,343 @@
             <div class="drawer-footer">
                 <button class="btn" onclick="closeCompanyDrawer()">取消</button>
                 <button class="btn btn-primary" onclick="saveCompany()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 司机表单抽屉（新增/编辑） -->
+    <div class="ant-drawer ant-drawer-right driver-form-drawer" id="driver-form-drawer" tabindex="-1">
+        <div class="ant-drawer-mask" onclick="closeDriverFormDrawer()"></div>
+        <div class="ant-drawer-content-wrapper">
+            <div class="ant-drawer-content">
+                <div class="ant-drawer-wrapper-body">
+                    <div class="ant-drawer-header">
+                        <div class="ant-drawer-header-title">
+                            <div class="ant-drawer-title" id="driver-form-title">添加司机</div>
+                            <button class="ant-drawer-close" onclick="closeDriverFormDrawer()">
+                                <span class="anticon anticon-close"><svg viewBox="64 64 896 896" width="1em" height="1em" fill="currentColor"><path d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9c-4.4 5.2-.7 13.1 6.1 13.1h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"></path></svg></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ant-drawer-body">
+                        <div class="driver-drawer-content">
+                            <form id="driver-form">
+                                <input type="hidden" id="edit-driver-id">
+
+                                <!-- 个人信息 -->
+                                <div class="driver-form-section">
+                                    <div class="section-title">个人信息</div>
+                                    <div class="driver-form-row">
+                                        <div class="ant-form-item">
+                                            <label class="ant-form-item-label">姓名 <span class="ant-form-item-required">*</span></label>
+                                            <div class="ant-form-item-control">
+                                                <input type="text" class="ant-input" id="driver-name" placeholder="请输入姓名">
+                                            </div>
+                                        </div>
+                                        <div class="ant-form-item">
+                                            <label class="ant-form-item-label">身份证号 <span class="ant-form-item-required">*</span></label>
+                                            <div class="ant-form-item-control">
+                                                <input type="text" class="ant-input" id="driver-idcard" placeholder="请输入身份证号" oninput="this.value=this.value.replace(/[^0-9a-zA-Z]/g,'')">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="driver-form-row">
+                                        <div class="ant-form-item">
+                                            <label class="ant-form-item-label">出生日期 <span class="ant-form-item-required">*</span></label>
+                                            <div class="ant-form-item-control">
+                                                <input type="date" class="ant-input" id="driver-birthday">
+                                            </div>
+                                        </div>
+                                        <div class="ant-form-item">
+                                            <label class="ant-form-item-label">性别 <span class="ant-form-item-required">*</span></label>
+                                            <div class="ant-form-item-control">
+                                                <div style="display:flex;gap:16px;padding-top:4px;">
+                                                    <label class="ant-radio-wrapper">
+                                                        <span class="ant-radio"><input type="radio" name="driver-gender" value="男" checked><span class="ant-radio-inner"></span></span>
+                                                        <span>男</span>
+                                                    </label>
+                                                    <label class="ant-radio-wrapper">
+                                                        <span class="ant-radio"><input type="radio" name="driver-gender" value="女"><span class="ant-radio-inner"></span></span>
+                                                        <span>女</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="driver-form-row">
+                                        <div class="ant-form-item">
+                                            <label class="ant-form-item-label">手机号 <span class="ant-form-item-required">*</span></label>
+                                            <div class="ant-form-item-control">
+                                                <input type="text" class="ant-input" id="driver-phone" placeholder="请输入手机号" maxlength="11" oninput="this.value=this.value.replace(/\D/g,'')">
+                                            </div>
+                                        </div>
+                                        <div class="ant-form-item"></div>
+                                    </div>
+                                    <div class="driver-form-row">
+                                        <div class="ant-form-item">
+                                            <label class="ant-form-item-label">身份证正面</label>
+                                            <div class="ant-form-item-control">
+                                                <div class="driver-photo-upload">
+                                                    <div class="ant-upload ant-upload-select-picture-card" onclick="document.getElementById('idcard-front-input').click()">
+                                                        <div class="ant-upload">
+                                                            <span class="anticon anticon-plus"><svg viewBox="64 64 896 896" width="1em" height="1em" fill="currentColor"><path d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"></path><path d="M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z"></path></svg></span>
+                                                            <div class="ant-upload-text">上传照片</div>
+                                                        </div>
+                                                    </div>
+                                                    <input type="file" id="idcard-front-input" accept="image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this, 'idcard-front-preview')">
+                                                    <div class="driver-upload-hint">照片大小不超过 10M，jpg/png 文件</div>
+                                                    <div id="idcard-front-preview" class="driver-photo-grid" style="margin-top:8px;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="ant-form-item">
+                                            <label class="ant-form-item-label">身份证背面</label>
+                                            <div class="ant-form-item-control">
+                                                <div class="driver-photo-upload">
+                                                    <div class="ant-upload ant-upload-select-picture-card" onclick="document.getElementById('idcard-back-input').click()">
+                                                        <div class="ant-upload">
+                                                            <span class="anticon anticon-plus"><svg viewBox="64 64 896 896" width="1em" height="1em" fill="currentColor"><path d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"></path><path d="M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z"></path></svg></span>
+                                                            <div class="ant-upload-text">上传照片</div>
+                                                        </div>
+                                                    </div>
+                                                    <input type="file" id="idcard-back-input" accept="image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this, 'idcard-back-preview')">
+                                                    <div class="driver-upload-hint">照片大小不超过 10M，jpg/png 文件</div>
+                                                    <div id="idcard-back-preview" class="driver-photo-grid" style="margin-top:8px;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 紧急联系人 -->
+                                <div class="driver-form-section">
+                                    <div class="section-title">紧急联系人</div>
+                                    <div class="driver-form-row">
+                                        <div class="ant-form-item">
+                                            <label class="ant-form-item-label">紧急联系人 <span class="ant-form-item-required">*</span></label>
+                                            <div class="ant-form-item-control">
+                                                <input type="text" class="ant-input" id="driver-emergency-contact" placeholder="请输入紧急联系人">
+                                            </div>
+                                        </div>
+                                        <div class="ant-form-item">
+                                            <label class="ant-form-item-label">紧急联系人手机号 <span class="ant-form-item-required">*</span></label>
+                                            <div class="ant-form-item-control">
+                                                <input type="text" class="ant-input" id="driver-emergency-phone" placeholder="请输入手机号" maxlength="11" oninput="this.value=this.value.replace(/\D/g,'')">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 驾驶证信息 -->
+                                <div class="driver-form-section">
+                                    <div class="section-title">驾驶证信息</div>
+                                    <div class="driver-form-row">
+                                        <div class="ant-form-item">
+                                            <label class="ant-form-item-label">驾驶证号 <span class="ant-form-item-required">*</span></label>
+                                            <div class="ant-form-item-control">
+                                                <input type="text" class="ant-input" id="driver-license-no" placeholder="请输入驾驶证号" oninput="this.value=this.value.replace(/[^0-9a-zA-Z]/g,'')">
+                                            </div>
+                                        </div>
+                                        <div class="ant-form-item">
+                                            <label class="ant-form-item-label">准驾车型 <span class="ant-form-item-required">*</span></label>
+                                            <div class="ant-form-item-control">
+                                                <div class="ant-select ant-select-multiple" style="width:100%;">
+                                                    <div class="ant-select-selector" style="padding:2px 4px;min-height:32px;border:1px solid #d9d9d9;border-radius:2px;cursor:pointer;" onclick="toggleLicenseTypeDropdown()">
+                                                        <div class="ant-select-selection-overflow" id="license-type-tags" style="display:flex;flex-wrap:wrap;gap:2px;">
+                                                            <span style="color:#bbb;font-size:13px;padding:2px 4px;">请选择准驾车型</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ant-select-dropdown ant-select-dropdown-hidden" id="license-type-dropdown" style="position:absolute;top:100%;left:0;right:0;z-index:1050;background:#fff;border:1px solid #d9d9d9;border-radius:2px;box-shadow:0 2px 8px rgba(0,0,0,0.15);max-height:200px;overflow-y:auto;">
+                                                        <div class="ant-select-item ant-select-item-option" data-value="C1" onclick="toggleLicenseType('C1')"><div class="ant-select-item-option-content">C1</div></div>
+                                                        <div class="ant-select-item ant-select-item-option" data-value="C2" onclick="toggleLicenseType('C2')"><div class="ant-select-item-option-content">C2</div></div>
+                                                        <div class="ant-select-item ant-select-item-option" data-value="C3" onclick="toggleLicenseType('C3')"><div class="ant-select-item-option-content">C3</div></div>
+                                                        <div class="ant-select-item ant-select-item-option" data-value="C4" onclick="toggleLicenseType('C4')"><div class="ant-select-item-option-content">C4</div></div>
+                                                        <div class="ant-select-item ant-select-item-option" data-value="C5" onclick="toggleLicenseType('C5')"><div class="ant-select-item-option-content">C5</div></div>
+                                                        <div class="ant-select-item ant-select-item-option" data-value="C6" onclick="toggleLicenseType('C6')"><div class="ant-select-item-option-content">C6</div></div>
+                                                        <div class="ant-select-item ant-select-item-option" data-value="B1" onclick="toggleLicenseType('B1')"><div class="ant-select-item-option-content">B1</div></div>
+                                                        <div class="ant-select-item ant-select-item-option" data-value="B2" onclick="toggleLicenseType('B2')"><div class="ant-select-item-option-content">B2</div></div>
+                                                        <div class="ant-select-item ant-select-item-option" data-value="A1" onclick="toggleLicenseType('A1')"><div class="ant-select-item-option-content">A1</div></div>
+                                                        <div class="ant-select-item ant-select-item-option" data-value="A2" onclick="toggleLicenseType('A2')"><div class="ant-select-item-option-content">A2</div></div>
+                                                        <div class="ant-select-item ant-select-item-option" data-value="A3" onclick="toggleLicenseType('A3')"><div class="ant-select-item-option-content">A3</div></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="driver-form-row">
+                                        <div class="ant-form-item">
+                                            <label class="ant-form-item-label">初次领证日期 <span class="ant-form-item-required">*</span></label>
+                                            <div class="ant-form-item-control">
+                                                <input type="date" class="ant-input" id="driver-license-first-date">
+                                            </div>
+                                        </div>
+                                        <div class="ant-form-item">
+                                            <label class="ant-form-item-label">驾驶证有效期止 <span class="ant-form-item-required">*</span></label>
+                                            <div class="ant-form-item-control">
+                                                <input type="date" class="ant-input" id="driver-license-expire-date">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="driver-form-row">
+                                        <div class="ant-form-item">
+                                            <label class="ant-form-item-label">驾驶证正本</label>
+                                            <div class="ant-form-item-control">
+                                                <div class="driver-photo-upload">
+                                                    <div class="ant-upload ant-upload-select-picture-card" onclick="document.getElementById('license-front-input').click()">
+                                                        <div class="ant-upload">
+                                                            <span class="anticon anticon-plus"><svg viewBox="64 64 896 896" width="1em" height="1em" fill="currentColor"><path d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"></path><path d="M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z"></path></svg></span>
+                                                            <div class="ant-upload-text">上传照片</div>
+                                                        </div>
+                                                    </div>
+                                                    <input type="file" id="license-front-input" accept="image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this, 'license-front-preview')">
+                                                    <div class="driver-upload-hint">照片大小不超过 10M，jpg/png 文件</div>
+                                                    <div id="license-front-preview" class="driver-photo-grid" style="margin-top:8px;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="ant-form-item">
+                                            <label class="ant-form-item-label">驾驶证副本</label>
+                                            <div class="ant-form-item-control">
+                                                <div class="driver-photo-upload">
+                                                    <div class="ant-upload ant-upload-select-picture-card" onclick="document.getElementById('license-back-input').click()">
+                                                        <div class="ant-upload">
+                                                            <span class="anticon anticon-plus"><svg viewBox="64 64 896 896" width="1em" height="1em" fill="currentColor"><path d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"></path><path d="M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z"></path></svg></span>
+                                                            <div class="ant-upload-text">上传照片</div>
+                                                        </div>
+                                                    </div>
+                                                    <input type="file" id="license-back-input" accept="image/jpeg,image/png" style="display:none" onchange="handlePhotoUpload(this, 'license-back-preview')">
+                                                    <div class="driver-upload-hint">照片大小不超过 10M，jpg/png 文件</div>
+                                                    <div id="license-back-preview" class="driver-photo-grid" style="margin-top:8px;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 公司信息 -->
+                                <div class="driver-form-section">
+                                    <div class="section-title">公司信息</div>
+                                    <div class="driver-form-row">
+                                        <div class="ant-form-item">
+                                            <label class="ant-form-item-label">所属公司 <span class="ant-form-item-required">*</span></label>
+                                            <div class="ant-form-item-control">
+                                                <select class="ant-input" id="driver-company" style="height:32px;">
+                                                    <option value="">请选择所属公司</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="ant-form-item">
+                                            <label class="ant-form-item-label">业务类型 <span class="ant-form-item-required">*</span></label>
+                                            <div class="ant-form-item-control">
+                                                <select class="ant-input" id="driver-business-type" style="height:32px;">
+                                                    <option value="">请选择业务类型</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="driver-form-row">
+                                        <div class="ant-form-item">
+                                            <label class="ant-form-item-label">司机类型 <span class="ant-form-item-required">*</span></label>
+                                            <div class="ant-form-item-control">
+                                                <select class="ant-input" id="driver-type" style="height:32px;">
+                                                    <option value="">请选择司机类型</option>
+                                                    <option value="全职">全职</option>
+                                                    <option value="兼职">兼职</option>
+                                                    <option value="临时">临时</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="ant-form-item"></div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="driver-drawer-footer">
+                        <button class="ant-btn" onclick="closeDriverFormDrawer()">取消</button>
+                        <button class="ant-btn ant-btn-primary" onclick="saveDriver()">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 司机详情抽屉 -->
+    <div class="ant-drawer ant-drawer-right driver-drawer" id="driver-detail-drawer" tabindex="-1">
+        <div class="ant-drawer-mask" onclick="closeDriverDetailDrawer()"></div>
+        <div class="ant-drawer-content-wrapper">
+            <div class="ant-drawer-content">
+                <div class="ant-drawer-wrapper-body">
+                    <div class="ant-drawer-header">
+                        <div class="ant-drawer-header-title">
+                            <div class="ant-drawer-title">司机详情</div>
+                            <button class="ant-drawer-close" onclick="closeDriverDetailDrawer()">
+                                <span class="anticon anticon-close"><svg viewBox="64 64 896 896" width="1em" height="1em" fill="currentColor"><path d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9c-4.4 5.2-.7 13.1 6.1 13.1h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"></path></svg></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ant-drawer-body">
+                        <div class="driver-drawer-content" id="driver-detail-content">
+                        </div>
+                    </div>
+                    <div class="driver-drawer-footer">
+                        <button class="ant-btn" onclick="closeDriverDetailDrawer()">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 解约确认弹窗 -->
+    <div class="ant-modal" id="terminate-modal" style="display:none;">
+        <div class="ant-modal-mask" onclick="closeTerminateModal()"></div>
+        <div class="ant-modal-wrap" style="display:flex;align-items:center;justify-content:center;">
+            <div class="ant-modal-content" style="width:480px;">
+                <div class="ant-modal-header">
+                    <div class="ant-modal-title">解约司机</div>
+                </div>
+                <div class="ant-modal-body">
+                    <div style="display:flex;gap:12px;align-items:flex-start;">
+                        <span class="anticon anticon-exclamation-circle" style="font-size:22px;color:#faad14;flex-shrink:0;margin-top:2px;">
+                            <svg viewBox="64 64 896 896" width="1em" height="1em" fill="currentColor"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path><path d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"></path></svg>
+                        </span>
+                        <div>
+                            <p style="font-size:14px;color:#333;margin-bottom:8px;">解约司机后，司机将无法登录app和处理订单，确定要解约司机吗？</p>
+                            <p style="font-size:13px;color:#999;" id="terminate-driver-name"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="ant-modal-footer">
+                    <button class="ant-btn" onclick="closeTerminateModal()">取消</button>
+                    <button class="ant-btn ant-btn-danger" onclick="confirmTerminate()">确定解约</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 重新入职确认弹窗 -->
+    <div class="ant-modal" id="rehire-modal" style="display:none;">
+        <div class="ant-modal-mask" onclick="closeRehireModal()"></div>
+        <div class="ant-modal-wrap" style="display:flex;align-items:center;justify-content:center;">
+            <div class="ant-modal-content" style="width:480px;">
+                <div class="ant-modal-header">
+                    <div class="ant-modal-title">重新入职</div>
+                </div>
+                <div class="ant-modal-body">
+                    <div style="display:flex;gap:12px;align-items:flex-start;">
+                        <span class="anticon anticon-info-circle" style="font-size:22px;color:#1890ff;flex-shrink:0;margin-top:2px;">
+                            <svg viewBox="64 64 896 896" width="1em" height="1em" fill="currentColor"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path><path d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"></path></svg>
+                        </span>
+                        <div>
+                            <p style="font-size:14px;color:#333;margin-bottom:8px;">重新入职前需要确保司机已完成资质审核和培训工作</p>
+                            <p style="font-size:13px;color:#999;" id="rehire-driver-name"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="ant-modal-footer">
+                    <button class="ant-btn" onclick="closeRehireModal()">取消</button>
+                    <button class="ant-btn ant-btn-primary" onclick="confirmRehire()">确定重新入职</button>
+                </div>
             </div>
         </div>
     </div>
@@ -3839,6 +4450,521 @@
             if (trigger && (trigger.contains(e.target) || dropdown.contains(e.target))) return;
             closeCascadeDropdown();
         });
-    </script>
+
+        // ========== 司机管理逻辑 ==========
+
+        // Mock 数据 - 司机列表
+        let drivers = [
+            { id: 1, name: '张伟', gender: '男', birthday: '1990-05-15', phone: '13800138001', idcard: '110101199005150011', company: '北京分公司', businessType: '酒后代驾', driverType: '全职', status: 'active', joinDate: '2024-01-15', emergencyContact: '李娜', emergencyPhone: '13900139001', licenseNo: '110101199005150011', licenseTypes: ['C1', 'B2'], licenseFirstDate: '2012-06-01', licenseExpireDate: '2028-06-01' },
+            { id: 2, name: '王强', gender: '男', birthday: '1988-08-20', phone: '13800138002', idcard: '110101198808200012', company: '上海分公司', businessType: '商务代驾', driverType: '全职', status: 'active', joinDate: '2024-02-20', emergencyContact: '王芳', emergencyPhone: '13900139002', licenseNo: '110101198808200012', licenseTypes: ['C1', 'A2'], licenseFirstDate: '2010-08-01', licenseExpireDate: '2026-08-01' },
+            { id: 3, name: '刘洋', gender: '男', birthday: '1995-12-01', phone: '13800138003', idcard: '110101199512010013', company: '广州分公司', businessType: '长途代驾', driverType: '兼职', status: 'active', joinDate: '2024-03-10', emergencyContact: '刘敏', emergencyPhone: '13900139003', licenseNo: '110101199512010013', licenseTypes: ['C1'], licenseFirstDate: '2016-12-01', licenseExpireDate: '2032-12-01' },
+            { id: 4, name: '陈静', gender: '女', birthday: '1992-03-25', phone: '13800138004', idcard: '110101199203250014', company: '深圳分公司', businessType: '包时代驾', driverType: '全职', status: 'active', joinDate: '2024-01-05', emergencyContact: '陈刚', emergencyPhone: '13900139004', licenseNo: '110101199203250014', licenseTypes: ['C1', 'C2'], licenseFirstDate: '2013-03-01', licenseExpireDate: '2029-03-01' },
+            { id: 5, name: '赵磊', gender: '男', birthday: '1985-07-10', phone: '13800138005', idcard: '110101198507100015', company: '北京分公司', businessType: '酒后代驾', driverType: '全职', status: 'terminated', joinDate: '2023-06-01', emergencyContact: '赵丽', emergencyPhone: '13900139005', licenseNo: '110101198507100015', licenseTypes: ['C1', 'B1', 'A2'], licenseFirstDate: '2006-07-01', licenseExpireDate: '2024-07-01' },
+            { id: 6, name: '孙明', gender: '男', birthday: '1993-11-18', phone: '13800138006', idcard: '110101199311180016', company: '上海分公司', businessType: '商务代驾', driverType: '兼职', status: 'active', joinDate: '2024-04-01', emergencyContact: '孙红', emergencyPhone: '13900139006', licenseNo: '110101199311180016', licenseTypes: ['C1', 'C2'], licenseFirstDate: '2014-11-01', licenseExpireDate: '2030-11-01' },
+            { id: 7, name: '周婷', gender: '女', birthday: '1991-09-05', phone: '13800138007', idcard: '110101199109050017', company: '广州分公司', businessType: '酒后代驾', driverType: '全职', status: 'active', joinDate: '2024-02-15', emergencyContact: '周杰', emergencyPhone: '13900139007', licenseNo: '110101199109050017', licenseTypes: ['C1'], licenseFirstDate: '2012-09-01', licenseExpireDate: '2028-09-01' },
+            { id: 8, name: '吴凯', gender: '男', birthday: '1987-04-30', phone: '13800138008', idcard: '110101198704300018', company: '深圳分公司', businessType: '长途代驾', driverType: '全职', status: 'terminated', joinDate: '2023-08-20', emergencyContact: '吴雪', emergencyPhone: '13900139008', licenseNo: '110101198704300018', licenseTypes: ['C1', 'A1'], licenseFirstDate: '2008-04-01', licenseExpireDate: '2024-04-01' },
+            { id: 9, name: '郑浩', gender: '男', birthday: '1994-06-22', phone: '13800138009', idcard: '110101199406220019', company: '北京分公司', businessType: '包时代驾', driverType: '兼职', status: 'active', joinDate: '2024-05-10', emergencyContact: '郑秀', emergencyPhone: '13900139009', licenseNo: '110101199406220019', licenseTypes: ['C1', 'C2', 'C3'], licenseFirstDate: '2015-06-01', licenseExpireDate: '2031-06-01' },
+            { id: 10, name: '黄丽', gender: '女', birthday: '1996-01-12', phone: '13800138010', idcard: '110101199601120010', company: '上海分公司', businessType: '酒后代驾', driverType: '全职', status: 'active', joinDate: '2024-03-25', emergencyContact: '黄磊', emergencyPhone: '13900139010', licenseNo: '110101199601120010', licenseTypes: ['C1'], licenseFirstDate: '2017-01-01', licenseExpireDate: '2033-01-01' },
+            { id: 11, name: '林峰', gender: '男', birthday: '1989-10-08', phone: '13800138011', idcard: '110101198910080011', company: '广州分公司', businessType: '商务代驾', driverType: '全职', status: 'active', joinDate: '2024-01-20', emergencyContact: '林芝', emergencyPhone: '13900139011', licenseNo: '110101198910080011', licenseTypes: ['C1', 'B2'], licenseFirstDate: '2010-10-01', licenseExpireDate: '2026-10-01' },
+            { id: 12, name: '何伟', gender: '男', birthday: '1997-08-15', phone: '13800138012', idcard: '110101199708150012', company: '深圳分公司', businessType: '酒后代驾', driverType: '兼职', status: 'active', joinDate: '2024-06-01', emergencyContact: '何花', emergencyPhone: '13900139012', licenseNo: '110101199708150012', licenseTypes: ['C1', 'C2'], licenseFirstDate: '2018-08-01', licenseExpireDate: '2034-08-01' },
+        ];
+        let driverNextId = 13;
+        let currentDriverStatus = 'active';
+        let currentDriverPage = 1;
+        let driverPageSize = 10;
+        let selectedLicenseTypes = [];
+        let terminateDriverId = null;
+        let rehireDriverId = null;
+
+        // 计算年龄
+        function calcAge(birthday) {
+            const birth = new Date(birthday);
+            const today = new Date();
+            let age = today.getFullYear() - birth.getFullYear();
+            const m = today.getMonth() - birth.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+            return age;
+        }
+
+        // 获取筛选后的司机列表
+        function getFilteredDrivers() {
+            const name = (document.getElementById('driver-search-name').value || '').trim().toLowerCase();
+            const phone = (document.getElementById('driver-search-phone').value || '').trim();
+            const company = document.getElementById('driver-search-company').value;
+            const businessType = document.getElementById('driver-search-business').value;
+
+            return drivers.filter(d => {
+                if (d.status !== currentDriverStatus) return false;
+                if (name && !d.name.toLowerCase().includes(name)) return false;
+                if (phone && !d.phone.includes(phone)) return false;
+                if (company && d.company !== company) return false;
+                if (businessType && d.businessType !== businessType) return false;
+                return true;
+            });
+        }
+
+        // 渲染司机列表
+        function renderDrivers() {
+            const filtered = getFilteredDrivers();
+            const total = filtered.length;
+            const totalPages = Math.ceil(total / driverPageSize) || 1;
+            if (currentDriverPage > totalPages) currentDriverPage = totalPages;
+            const start = (currentDriverPage - 1) * driverPageSize;
+            const pageData = filtered.slice(start, start + driverPageSize);
+
+            const tbody = document.getElementById('driver-list-body');
+
+            if (pageData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8"><div class="driver-empty">暂无司机数据</div></td></tr>';
+            } else {
+                tbody.innerHTML = pageData.map(d => {
+                    const age = calcAge(d.birthday);
+                    const statusTag = d.status === 'active'
+                        ? '<span class="ant-tag ant-tag-green">在职</span>'
+                        : '<span class="ant-tag ant-tag-red">已解约</span>';
+
+                    let actions = '';
+                    if (d.status === 'active') {
+                        actions = `
+                            <div class="driver-actions">
+                                <button class="ant-btn ant-btn-link ant-btn-sm" onclick="viewDriver(${d.id})">详情</button>
+                                <button class="ant-btn ant-btn-link ant-btn-sm" onclick="editDriver(${d.id})">编辑</button>
+                                <button class="ant-btn ant-btn-link ant-btn-sm" style="color:#ff4d4f;" onclick="openTerminateModal(${d.id})">解约</button>
+                            </div>
+                        `;
+                    } else {
+                        actions = `
+                            <div class="driver-actions">
+                                <button class="ant-btn ant-btn-link ant-btn-sm" onclick="viewDriver(${d.id})">详情</button>
+                                <button class="ant-btn ant-btn-link ant-btn-sm" style="color:#1890ff;" onclick="openRehireModal(${d.id})">重新入职</button>
+                            </div>
+                        `;
+                    }
+
+                    return `<tr class="ant-table-row">
+                        <td class="ant-table-cell">${d.name}</td>
+                        <td class="ant-table-cell">${d.gender}</td>
+                        <td class="ant-table-cell">${age}</td>
+                        <td class="ant-table-cell">${d.company}</td>
+                        <td class="ant-table-cell">${d.businessType}</td>
+                        <td class="ant-table-cell">${d.joinDate}</td>
+                        <td class="ant-table-cell">${statusTag}</td>
+                        <td class="ant-table-cell">${actions}</td>
+                    </tr>`;
+                }).join('');
+            }
+
+            // 渲染分页
+            renderDriverPagination(total, totalPages);
+            document.getElementById('driver-page-info').textContent = `共 ${total} 条`;
+        }
+
+        // 渲染分页
+        function renderDriverPagination(total, totalPages) {
+            const container = document.getElementById('driver-pagination');
+            let html = `<div class="page-info" id="driver-page-info">共 ${total} 条</div>`;
+            html += '<div class="ant-pagination">';
+            html += `<button class="ant-pagination-prev" ${currentDriverPage <= 1 ? 'disabled' : ''} onclick="goDriverPage(${currentDriverPage - 1})">
+                <span class="ant-pagination-item-link"><span class="anticon anticon-left"><svg viewBox="64 64 896 896" width="1em" height="1em" fill="currentColor"><path d="M724 218.3V141c0-6.7-7.7-10.4-12.9-6.3L260.3 486.8a31.86 31.86 0 000 50.3l450.8 352.1c5.3 4.1 12.9.4 12.9-6.3v-77.3c0-4.9-2.3-9.6-6.1-12.6l-360-281 360-281.1c3.8-3 6.1-7.7 6.1-12.6z"></path></svg></span></span>
+            </button>`;
+            for (let i = 1; i <= totalPages; i++) {
+                html += `<button class="ant-pagination-item ${i === currentDriverPage ? 'ant-pagination-item-active' : ''}" onclick="goDriverPage(${i})">
+                    <a>${i}</a>
+                </button>`;
+            }
+            html += `<button class="ant-pagination-next" ${currentDriverPage >= totalPages ? 'disabled' : ''} onclick="goDriverPage(${currentDriverPage + 1})">
+                <span class="ant-pagination-item-link"><span class="anticon anticon-right"><svg viewBox="64 64 896 896" width="1em" height="1em" fill="currentColor"><path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"></path></svg></span></span>
+            </button>`;
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // 切换页码
+        function goDriverPage(page) {
+            currentDriverPage = page;
+            renderDrivers();
+        }
+
+        // 切换司机状态
+        function switchDriverStatus(status) {
+            currentDriverStatus = status;
+            currentDriverPage = 1;
+            document.querySelectorAll('.driver-status-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.status === status);
+            });
+            renderDrivers();
+        }
+
+        // 搜索司机
+        function searchDrivers() {
+            currentDriverPage = 1;
+            renderDrivers();
+        }
+
+        // 重置搜索
+        function resetDriverSearch() {
+            document.getElementById('driver-search-name').value = '';
+            document.getElementById('driver-search-phone').value = '';
+            document.getElementById('driver-search-company').value = '';
+            document.getElementById('driver-search-business').value = '';
+            currentDriverPage = 1;
+            renderDrivers();
+        }
+
+        // 初始化搜索下拉选项
+        function initDriverSearchOptions() {
+            const companySelect = document.getElementById('driver-search-company');
+            const businessSelect = document.getElementById('driver-search-business');
+            const formCompanySelect = document.getElementById('driver-company');
+            const formBusinessSelect = document.getElementById('driver-business-type');
+
+            const companies = [...new Set(drivers.map(d => d.company))];
+            const businessTypes = [...new Set(drivers.map(d => d.businessType))];
+
+            companies.forEach(c => {
+                companySelect.innerHTML += `<option value="${c}">${c}</option>`;
+                formCompanySelect.innerHTML += `<option value="${c}">${c}</option>`;
+            });
+            businessTypes.forEach(b => {
+                businessSelect.innerHTML += `<option value="${b}">${b}</option>`;
+                formBusinessSelect.innerHTML += `<option value="${b}">${b}</option>`;
+            });
+        }
+
+        // 打开司机表单抽屉（新增）
+        function openDriverFormDrawer() {
+            document.getElementById('driver-form-title').textContent = '添加司机';
+            document.getElementById('edit-driver-id').value = '';
+            document.getElementById('driver-form').reset();
+            document.querySelector('input[name="driver-gender"][value="男"]').checked = true;
+            document.getElementById('driver-type').value = '';
+            selectedLicenseTypes = [];
+            updateLicenseTypeTags();
+            clearAllPhotoPreviews();
+            document.getElementById('driver-form-drawer').classList.add('ant-drawer-open');
+            document.getElementById('driver-form-drawer').style.display = 'block';
+        }
+
+        // 编辑司机
+        function editDriver(id) {
+            const driver = drivers.find(d => d.id === id);
+            if (!driver) return;
+
+            document.getElementById('driver-form-title').textContent = '编辑司机';
+            document.getElementById('edit-driver-id').value = driver.id;
+            document.getElementById('driver-name').value = driver.name;
+            document.getElementById('driver-idcard').value = driver.idcard;
+            document.getElementById('driver-birthday').value = driver.birthday;
+            document.querySelector(`input[name="driver-gender"][value="${driver.gender}"]`).checked = true;
+            document.getElementById('driver-phone').value = driver.phone;
+            document.getElementById('driver-emergency-contact').value = driver.emergencyContact;
+            document.getElementById('driver-emergency-phone').value = driver.emergencyPhone;
+            document.getElementById('driver-license-no').value = driver.licenseNo;
+            selectedLicenseTypes = [...driver.licenseTypes];
+            updateLicenseTypeTags();
+            document.getElementById('driver-license-first-date').value = driver.licenseFirstDate;
+            document.getElementById('driver-license-expire-date').value = driver.licenseExpireDate;
+            document.getElementById('driver-company').value = driver.company;
+            document.getElementById('driver-business-type').value = driver.businessType;
+            document.getElementById('driver-type').value = driver.driverType;
+            clearAllPhotoPreviews();
+            document.getElementById('driver-form-drawer').classList.add('ant-drawer-open');
+            document.getElementById('driver-form-drawer').style.display = 'block';
+        }
+
+        // 关闭司机表单抽屉
+        function closeDriverFormDrawer() {
+            document.getElementById('driver-form-drawer').classList.remove('ant-drawer-open');
+            document.getElementById('driver-form-drawer').style.display = 'none';
+        }
+
+        // 保存司机
+        function saveDriver() {
+            const name = document.getElementById('driver-name').value.trim();
+            const idcard = document.getElementById('driver-idcard').value.trim();
+            const birthday = document.getElementById('driver-birthday').value;
+            const gender = document.querySelector('input[name="driver-gender"]:checked').value;
+            const phone = document.getElementById('driver-phone').value.trim();
+            const emergencyContact = document.getElementById('driver-emergency-contact').value.trim();
+            const emergencyPhone = document.getElementById('driver-emergency-phone').value.trim();
+            const licenseNo = document.getElementById('driver-license-no').value.trim();
+            const licenseFirstDate = document.getElementById('driver-license-first-date').value;
+            const licenseExpireDate = document.getElementById('driver-license-expire-date').value;
+            const company = document.getElementById('driver-company').value;
+            const businessType = document.getElementById('driver-business-type').value;
+            const driverType = document.getElementById('driver-type').value;
+            const editId = document.getElementById('edit-driver-id').value;
+
+            // 表单校验
+            if (!name) { alert('请输入姓名'); return; }
+            if (!idcard) { alert('请输入身份证号'); return; }
+            if (idcard.length < 15) { alert('请输入有效的身份证号'); return; }
+            if (!birthday) { alert('请选择出生日期'); return; }
+            if (!phone) { alert('请输入手机号'); return; }
+            if (phone.length !== 11) { alert('请输入有效的11位手机号'); return; }
+            if (!emergencyContact) { alert('请输入紧急联系人'); return; }
+            if (!emergencyPhone) { alert('请输入紧急联系人手机号'); return; }
+            if (emergencyPhone.length !== 11) { alert('请输入有效的紧急联系人手机号'); return; }
+            if (!licenseNo) { alert('请输入驾驶证号'); return; }
+            if (selectedLicenseTypes.length === 0) { alert('请选择准驾车型'); return; }
+            if (!licenseFirstDate) { alert('请选择初次领证日期'); return; }
+            if (!licenseExpireDate) { alert('请选择驾驶证有效期止'); return; }
+            if (!company) { alert('请选择所属公司'); return; }
+            if (!businessType) { alert('请选择业务类型'); return; }
+            if (!driverType) { alert('请选择司机类型'); return; }
+
+            const now = new Date();
+            const pad = n => String(n).padStart(2, '0');
+            const joinDate = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+
+            if (editId) {
+                const index = drivers.findIndex(d => d.id === parseInt(editId));
+                if (index !== -1) {
+                    drivers[index] = {
+                        ...drivers[index],
+                        name, idcard, birthday, gender, phone,
+                        emergencyContact, emergencyPhone,
+                        licenseNo, licenseTypes: [...selectedLicenseTypes],
+                        licenseFirstDate, licenseExpireDate,
+                        company, businessType, driverType
+                    };
+                }
+            } else {
+                drivers.push({
+                    id: driverNextId++,
+                    name, idcard, birthday, gender, phone,
+                    company, businessType, driverType,
+                    status: 'active',
+                    joinDate,
+                    emergencyContact, emergencyPhone,
+                    licenseNo, licenseTypes: [...selectedLicenseTypes],
+                    licenseFirstDate, licenseExpireDate
+                });
+            }
+
+            closeDriverFormDrawer();
+            renderDrivers();
+        }
+
+        // 查看司机详情
+        function viewDriver(id) {
+            const d = drivers.find(driver => driver.id === id);
+            if (!d) return;
+
+            const age = calcAge(d.birthday);
+            const licenseTypesStr = d.licenseTypes.join('、');
+
+            const html = `
+                <div class="driver-detail-section">
+                    <div class="section-title">个人信息</div>
+                    <div class="driver-detail-grid">
+                        <div class="driver-detail-item"><span class="detail-label">姓名</span><span class="detail-value">${d.name}</span></div>
+                        <div class="driver-detail-item"><span class="detail-label">性别</span><span class="detail-value">${d.gender}</span></div>
+                        <div class="driver-detail-item"><span class="detail-label">年龄</span><span class="detail-value">${age}岁</span></div>
+                        <div class="driver-detail-item"><span class="detail-label">手机号</span><span class="detail-value">${d.phone}</span></div>
+                        <div class="driver-detail-item"><span class="detail-label">身份证号</span><span class="detail-value">${d.idcard}</span></div>
+                        <div class="driver-detail-item"><span class="detail-label">出生日期</span><span class="detail-value">${d.birthday}</span></div>
+                        <div class="driver-detail-item"><span class="detail-label">入职时间</span><span class="detail-value">${d.joinDate}</span></div>
+                        <div class="driver-detail-item"><span class="detail-label">状态</span><span class="detail-value">${d.status === 'active' ? '在职' : '已解约'}</span></div>
+                    </div>
+                </div>
+                <div class="driver-detail-section">
+                    <div class="section-title">紧急联系人</div>
+                    <div class="driver-detail-grid">
+                        <div class="driver-detail-item"><span class="detail-label">联系人</span><span class="detail-value">${d.emergencyContact}</span></div>
+                        <div class="driver-detail-item"><span class="detail-label">手机号</span><span class="detail-value">${d.emergencyPhone}</span></div>
+                    </div>
+                </div>
+                <div class="driver-detail-section">
+                    <div class="section-title">驾驶证信息</div>
+                    <div class="driver-detail-grid">
+                        <div class="driver-detail-item"><span class="detail-label">驾驶证号</span><span class="detail-value">${d.licenseNo}</span></div>
+                        <div class="driver-detail-item"><span class="detail-label">准驾车型</span><span class="detail-value">${licenseTypesStr}</span></div>
+                        <div class="driver-detail-item"><span class="detail-label">初次领证</span><span class="detail-value">${d.licenseFirstDate}</span></div>
+                        <div class="driver-detail-item"><span class="detail-label">有效期止</span><span class="detail-value">${d.licenseExpireDate}</span></div>
+                    </div>
+                </div>
+                <div class="driver-detail-section">
+                    <div class="section-title">公司信息</div>
+                    <div class="driver-detail-grid">
+                        <div class="driver-detail-item"><span class="detail-label">所属公司</span><span class="detail-value">${d.company}</span></div>
+                        <div class="driver-detail-item"><span class="detail-label">业务类型</span><span class="detail-value">${d.businessType}</span></div>
+                        <div class="driver-detail-item"><span class="detail-label">司机类型</span><span class="detail-value">${d.driverType}</span></div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('driver-detail-content').innerHTML = html;
+            document.getElementById('driver-detail-drawer').classList.add('ant-drawer-open');
+            document.getElementById('driver-detail-drawer').style.display = 'block';
+        }
+
+        // 关闭司机详情抽屉
+        function closeDriverDetailDrawer() {
+            document.getElementById('driver-detail-drawer').classList.remove('ant-drawer-open');
+            document.getElementById('driver-detail-drawer').style.display = 'none';
+        }
+
+        // 打开解约弹窗
+        function openTerminateModal(id) {
+            terminateDriverId = id;
+            const d = drivers.find(driver => driver.id === id);
+            document.getElementById('terminate-driver-name').textContent = `司机：${d ? d.name : ''}`;
+            document.getElementById('terminate-modal').style.display = 'block';
+        }
+
+        // 关闭解约弹窗
+        function closeTerminateModal() {
+            document.getElementById('terminate-modal').style.display = 'none';
+            terminateDriverId = null;
+        }
+
+        // 确认解约
+        function confirmTerminate() {
+            if (terminateDriverId) {
+                const index = drivers.findIndex(d => d.id === terminateDriverId);
+                if (index !== -1) {
+                    drivers[index].status = 'terminated';
+                }
+            }
+            closeTerminateModal();
+            renderDrivers();
+        }
+
+        // 打开重新入职弹窗
+        function openRehireModal(id) {
+            rehireDriverId = id;
+            const d = drivers.find(driver => driver.id === id);
+            document.getElementById('rehire-driver-name').textContent = `司机：${d ? d.name : ''}`;
+            document.getElementById('rehire-modal').style.display = 'block';
+        }
+
+        // 关闭重新入职弹窗
+        function closeRehireModal() {
+            document.getElementById('rehire-modal').style.display = 'none';
+            rehireDriverId = null;
+        }
+
+        // 确认重新入职
+        function confirmRehire() {
+            if (rehireDriverId) {
+                const index = drivers.findIndex(d => d.id === rehireDriverId);
+                if (index !== -1) {
+                    drivers[index].status = 'active';
+                }
+            }
+            closeRehireModal();
+            renderDrivers();
+        }
+
+        // 准驾车型多选
+        function toggleLicenseTypeDropdown() {
+            const dropdown = document.getElementById('license-type-dropdown');
+            dropdown.classList.toggle('ant-select-dropdown-hidden');
+        }
+
+        function toggleLicenseType(value) {
+            const idx = selectedLicenseTypes.indexOf(value);
+            if (idx === -1) {
+                selectedLicenseTypes.push(value);
+            } else {
+                selectedLicenseTypes.splice(idx, 1);
+            }
+            updateLicenseTypeTags();
+        }
+
+        function updateLicenseTypeTags() {
+            const container = document.getElementById('license-type-tags');
+            if (selectedLicenseTypes.length === 0) {
+                container.innerHTML = '<span style="color:#bbb;font-size:13px;padding:2px 4px;">请选择准驾车型</span>';
+            } else {
+                container.innerHTML = selectedLicenseTypes.map(v =>
+                    `<span class="ant-tag ant-tag-blue" style="margin:1px;cursor:default;">${v}</span>`
+                ).join('');
+            }
+            // 更新下拉选项选中状态
+            document.querySelectorAll('#license-type-dropdown .ant-select-item-option').forEach(el => {
+                const val = el.dataset.value;
+                el.classList.toggle('ant-select-item-option-selected', selectedLicenseTypes.includes(val));
+            });
+        }
+
+        // 关闭下拉（点击外部）
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('license-type-dropdown');
+            if (dropdown && !dropdown.classList.contains('ant-select-dropdown-hidden')) {
+                const selector = dropdown.closest('.ant-select');
+                if (selector && !selector.contains(e.target)) {
+                    dropdown.classList.add('ant-select-dropdown-hidden');
+                }
+            }
+        });
+
+        // 照片上传处理
+        function handlePhotoUpload(input, previewId) {
+            const file = input.files[0];
+            if (!file) return;
+
+            if (file.size > 10 * 1024 * 1024) {
+                alert('照片大小不能超过 10M');
+                input.value = '';
+                return;
+            }
+
+            if (!['image/jpeg', 'image/png'].includes(file.type)) {
+                alert('仅支持 jpg/png 文件');
+                input.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById(previewId);
+                preview.innerHTML = `<div class="driver-photo-item"><img src="${e.target.result}" alt="照片预览"></div>`;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearAllPhotoPreviews() {
+            ['idcard-front-preview', 'idcard-back-preview', 'license-front-preview', 'license-back-preview'].forEach(id => {
+                document.getElementById(id).innerHTML = '';
+            });
+        }
+
+        // 扩展导航支持司机页面
+        document.addEventListener('DOMContentLoaded', function() {
+            initDriverSearchOptions();
+            renderDrivers();
+
+            // 为所有一级菜单项添加导航点击处理
+            document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+                const page = item.dataset.page;
+                if (page === 'dashboard' || page === 'operation') return;
+
+                item.addEventListener('click', function(e) {
+                    if (e.target.closest('.sub-menu')) return;
+
+                    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                    this.classList.add('active');
+
+                    document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden'));
+                    const targetPage = document.getElementById('page-' + page);
+                    if (targetPage) {
+                        targetPage.classList.remove('hidden');
+                    }
+
+                    document.getElementById('breadcrumb-current').textContent = this.querySelector('a span:last-child').textContent;
+                    document.getElementById('breadcrumb-sub').textContent = '';
+
+                    if (page === 'company') {
+                        renderCompanies(companies);
+                    } else if (page === 'drivers') {
+                        renderDrivers();
+                    }
+                });
+            });
+        });
+
+        </script>
 </body>
 </html>
