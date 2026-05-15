@@ -4968,16 +4968,16 @@
             const licenseTypesStr = d.licenseTypes.join('、');
 
             const idcardFrontHtml = d.idcardFront
-                ? `<div class="driver-photo-item" onclick="openPhotoLightbox('${d.idcardFront}')"><img src="${d.idcardFront}" alt="身份证正面"></div>`
+                ? `<div class="driver-photo-item" onclick="openPhotoLightbox(this)"><img src="${d.idcardFront}" alt="身份证正面"></div>`
                 : `<div class="driver-photo-item" style="color:#bbb;cursor:default;">暂无照片</div>`;
             const idcardBackHtml = d.idcardBack
-                ? `<div class="driver-photo-item" onclick="openPhotoLightbox('${d.idcardBack}')"><img src="${d.idcardBack}" alt="身份证背面"></div>`
+                ? `<div class="driver-photo-item" onclick="openPhotoLightbox(this)"><img src="${d.idcardBack}" alt="身份证背面"></div>`
                 : `<div class="driver-photo-item" style="color:#bbb;cursor:default;">暂无照片</div>`;
             const licenseFrontHtml = d.licenseFront
-                ? `<div class="driver-photo-item" onclick="openPhotoLightbox('${d.licenseFront}')"><img src="${d.licenseFront}" alt="驾驶证正本"></div>`
+                ? `<div class="driver-photo-item" onclick="openPhotoLightbox(this)"><img src="${d.licenseFront}" alt="驾驶证正本"></div>`
                 : `<div class="driver-photo-item" style="color:#bbb;cursor:default;">暂无照片</div>`;
             const licenseBackHtml = d.licenseBack
-                ? `<div class="driver-photo-item" onclick="openPhotoLightbox('${d.licenseBack}')"><img src="${d.licenseBack}" alt="驾驶证副本"></div>`
+                ? `<div class="driver-photo-item" onclick="openPhotoLightbox(this)"><img src="${d.licenseBack}" alt="驾驶证副本"></div>`
                 : `<div class="driver-photo-item" style="color:#bbb;cursor:default;">暂无照片</div>`;
 
             const html = `
