@@ -1856,6 +1856,77 @@
             height: 100%;
             opacity: 0;
         }
+
+        /* 图片预览大图弹窗 */
+        .photo-lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 9999;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+            animation: lightbox-fade-in 0.2s ease;
+        }
+        @keyframes lightbox-fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .photo-lightbox {
+                animation: none;
+            }
+        }
+        .photo-lightbox-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .photo-lightbox-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+            cursor: default;
+        }
+        .photo-lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            background: rgba(255,255,255,0.15);
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #fff;
+            transition: background 0.2s;
+        }
+        .photo-lightbox-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .photo-lightbox-close:focus-visible {
+            outline: 2px solid #fff;
+            outline-offset: 2px;
+        }
+        .driver-photo-item {
+            cursor: zoom-in;
+        }
+        .driver-photo-item:hover {
+            border-color: #1890ff;
+            box-shadow: 0 2px 8px rgba(24,144,255,0.3);
+        }
     </style>
 </head>
 <body>
@@ -3196,6 +3267,16 @@
                     <button class="ant-btn ant-btn-primary" onclick="confirmRehire()">确定重新入职</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- 图片预览大图弹窗 -->
+    <div class="photo-lightbox" id="photo-lightbox" style="display:none;" onclick="closePhotoLightbox()">
+        <div class="photo-lightbox-content">
+            <button class="photo-lightbox-close" aria-label="关闭预览" onclick="event.stopPropagation();closePhotoLightbox()">
+                <svg viewBox="64 64 896 896" width="24" height="24" fill="currentColor"><path d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9c-4.4 5.2-.7 13.1 6.1 13.1h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"></path></svg>
+            </button>
+            <img id="photo-lightbox-img" src="" alt="大图预览">
         </div>
     </div>
 
@@ -4887,17 +4968,17 @@
             const licenseTypesStr = d.licenseTypes.join('、');
 
             const idcardFrontHtml = d.idcardFront
-                ? `<div class="driver-photo-item"><img src="${d.idcardFront}" alt="身份证正面"></div>`
-                : `<div class="driver-photo-item" style="color:#bbb;">暂无照片</div>`;
+                ? `<div class="driver-photo-item" onclick="openPhotoLightbox('${d.idcardFront}')"><img src="${d.idcardFront}" alt="身份证正面"></div>`
+                : `<div class="driver-photo-item" style="color:#bbb;cursor:default;">暂无照片</div>`;
             const idcardBackHtml = d.idcardBack
-                ? `<div class="driver-photo-item"><img src="${d.idcardBack}" alt="身份证背面"></div>`
-                : `<div class="driver-photo-item" style="color:#bbb;">暂无照片</div>`;
+                ? `<div class="driver-photo-item" onclick="openPhotoLightbox('${d.idcardBack}')"><img src="${d.idcardBack}" alt="身份证背面"></div>`
+                : `<div class="driver-photo-item" style="color:#bbb;cursor:default;">暂无照片</div>`;
             const licenseFrontHtml = d.licenseFront
-                ? `<div class="driver-photo-item"><img src="${d.licenseFront}" alt="驾驶证正本"></div>`
-                : `<div class="driver-photo-item" style="color:#bbb;">暂无照片</div>`;
+                ? `<div class="driver-photo-item" onclick="openPhotoLightbox('${d.licenseFront}')"><img src="${d.licenseFront}" alt="驾驶证正本"></div>`
+                : `<div class="driver-photo-item" style="color:#bbb;cursor:default;">暂无照片</div>`;
             const licenseBackHtml = d.licenseBack
-                ? `<div class="driver-photo-item"><img src="${d.licenseBack}" alt="驾驶证副本"></div>`
-                : `<div class="driver-photo-item" style="color:#bbb;">暂无照片</div>`;
+                ? `<div class="driver-photo-item" onclick="openPhotoLightbox('${d.licenseBack}')"><img src="${d.licenseBack}" alt="驾驶证副本"></div>`
+                : `<div class="driver-photo-item" style="color:#bbb;cursor:default;">暂无照片</div>`;
 
             const html = `
                 <div class="driver-detail-section">
@@ -5107,6 +5188,29 @@
                 document.getElementById(id).innerHTML = '';
             });
         }
+
+        // 图片大图预览
+        function openPhotoLightbox(src) {
+            const img = document.getElementById('photo-lightbox-img');
+            img.src = src;
+            document.getElementById('photo-lightbox').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePhotoLightbox() {
+            document.getElementById('photo-lightbox').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        // 键盘 ESC 关闭大图
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const lightbox = document.getElementById('photo-lightbox');
+                if (lightbox.style.display === 'flex') {
+                    closePhotoLightbox();
+                }
+            }
+        });
 
         // 扩展导航支持司机页面
         document.addEventListener('DOMContentLoaded', function() {
