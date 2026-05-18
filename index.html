@@ -1894,69 +1894,72 @@
             font-size: 13px;
             margin-left: 8px;
         }
+        /* 司机详情和表单抽屉样式 */
+        .driver-drawer,
+        .driver-form-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        .driver-drawer .ant-drawer-content-wrapper,
+        .driver-form-drawer .ant-drawer-content-wrapper {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            box-shadow: -2px 0 8px rgba(0,0,0,0.15);
+            background: #fff;
+            height: 100%;
+        }
         .driver-drawer .ant-drawer-content-wrapper {
             width: 640px !important;
-        }
-        .driver-drawer .ant-drawer-content {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        .driver-drawer .ant-drawer-wrapper-body {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            overflow: hidden;
-        }
-        .driver-drawer .ant-drawer-body {
-            flex: 1;
-            overflow-y: auto;
-            overscroll-behavior: contain;
-        }
-        .driver-drawer .ant-drawer-body .driver-drawer-footer {
-            border-top: 1px solid #f0f0f0;
-            padding: 12px 24px;
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-            position: sticky;
-            bottom: 0;
-            background: #fff;
-            z-index: 10;
         }
         .driver-form-drawer .ant-drawer-content-wrapper {
             width: 720px !important;
         }
+        .driver-drawer .ant-drawer-content,
         .driver-form-drawer .ant-drawer-content {
-            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             display: flex;
             flex-direction: column;
         }
+        .driver-drawer .ant-drawer-wrapper-body,
         .driver-form-drawer .ant-drawer-wrapper-body {
             display: flex;
             flex-direction: column;
             height: 100%;
             overflow: hidden;
         }
+        .driver-drawer .ant-drawer-body,
         .driver-form-drawer .ant-drawer-body {
-            padding: 0;
             flex: 1;
             overflow-y: auto;
             overscroll-behavior: contain;
         }
+        .driver-form-drawer .ant-drawer-body {
+            padding: 0;
+        }
         .driver-form-drawer .ant-drawer-body .driver-drawer-content {
             padding: 24px;
         }
+        .driver-drawer .ant-drawer-body .driver-drawer-footer,
         .driver-form-drawer .ant-drawer-body .driver-drawer-footer {
-            position: sticky;
-            bottom: 0;
-            background: #fff;
-            z-index: 10;
             border-top: 1px solid #f0f0f0;
             padding: 12px 24px;
             display: flex;
             justify-content: flex-end;
             gap: 8px;
+            position: sticky;
+            bottom: 0;
+            background: #fff;
+            z-index: 10;
         }
         .driver-photo-upload {
             display: flex;
