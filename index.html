@@ -1897,14 +1897,50 @@
         .driver-drawer .ant-drawer-content-wrapper {
             width: 640px !important;
         }
+        .driver-drawer .ant-drawer-content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .driver-drawer .ant-drawer-wrapper-body {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
         .driver-drawer .ant-drawer-body {
+            flex: 1;
+            overflow-y: auto;
             overscroll-behavior: contain;
+        }
+        .driver-drawer .ant-drawer-body .driver-drawer-footer {
+            border-top: 1px solid #f0f0f0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            position: sticky;
+            bottom: 0;
+            background: #fff;
+            z-index: 10;
         }
         .driver-form-drawer .ant-drawer-content-wrapper {
             width: 720px !important;
         }
+        .driver-form-drawer .ant-drawer-content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .driver-form-drawer .ant-drawer-wrapper-body {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
         .driver-form-drawer .ant-drawer-body {
             padding: 0;
+            flex: 1;
             overflow-y: auto;
             overscroll-behavior: contain;
         }
@@ -1916,6 +1952,11 @@
             bottom: 0;
             background: #fff;
             z-index: 10;
+            border-top: 1px solid #f0f0f0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
         }
         .driver-photo-upload {
             display: flex;
@@ -3266,10 +3307,10 @@
                                 <div class="driver-form-error" id="driver-form-error" aria-live="polite" role="alert"></div>
                             </form>
                         </div>
-                    </div>
-                    <div class="driver-drawer-footer">
-                        <button class="ant-btn" onclick="closeDriverFormDrawer()">取消</button>
-                        <button class="ant-btn ant-btn-primary" onclick="saveDriver()">保存</button>
+                        <div class="driver-drawer-footer">
+                            <button class="ant-btn" onclick="closeDriverFormDrawer()">取消</button>
+                            <button class="ant-btn ant-btn-primary" onclick="saveDriver()">保存</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -3293,9 +3334,9 @@
                     <div class="ant-drawer-body">
                         <div class="driver-drawer-content" id="driver-detail-content">
                         </div>
-                    </div>
-                    <div class="driver-drawer-footer">
-                        <button class="ant-btn" onclick="closeDriverDetailDrawer()">关闭</button>
+                        <div class="driver-drawer-footer">
+                            <button class="ant-btn" onclick="closeDriverDetailDrawer()">关闭</button>
+                        </div>
                     </div>
                 </div>
             </div>
